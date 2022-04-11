@@ -1,4 +1,4 @@
-# GigGub
+# GigHub
 
 A Job-searching Application made using Flutter.
 
