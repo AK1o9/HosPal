@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:gighub/widgets/button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:gighub/widgets/textfield_widget.dart';
@@ -11,10 +12,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../api/firebase_api.dart';
+import '../../classes/dropped_file.dart';
 import '../../classes/firebase_file.dart';
 import '../../constants/style.dart';
 
 import 'package:path/path.dart' as _path;
+
+import '../../widgets/dropzone_widget.dart';
 
 class JobPostPage extends StatefulWidget {
   const JobPostPage({Key? key}) : super(key: key);
@@ -34,21 +38,26 @@ class _JobPostPageState extends State<JobPostPage> {
   String? jobRequirements; // -> Multiline String
   int jobSalary = 0;
 
-  UploadTask? task;
-  File? file;
-  //Note: The below variables are intended for Web Usage only.
-  Uint8List? bytes;
-  PlatformFile? byteFile;
-  String? fileURL;
-  FirebaseFile? firebaseFile;
-
   final jobTitleController = TextEditingController();
   final jobDescriptionController = TextEditingController();
   final jobSalaryController = TextEditingController();
+  final jobRequirementsController = TextEditingController();
   final jobSkillsController = TextEditingController();
   final companyNameController = TextEditingController();
   final companyAddressController = TextEditingController();
   final companyDescriptionController = TextEditingController();
+
+  DropzoneViewController? dropzoneController;
+  bool isDropzoneHighlighted = false;
+
+  UploadTask? task;
+  DroppedFile? file;
+  FirebaseFile? firebaseFile;
+
+  //Note: The below variables are intended for Web Usage only.
+  Uint8List? bytes;
+  PlatformFile? byteFile;
+  String? fileURL;
 
   @override
   void initState() {
@@ -56,6 +65,7 @@ class _JobPostPageState extends State<JobPostPage> {
     jobTitleController.addListener(() => setState(() {}));
     jobDescriptionController.addListener(() => setState(() {}));
     jobSalaryController.addListener(() => setState(() {}));
+    jobRequirementsController.addListener(() => setState(() {}));
     jobSkillsController.addListener(() => setState(() {}));
     companyNameController.addListener(() => setState(() {}));
     companyAddressController.addListener(() => setState(() {}));
@@ -67,6 +77,7 @@ class _JobPostPageState extends State<JobPostPage> {
     jobTitleController.dispose();
     jobDescriptionController.dispose();
     jobSalaryController.dispose();
+    jobRequirementsController.dispose();
     jobSkillsController.dispose();
     companyNameController.dispose();
     companyAddressController.dispose();
@@ -78,6 +89,7 @@ class _JobPostPageState extends State<JobPostPage> {
     jobTitleController.clear();
     jobDescriptionController.clear();
     jobSalaryController.clear();
+    jobRequirementsController.clear();
     jobSkillsController.clear();
     companyNameController.clear();
     companyAddressController.clear();
@@ -227,6 +239,12 @@ class _JobPostPageState extends State<JobPostPage> {
             ),
             y20,
             TextfieldWidget(
+              labelText: 'Job Requirements',
+              controller: jobRequirementsController,
+              textInputType: TextInputType.multiline,
+            ),
+            y20,
+            TextfieldWidget(
               labelText: 'Skills Required',
               controller: jobSkillsController,
             ),
@@ -240,7 +258,6 @@ class _JobPostPageState extends State<JobPostPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 5,
                   child: Column(
                     children: [
                       Row(
@@ -272,44 +289,25 @@ class _JobPostPageState extends State<JobPostPage> {
                           //     "Short summary of Company's activities and achievements",
                           controller: companyDescriptionController,
                           textInputType: TextInputType.multiline),
-                      y20,
-                      TextfieldWidget(
-                          labelText: 'Company Description & Information',
-                          // hintText:
-                          //     "Short summary of Company's activities and achievements",
-                          controller: companyDescriptionController,
-                          textInputType: TextInputType.multiline),
-                      y20,
-                      TextfieldWidget(
-                          labelText: 'Company Description & Information',
-                          // hintText:
-                          //     "Short summary of Company's activities and achievements",
-                          controller: companyDescriptionController,
-                          textInputType: TextInputType.multiline),
-                      y20,
-                      TextfieldWidget(
-                          labelText: 'Company Description & Information',
-                          // hintText:
-                          //     "Short summary of Company's activities and achievements",
-                          controller: companyDescriptionController,
-                          textInputType: TextInputType.multiline),
-                    ],
-                  ),
-                ),
-                x10,
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      PoppinsTextWidget(
-                          text: 'Company Logo', size: fontHeader, color: dark),
-                      y8,
-                      buildImageBox(),
                     ],
                   ),
                 ),
               ],
             ),
+            y20,
+
+            //Drop Zone / File Picker
+            PoppinsTextWidget(
+                text: 'Company Logo\n(Image)', size: fontHeader, color: dark),
+            y10,
+            kIsWeb
+                ? Container(
+                    height: 350,
+                    width: 300,
+                    child: DropzoneWidget(
+                        onDroppedFile: (file) =>
+                            setState(() => this.file = file)))
+                : pickFile(),
 
             y30, y20,
             Center(
@@ -339,7 +337,7 @@ class _JobPostPageState extends State<JobPostPage> {
     } else {
       //Save data
       saveData();
-      uploadFile();
+      saveFiles();
       //Confirmation message
       showDialog(
           barrierDismissible: true,
@@ -393,6 +391,8 @@ class _JobPostPageState extends State<JobPostPage> {
         'company_name': companyNameController.text,
         'company_address': companyAddressController.text,
         'company_info': companyDescriptionController.text,
+        // 'file_name': null,
+        // 'file_url': null,
       }).then((value) {
         if (kDebugMode) {
           print('Data saved successfuly!');
@@ -409,117 +409,117 @@ class _JobPostPageState extends State<JobPostPage> {
     }
   }
 
-  Widget buildImageBox() {
-    return Container(
-      padding: pad12,
-      decoration: BoxDecoration(
-          border: Border.all(color: grey, width: 0.5), borderRadius: bRadius20),
-      child: Column(children: [
-        Container(
-            // padding: pad10,
-            width: 150,
-            height: 150,
-            decoration: BoxDecoration(borderRadius: bRadius20, color: silver),
-            // ignore: prefer_const_constructors
-            child: (file != null)
-                ? SafeArea(
-                    child: Image.network(
-                      file!.path,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  )
-                : (bytes != null)
-                    ? SafeArea(
-                        child: Image.network(
-                          bytes.toString(),
-                          fit: BoxFit.scaleDown,
-                        ),
-                      )
-                    : Icon(
-                        Icons.image_not_supported_rounded,
-                        size: 50,
-                        color: grey,
-                      )),
-        y20,
-        ButtonWidget(
-          label: 'Upload Image',
-          onTap: selectFile,
-          isInverted: true,
-        ),
-        y8,
-        PoppinsTextWidget(
-            text: '* Maximum File Size: 1 GB.', size: fontBody, color: dark)
-      ]),
-    );
-  }
+  // Widget buildImageBox() {
+  //   return Container(
+  //     padding: pad12,
+  //     decoration: BoxDecoration(
+  //         border: Border.all(color: grey, width: 0.5), borderRadius: bRadius20),
+  //     child: Column(children: [
+  //       Container(
+  //           // padding: pad10,
+  //           width: 150,
+  //           height: 150,
+  //           decoration: BoxDecoration(borderRadius: bRadius20, color: silver),
+  //           // ignore: prefer_const_constructors
+  //           child: (file != null)
+  //               ? SafeArea(
+  //                   child: Image.network(
+  //                     file!.path,
+  //                     fit: BoxFit.scaleDown,
+  //                   ),
+  //                 )
+  //               : (bytes != null)
+  //                   ? SafeArea(
+  //                       child: Image.network(
+  //                         bytes.toString(),
+  //                         fit: BoxFit.scaleDown,
+  //                       ),
+  //                     )
+  //                   : Icon(
+  //                       Icons.image_not_supported_rounded,
+  //                       size: 50,
+  //                       color: grey,
+  //                     )),
+  //       y20,
+  //       ButtonWidget(
+  //         label: 'Upload Image',
+  //         onTap: selectFile,
+  //         isInverted: true,
+  //       ),
+  //       y8,
+  //       PoppinsTextWidget(
+  //           text: '* Maximum File Size: 1 GB.', size: fontBody, color: dark)
+  //     ]),
+  //   );
+  // }
 
-  Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+  // Future selectFile() async {
+  //   final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
-    if (result == null) {
-      return;
-    } else if (/* result.files.single.bytes != null ||
-        FilePicker.platform.toString() == "Instance of 'FilePickerWeb'" ||  */
-        kIsWeb) {
-      final path = result.files.single.path;
-      setState(() {
-        bytes = result.files.single.bytes;
-        byteFile = result.files.single;
-        // file = File(path!).writeAsBytes(bytes!) as File?;
-      });
-    } else {
-      final path = result.files.single.path;
-      setState(() => file = File(path!));
-    }
+  //   if (result == null) {
+  //     return;
+  //   } else if (/* result.files.single.bytes != null ||
+  //       FilePicker.platform.toString() == "Instance of 'FilePickerWeb'" ||  */
+  //       kIsWeb) {
+  //     final path = result.files.single.path;
+  //     setState(() {
+  //       bytes = result.files.single.bytes;
+  //       byteFile = result.files.single;
+  //       // file = File(path!).writeAsBytes(bytes!) as File?;
+  //     });
+  //   } else {
+  //     final path = result.files.single.path;
+  //     setState(() => file = File(path!));
+  //   }
 
-    //File Information: (Dev view)
-    if (kDebugMode) {
-      print('File Info: ');
-      print('Name: ${result.files.single.name}');
-      print('Size: ${result.files.single.size}');
-      print('Extension: ${result.files.single.extension}');
-      result.files.single.bytes != null
-          ? print('Bytes: ${result.files.single.bytes}')
-          : print('Path: ${result.files.single.path}');
-    }
-  }
+  //   //File Information: (Dev view)
+  //   if (kDebugMode) {
+  //     print('File Info: ');
+  //     print('Name: ${result.files.single.name}');
+  //     print('Size: ${result.files.single.size}');
+  //     print('Extension: ${result.files.single.extension}');
+  //     result.files.single.bytes != null
+  //         ? print('Bytes: ${result.files.single.bytes}')
+  //         : print('Path: ${result.files.single.path}');
+  //   }
+  // }
 
-  Future uploadFile() async {
-    if (file == null && bytes == null) {
-      const snackBar = SnackBar(
-        backgroundColor: Colors.red,
-        content: Text("Please make sure you've selected a file to upload."),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;
-    } else if (file != null) {
-      final fileName = _path.basename(file!.path);
-      final destination = 'jobs/$fileName';
+  // Future uploadFile() async {
+  //   if (file == null && bytes == null) {
+  //     const snackBar = SnackBar(
+  //       backgroundColor: Colors.red,
+  //       content: Text("Please make sure you've selected a file to upload."),
+  //     );
+  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //     return;
+  //   } else if (file != null) {
+  //     final fileName = _path.basename(file!.path);
+  //     final destination = 'jobs/$fileName';
 
-      task = FirebaseApi.uploadFile(destination, file!);
-      setState(() {});
-    } else {
-      //if (bytes != null){
-      final fileName = byteFile!.name;
-      final destination = 'jobs/$jobId/$fileName';
+  //     task = FirebaseApi.uploadFile(destination, file!);
+  //     setState(() {});
+  //   } else {
+  //     //if (bytes != null){
+  //     final fileName = byteFile!.name;
+  //     final destination = 'jobs/$jobId/$fileName';
 
-      task = FirebaseApi.uploadBytes(destination, bytes!);
-      setState(() {});
-    }
+  //     task = FirebaseApi.uploadBytes(destination, bytes!);
+  //     setState(() {});
+  //   }
 
-    if (task == null) return;
+  //   if (task == null) return;
 
-    final snapshot = await task!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
+  //   final snapshot = await task!.whenComplete(() {});
+  //   final urlDownload = await snapshot.ref.getDownloadURL();
 
-    if (kDebugMode) {
-      print('Download-Link: $urlDownload');
-    }
+  //   if (kDebugMode) {
+  //     print('Download-Link: $urlDownload');
+  //   }
 
-    setState(() {
-      fileURL = urlDownload;
-    });
-  }
+  //   setState(() {
+  //     fileURL = urlDownload;
+  //   });
+  // }
 
   Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
         stream: task.snapshotEvents,
@@ -550,5 +550,106 @@ class _JobPostPageState extends State<JobPostPage> {
     Random _rnd = Random();
     return String.fromCharCodes(Iterable.generate(
         length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  }
+
+  //Filepicker
+  Widget pickFile() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18),
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            primary: Colors.blue,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20))),
+        icon: const Icon(Icons.attach_file_rounded, size: 32),
+        label: const Text('Attach File(s)',
+            style: TextStyle(color: Colors.white, fontSize: 20)),
+        onPressed: () async {
+          // final events = await dropzoneController.pickFiles();
+          // if (events.isEmpty) return;
+          // acceptFile(events.first);
+        },
+      ),
+    );
+  }
+
+  //TODO: Remove
+  // Future<dynamic> acceptFile(dynamic event) async {
+  //   final name = event.name; // or: await dropzoneController.getFilename(event);
+  //   final mime = await dropzoneController.getFileMIME(event);
+  //   final size = await dropzoneController.getFileSize(event);
+  //   final url = await dropzoneController.createFileUrl(event);
+
+  //   if (kDebugMode) {
+  //     print(name);
+  //     print(mime);
+  //     print(size);
+  //     print(url);
+  //   }
+
+  //   // ignore: unused_local_variable
+  //   final droppedFile = DroppedFile(
+  //     url: url,
+  //     name: name,
+  //     mime: mime,
+  //     size: size,
+  //   );
+
+  //   // widget.onDroppedFile(droppedFile);
+  // }
+
+  Future<void> saveFiles() async {
+    if (file == null) return null;
+    try {
+      var ref = FirebaseStorage.instance
+          .ref()
+          .child('jobs')
+          .child(jobId!)
+          .child(file!.name);
+
+      // Firebase.upload
+      var uploadTask = ref.putData(file!.bytes).catchError((error) {
+        if (kDebugMode) {
+          print(error);
+        }
+      });
+
+      // await ref.getDownloadURL().then((String result) {
+      //   setState(() {
+      //     fileURL = result;
+      //   });
+      // });
+
+      // var loadURL = await (await uploadTask).ref.getDownloadURL();
+
+      // String finalName = (await uploadTask).ref.name;
+      // String finalURL = loadURL.toString();
+
+      // var db = FirebaseFirestore.instance.collection('jobs');
+
+      // db
+      //     .doc(jobId)
+      //     .update({'file_name': finalName, 'file_url': finalURL}).then((_) {
+      //   if (kDebugMode) {
+      //     print('Task File URL saved successfully.');
+      //   }
+      // }).catchError((error) {
+      //   if (kDebugMode) {
+      //     print(
+      //         'Failed to save the File URL for the select task.\nError: $error');
+      //   }
+      // });
+
+//     var collection = FirebaseFirestore.instance.collection('collection');
+// collection
+//     .doc('doc_id')
+//     .set('file_url': fileURL, SetOptions(merge: true));
+
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   }
 }

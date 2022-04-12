@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:gighub/constants/style.dart';
 import 'package:gighub/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,6 +13,12 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 
   @override
   Widget build(BuildContext context) {

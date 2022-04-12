@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:gighub/pages/job/job_page.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
@@ -33,194 +34,201 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: PoppinsTextWidget(
-          text: 'GigHub',
-          color: light,
-          size: fontTitle,
-          isBold: true,
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: dark,
-        leading: Padding(
-            padding: EdgeInsets.only(
-                left: space18, top: space12, right: space12, bottom: space12),
-            child: Icon(Icons.menu_rounded, color: light, size: 28)),
-        actions: [
-          Icon(Icons.person, color: light, size: 28),
-          x10,
-          x8,
-        ],
-      ),
-      backgroundColor: silver,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: light,
-        elevation: 16,
-        child: Icon(
-          Icons.add_reaction,
-          color: dark,
-        ),
-        onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const JobPostPage()));
-        },
-      ),
-      body: Container(
-        margin: EdgeInsets.only(left: space18),
-        child: SingleChildScrollView(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            y30,
-            PoppinsTextWidget(
-              text: "Welcome back Ahmed,\nLet's find you a job!",
-              size: fontSubtitle,
-              color: dark,
-            ),
-            y30,
-            Container(
-              width: double.infinity,
-              height: space50,
-              margin: EdgeInsets.only(right: space18),
-              child: Row(children: [
-                //Search bar
-                Expanded(
-                    child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  decoration: BoxDecoration(
-                    color: light, //dark,
-                    borderRadius: bRadius12,
-                  ),
-                  child: TextField(
-                    controller: searchController,
-                    cursorColor: dark, //light,
-                    decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.search,
-                          size: 25,
-                          color: dark, //light,
-                        ),
-                        border: InputBorder.none,
-                        hintText: 'Search for a job of your choice.',
-                        hintStyle: TextStyle(color: /* light */ grey),
-                        suffixIcon: searchController.text.isNotEmpty
-                            ? IconButton(
-                                icon: Icon(
-                                  Icons.close,
-                                  color: dark,
-                                ),
-                                onPressed: () => searchController.clear(),
-                              )
-                            : Container(width: 0)),
-                  ),
-                )),
-                //Filter button (for search results)
-                Container(
-                    height: space50,
-                    width: space50,
-                    margin: EdgeInsets.only(left: space12),
-                    decoration:
-                        BoxDecoration(color: dark, borderRadius: bRadius12),
-                    child:
-                        Icon(Icons.filter_alt_rounded, color: light, size: 24))
-              ]),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: space50),
-              padding: pad20,
-              decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PoppinsTextWidget(
-                    text: 'FEATURED',
-                    size: fontTitle,
-                    color: dark,
-                    isBold: true,
-                  ),
-                  y20,
-                  SafeArea(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Expanded(
-                          child: Row(children: [
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                      ])),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: space50),
-              padding: pad20,
-              decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PoppinsTextWidget(
-                    text: 'NEAR YOU',
-                    size: fontTitle,
-                    color: dark,
-                    isBold: true,
-                  ),
-                  y20,
-                  SafeArea(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Expanded(
-                          child: Row(children: [
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                        buildJobTile(),
-                      ])),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: space50),
-              padding: pad20,
-              decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PoppinsTextWidget(
-                    text: 'ALL JOBS',
-                    size: fontTitle,
-                    color: dark,
-                    isBold: true,
-                  ),
-                  y20,
-                  SingleChildScrollView(
-                    child: Expanded(
-                        child: Column(children: [
-                      buildJobListing(),
-                      buildJobListing(),
-                      buildJobListing(),
-                      buildJobListing(),
-                    ])),
-                  )
-                ],
-              ),
-            )
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      scrollBehavior: MyCustomScrollBehavior(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: PoppinsTextWidget(
+            text: 'GigHub',
+            color: light,
+            size: fontTitle,
+            isBold: true,
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: dark,
+          leading: Padding(
+              padding: EdgeInsets.only(
+                  left: space18, top: space12, right: space12, bottom: space12),
+              child: Icon(Icons.menu_rounded, color: light, size: 28)),
+          actions: [
+            Icon(Icons.person, color: light, size: 28),
+            x10,
+            x8,
           ],
-        )),
+        ),
+        backgroundColor: silver,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: light,
+          elevation: 16,
+          child: Icon(
+            Icons.add_reaction,
+            color: dark,
+          ),
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const JobPostPage()));
+          },
+        ),
+        body: Container(
+          margin: EdgeInsets.only(left: space18),
+          child: SingleChildScrollView(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              y30,
+              PoppinsTextWidget(
+                text: "Welcome back Ahmed,\nLet's find you a job!",
+                size: fontSubtitle,
+                color: dark,
+              ),
+              y30,
+              Container(
+                width: double.infinity,
+                height: space50,
+                margin: EdgeInsets.only(right: space18),
+                child: Row(children: [
+                  //Search bar
+                  Expanded(
+                      child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: light, //dark,
+                      borderRadius: bRadius12,
+                    ),
+                    child: TextField(
+                      controller: searchController,
+                      cursorColor: dark, //light,
+                      decoration: InputDecoration(
+                          icon: Icon(
+                            Icons.search,
+                            size: 25,
+                            color: dark, //light,
+                          ),
+                          border: InputBorder.none,
+                          hintText: 'Search for a job of your choice.',
+                          hintStyle: TextStyle(color: /* light */ grey),
+                          suffixIcon: searchController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: dark,
+                                  ),
+                                  onPressed: () => searchController.clear(),
+                                )
+                              : Container(width: 0)),
+                    ),
+                  )),
+                  //Filter button (for search results)
+                  Container(
+                      height: space50,
+                      width: space50,
+                      margin: EdgeInsets.only(left: space12),
+                      decoration:
+                          BoxDecoration(color: dark, borderRadius: bRadius12),
+                      child: Icon(Icons.filter_alt_rounded,
+                          color: light, size: 24))
+                ]),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: space50),
+                padding: pad20,
+                decoration:
+                    BoxDecoration(borderRadius: bRadius20, color: light),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PoppinsTextWidget(
+                      text: 'FEATURED',
+                      size: fontTitle,
+                      color: dark,
+                      isBold: true,
+                    ),
+                    y20,
+                    SafeArea(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Expanded(
+                            child: Row(children: [
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                        ])),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: space50),
+                padding: pad20,
+                decoration:
+                    BoxDecoration(borderRadius: bRadius20, color: light),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PoppinsTextWidget(
+                      text: 'NEAR YOU',
+                      size: fontTitle,
+                      color: dark,
+                      isBold: true,
+                    ),
+                    y20,
+                    SafeArea(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Expanded(
+                            child: Row(children: [
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                          buildJobTile(),
+                        ])),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: space50),
+                padding: pad20,
+                decoration:
+                    BoxDecoration(borderRadius: bRadius20, color: light),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    PoppinsTextWidget(
+                      text: 'ALL JOBS',
+                      size: fontTitle,
+                      color: dark,
+                      isBold: true,
+                    ),
+                    y20,
+                    SingleChildScrollView(
+                      child: Expanded(
+                          child: Column(children: [
+                        buildJobListing(),
+                        buildJobListing(),
+                        buildJobListing(),
+                        buildJobListing(),
+                      ])),
+                    )
+                  ],
+                ),
+              )
+            ],
+          )),
+        ),
       ),
     );
   }
@@ -377,4 +385,13 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }
