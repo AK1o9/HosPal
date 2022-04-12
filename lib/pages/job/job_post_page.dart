@@ -51,7 +51,8 @@ class _JobPostPageState extends State<JobPostPage> {
   bool isDropzoneHighlighted = false;
 
   UploadTask? task;
-  DroppedFile? file;
+  File? file;
+  DroppedFile? droppedFile;
   FirebaseFile? firebaseFile;
 
   //Note: The below variables are intended for Web Usage only.
@@ -306,7 +307,7 @@ class _JobPostPageState extends State<JobPostPage> {
                     width: 300,
                     child: DropzoneWidget(
                         onDroppedFile: (file) =>
-                            setState(() => this.file = file)))
+                            setState(() => droppedFile = file)))
                 : pickFile(),
 
             y30, y20,
@@ -330,10 +331,104 @@ class _JobPostPageState extends State<JobPostPage> {
         companyAddressController.text.isEmpty ||
         companyDescriptionController.text.isEmpty) {
       //Error message: fill all fields.
+      showDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: (_) => AlertDialog(
+                backgroundColor: Colors.red,
+                title: PoppinsTextWidget(
+                  text: 'Error',
+                  size: fontTitle,
+                  color: light,
+                  isBold: true,
+                ),
+                content: PoppinsTextWidget(
+                  text: "Please make sure to fill up all of the fields.",
+                  size: fontSubtitle,
+                  color: light,
+                ),
+                // actionsAlignment: MainAxisAlignment.center,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop;
+                    },
+                    child: PoppinsTextWidget(
+                      text: "OK",
+                      size: fontSubtitle,
+                      color: light,
+                      isBold: true,
+                    ),
+                  ),
+                ],
+              ));
     } else if (jobSalary < 1500 && jobType != 'Internship') {
       //Below Minimum wage.
+      showDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: (_) => AlertDialog(
+                backgroundColor: Colors.red,
+                title: PoppinsTextWidget(
+                  text: 'Error',
+                  size: fontTitle,
+                  color: light,
+                  isBold: true,
+                ),
+                content: PoppinsTextWidget(
+                  text:
+                      "The selected monthly salary is shown to be below RM 1500, which is the minimum wage in Malaysia.\nPlease raise this value to proceed.",
+                  size: fontSubtitle,
+                  color: light,
+                ),
+                // actionsAlignment: MainAxisAlignment.center,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop;
+                    },
+                    child: PoppinsTextWidget(
+                      text: "OK",
+                      size: fontSubtitle,
+                      color: light,
+                      isBold: true,
+                    ),
+                  ),
+                ],
+              ));
     } else if (jobType == '' || jobType == null) {
       //Please set a job type.
+      showDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: (_) => AlertDialog(
+                backgroundColor: Colors.red,
+                title: PoppinsTextWidget(
+                  text: 'Error',
+                  size: fontTitle,
+                  color: light,
+                  isBold: true,
+                ),
+                content: PoppinsTextWidget(
+                  text: "Please select a valid job type.",
+                  size: fontSubtitle,
+                  color: light,
+                ),
+                // actionsAlignment: MainAxisAlignment.center,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(this.context).pop;
+                    },
+                    child: PoppinsTextWidget(
+                      text: "OK",
+                      size: fontSubtitle,
+                      color: light,
+                      isBold: true,
+                    ),
+                  ),
+                ],
+              ));
     } else {
       //Save data
       saveData();
@@ -391,8 +486,8 @@ class _JobPostPageState extends State<JobPostPage> {
         'company_name': companyNameController.text,
         'company_address': companyAddressController.text,
         'company_info': companyDescriptionController.text,
-        // 'file_name': null,
-        // 'file_url': null,
+        'file_name': null,
+        'file_url': null,
       }).then((value) {
         if (kDebugMode) {
           print('Data saved successfuly!');
@@ -409,117 +504,117 @@ class _JobPostPageState extends State<JobPostPage> {
     }
   }
 
-  // Widget buildImageBox() {
-  //   return Container(
-  //     padding: pad12,
-  //     decoration: BoxDecoration(
-  //         border: Border.all(color: grey, width: 0.5), borderRadius: bRadius20),
-  //     child: Column(children: [
-  //       Container(
-  //           // padding: pad10,
-  //           width: 150,
-  //           height: 150,
-  //           decoration: BoxDecoration(borderRadius: bRadius20, color: silver),
-  //           // ignore: prefer_const_constructors
-  //           child: (file != null)
-  //               ? SafeArea(
-  //                   child: Image.network(
-  //                     file!.path,
-  //                     fit: BoxFit.scaleDown,
-  //                   ),
-  //                 )
-  //               : (bytes != null)
-  //                   ? SafeArea(
-  //                       child: Image.network(
-  //                         bytes.toString(),
-  //                         fit: BoxFit.scaleDown,
-  //                       ),
-  //                     )
-  //                   : Icon(
-  //                       Icons.image_not_supported_rounded,
-  //                       size: 50,
-  //                       color: grey,
-  //                     )),
-  //       y20,
-  //       ButtonWidget(
-  //         label: 'Upload Image',
-  //         onTap: selectFile,
-  //         isInverted: true,
-  //       ),
-  //       y8,
-  //       PoppinsTextWidget(
-  //           text: '* Maximum File Size: 1 GB.', size: fontBody, color: dark)
-  //     ]),
-  //   );
-  // }
+  Widget buildImageBox() {
+    return Container(
+      padding: pad12,
+      decoration: BoxDecoration(
+          border: Border.all(color: grey, width: 0.5), borderRadius: bRadius20),
+      child: Column(children: [
+        Container(
+            // padding: pad10,
+            width: 150,
+            height: 150,
+            decoration: BoxDecoration(borderRadius: bRadius20, color: silver),
+            // ignore: prefer_const_constructors
+            child: (file != null)
+                ? SafeArea(
+                    child: Image.network(
+                      file!.path,
+                      fit: BoxFit.scaleDown,
+                    ),
+                  )
+                : (bytes != null)
+                    ? SafeArea(
+                        child: Image.network(
+                          bytes.toString(),
+                          fit: BoxFit.scaleDown,
+                        ),
+                      )
+                    : Icon(
+                        Icons.image_not_supported_rounded,
+                        size: 50,
+                        color: grey,
+                      )),
+        y20,
+        ButtonWidget(
+          label: 'Upload Image',
+          onTap: selectFile,
+          isInverted: true,
+        ),
+        y8,
+        PoppinsTextWidget(
+            text: '* Maximum File Size: 1 GB.', size: fontBody, color: dark)
+      ]),
+    );
+  }
 
-  // Future selectFile() async {
-  //   final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
-  //   if (result == null) {
-  //     return;
-  //   } else if (/* result.files.single.bytes != null ||
-  //       FilePicker.platform.toString() == "Instance of 'FilePickerWeb'" ||  */
-  //       kIsWeb) {
-  //     final path = result.files.single.path;
-  //     setState(() {
-  //       bytes = result.files.single.bytes;
-  //       byteFile = result.files.single;
-  //       // file = File(path!).writeAsBytes(bytes!) as File?;
-  //     });
-  //   } else {
-  //     final path = result.files.single.path;
-  //     setState(() => file = File(path!));
-  //   }
+    if (result == null) {
+      return;
+    } else if (/* result.files.single.bytes != null ||
+        FilePicker.platform.toString() == "Instance of 'FilePickerWeb'" ||  */
+        kIsWeb) {
+      final path = result.files.single.path;
+      setState(() {
+        bytes = result.files.single.bytes;
+        byteFile = result.files.single;
+        // file = File(path!).writeAsBytes(bytes!) as File?;
+      });
+    } else {
+      final path = result.files.single.path;
+      setState(() => file = File(path!));
+    }
 
-  //   //File Information: (Dev view)
-  //   if (kDebugMode) {
-  //     print('File Info: ');
-  //     print('Name: ${result.files.single.name}');
-  //     print('Size: ${result.files.single.size}');
-  //     print('Extension: ${result.files.single.extension}');
-  //     result.files.single.bytes != null
-  //         ? print('Bytes: ${result.files.single.bytes}')
-  //         : print('Path: ${result.files.single.path}');
-  //   }
-  // }
+    //File Information: (Dev view)
+    if (kDebugMode) {
+      print('File Info: ');
+      print('Name: ${result.files.single.name}');
+      print('Size: ${result.files.single.size}');
+      print('Extension: ${result.files.single.extension}');
+      result.files.single.bytes != null
+          ? print('Bytes: ${result.files.single.bytes}')
+          : print('Path: ${result.files.single.path}');
+    }
+  }
 
-  // Future uploadFile() async {
-  //   if (file == null && bytes == null) {
-  //     const snackBar = SnackBar(
-  //       backgroundColor: Colors.red,
-  //       content: Text("Please make sure you've selected a file to upload."),
-  //     );
-  //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //     return;
-  //   } else if (file != null) {
-  //     final fileName = _path.basename(file!.path);
-  //     final destination = 'jobs/$fileName';
+  Future uploadFile() async {
+    if (file == null && bytes == null) {
+      const snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text("Please make sure you've selected a file to upload."),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    } else if (file != null) {
+      final fileName = _path.basename(file!.path);
+      final destination = 'jobs/$fileName';
 
-  //     task = FirebaseApi.uploadFile(destination, file!);
-  //     setState(() {});
-  //   } else {
-  //     //if (bytes != null){
-  //     final fileName = byteFile!.name;
-  //     final destination = 'jobs/$jobId/$fileName';
+      task = FirebaseApi.uploadFile(destination, file!);
+      setState(() {});
+    } else {
+      //if (bytes != null){
+      final fileName = byteFile!.name;
+      final destination = 'jobs/$jobId/$fileName';
 
-  //     task = FirebaseApi.uploadBytes(destination, bytes!);
-  //     setState(() {});
-  //   }
+      task = FirebaseApi.uploadBytes(destination, bytes!);
+      setState(() {});
+    }
 
-  //   if (task == null) return;
+    if (task == null) return;
 
-  //   final snapshot = await task!.whenComplete(() {});
-  //   final urlDownload = await snapshot.ref.getDownloadURL();
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
 
-  //   if (kDebugMode) {
-  //     print('Download-Link: $urlDownload');
-  //   }
+    if (kDebugMode) {
+      print('Download-Link: $urlDownload');
+    }
 
-  //   setState(() {
-  //     fileURL = urlDownload;
-  //   });
-  // }
+    setState(() {
+      fileURL = urlDownload;
+    });
+  }
 
   Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
         stream: task.snapshotEvents,
@@ -574,42 +669,44 @@ class _JobPostPageState extends State<JobPostPage> {
     );
   }
 
-  //TODO: Remove
-  // Future<dynamic> acceptFile(dynamic event) async {
-  //   final name = event.name; // or: await dropzoneController.getFilename(event);
-  //   final mime = await dropzoneController.getFileMIME(event);
-  //   final size = await dropzoneController.getFileSize(event);
-  //   final url = await dropzoneController.createFileUrl(event);
+  // TODO: Remove
+  Future<dynamic> acceptFile(dynamic event) async {
+    final name = event.name; // or: await dropzoneController.getFilename(event);
+    final mime = await dropzoneController!.getFileMIME(event);
+    final size = await dropzoneController!.getFileSize(event);
+    final url = await dropzoneController!.createFileUrl(event);
+    final bytes = await dropzoneController!.getFileData(event);
 
-  //   if (kDebugMode) {
-  //     print(name);
-  //     print(mime);
-  //     print(size);
-  //     print(url);
-  //   }
+    if (kDebugMode) {
+      print(name);
+      print(mime);
+      print(size);
+      print(url);
+    }
 
-  //   // ignore: unused_local_variable
-  //   final droppedFile = DroppedFile(
-  //     url: url,
-  //     name: name,
-  //     mime: mime,
-  //     size: size,
-  //   );
+    // ignore: unused_local_variable
+    final droppedFile = DroppedFile(
+      url: url,
+      name: name,
+      mime: mime,
+      size: size,
+      bytes: bytes,
+    );
 
-  //   // widget.onDroppedFile(droppedFile);
-  // }
+    // widget.onDroppedFile(droppedFile);
+  }
 
   Future<void> saveFiles() async {
-    if (file == null) return null;
+    if (file == null) return;
     try {
       var ref = FirebaseStorage.instance
           .ref()
           .child('jobs')
           .child(jobId!)
-          .child(file!.name);
+          .child(droppedFile!.name);
 
       // Firebase.upload
-      var uploadTask = ref.putData(file!.bytes).catchError((error) {
+      var uploadTask = ref.putData(droppedFile!.bytes).catchError((error) {
         if (kDebugMode) {
           print(error);
         }
@@ -621,25 +718,25 @@ class _JobPostPageState extends State<JobPostPage> {
       //   });
       // });
 
-      // var loadURL = await (await uploadTask).ref.getDownloadURL();
+      var loadURL = await (await uploadTask).ref.getDownloadURL();
 
-      // String finalName = (await uploadTask).ref.name;
-      // String finalURL = loadURL.toString();
+      String finalName = (await uploadTask).ref.name;
+      String finalURL = loadURL.toString();
 
-      // var db = FirebaseFirestore.instance.collection('jobs');
+      var db = FirebaseFirestore.instance.collection('jobs');
 
-      // db
-      //     .doc(jobId)
-      //     .update({'file_name': finalName, 'file_url': finalURL}).then((_) {
-      //   if (kDebugMode) {
-      //     print('Task File URL saved successfully.');
-      //   }
-      // }).catchError((error) {
-      //   if (kDebugMode) {
-      //     print(
-      //         'Failed to save the File URL for the select task.\nError: $error');
-      //   }
-      // });
+      db
+          .doc(jobId)
+          .update({'file_name': finalName, 'file_url': finalURL}).then((_) {
+        if (kDebugMode) {
+          print('Task File URL saved successfully.');
+        }
+      }).catchError((error) {
+        if (kDebugMode) {
+          print(
+              'Failed to save the File URL for the select task.\nError: $error');
+        }
+      });
 
 //     var collection = FirebaseFirestore.instance.collection('collection');
 // collection

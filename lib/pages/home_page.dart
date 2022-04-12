@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gighub/pages/job/job_page.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
@@ -214,15 +215,16 @@ class _HomePageState extends State<HomePage> {
                       isBold: true,
                     ),
                     y20,
-                    SingleChildScrollView(
-                      child: Expanded(
-                          child: Column(children: [
-                        buildJobListing(),
-                        buildJobListing(),
-                        buildJobListing(),
-                        buildJobListing(),
-                      ])),
-                    )
+                    buildJobListing(),
+                    // SingleChildScrollView(
+                    //   child: Expanded(
+                    //       child: Column(children: [
+                    //     buildJobListing(),
+                    //     buildJobListing(),
+                    //     buildJobListing(),
+                    //     buildJobListing(),
+                    //   ])),
+                    // )
                   ],
                 ),
               )
@@ -231,6 +233,81 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget buildJobTiles() {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData ||
+              snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return ListView(
+              scrollDirection: Axis.horizontal,
+              children: snapshot.data!.docs.map((document) {
+                return Container(
+                  height: 200,
+                  width: 260,
+                  margin: EdgeInsets.only(right: space30),
+                  padding: pad20,
+                  decoration:
+                      BoxDecoration(borderRadius: bRadius20, color: dark),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: pad10,
+                              width: 72,
+                              height: 72,
+                              decoration: BoxDecoration(
+                                  borderRadius: bRadius12, color: light),
+                              child: Icon(
+                                Icons.photo_rounded,
+                                color: grey,
+                                size: 45,
+                              ),
+                            ),
+                            Container(
+                              padding: pad8,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.lightGreenAccent),
+                                  borderRadius: bRadius20),
+                              child: PoppinsTextWidget(
+                                text: 'RM ${document['monthly_salary']}',
+                                size: fontLabel,
+                                color: light, //Colors.lightGreen,
+                              ),
+                            )
+                          ],
+                        ),
+                        y20,
+                        PoppinsTextWidget(
+                          text: document['job_title'],
+                          size: fontLabel,
+                          color: light,
+                          isBold: true,
+                        ),
+                        PoppinsTextWidget(
+                          text: document['company_name'],
+                          size: fontLabel,
+                          color: light,
+                        ),
+                        PoppinsTextWidget(
+                          text: document['company_address'],
+                          size: fontLabel,
+                          color: light,
+                        )
+                      ]),
+                );
+              }).toList(),
+            );
+          }
+        });
   }
 
   Widget buildJobTile() {
@@ -294,6 +371,26 @@ class _HomePageState extends State<HomePage> {
         ]),
       ),
     );
+  }
+
+  Widget buildJobListings() {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          // if (!snapshot.hasData ||
+          //     snapshot.connectionState == ConnectionState.waiting) {
+          //   return const Center(child: CircularProgressIndicator());
+          // }
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, item) {
+                  return Text(
+                      snapshot.data!.docs[item].toString() /* ['title'] */);
+                });
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 
   Widget buildJobListing() {
