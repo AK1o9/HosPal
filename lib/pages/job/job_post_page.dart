@@ -18,6 +18,7 @@ import '../../constants/style.dart';
 
 import 'package:path/path.dart' as _path;
 
+import '../../widgets/dropped_file_widget.dart';
 import '../../widgets/dropzone_widget.dart';
 
 class JobPostPage extends StatefulWidget {
@@ -28,7 +29,8 @@ class JobPostPage extends StatefulWidget {
 }
 
 class _JobPostPageState extends State<JobPostPage> {
-  String? jobId; //Note: This also acts as the document ID in Firebase.
+  String? docId;
+  String? jobId;
   String? jobType; //Types: Full Time, Part Time, Internship
   String? jobLevel; //Levels: Intermediate, Amateur, Proffesional...
   String?
@@ -36,7 +38,7 @@ class _JobPostPageState extends State<JobPostPage> {
   List<String>?
       jobSkills; //User can set(add) multiple required skills in a list.
   String? jobRequirements; // -> Multiline String
-  int jobSalary = 0;
+  int jobSalary = 1500;
 
   final jobTitleController = TextEditingController();
   final jobDescriptionController = TextEditingController();
@@ -99,7 +101,8 @@ class _JobPostPageState extends State<JobPostPage> {
 
   @override
   Widget build(BuildContext context) {
-    jobId = getRandomString(22);
+    docId = getRandomString(22);
+    jobId = 'J-${getRandomString(20)}';
     jobSalaryController.text = 'RM $jobSalary';
     return Material(
       child: Container(
@@ -159,14 +162,14 @@ class _JobPostPageState extends State<JobPostPage> {
                           onLongPress: () {
                             if ((jobSalary - 100) >= 0) {
                               setState(() {
-                                jobSalary = jobSalary - 100;
+                                jobSalary = jobSalary - 10;
                               });
                             }
                           },
                           onTap: () {
                             if ((jobSalary - 10) >= 0) {
                               setState(() {
-                                jobSalary = jobSalary - 10;
+                                jobSalary = jobSalary - 100;
                               });
                             }
                           },
@@ -187,12 +190,12 @@ class _JobPostPageState extends State<JobPostPage> {
                           },
                           onLongPress: () {
                             setState(() {
-                              jobSalary = jobSalary + 100;
+                              jobSalary = jobSalary + 10;
                             });
                           },
                           onTap: () {
                             setState(() {
-                              jobSalary = jobSalary + 10;
+                              jobSalary = jobSalary + 100;
                             });
                           },
                           child: Container(
@@ -301,6 +304,14 @@ class _JobPostPageState extends State<JobPostPage> {
             PoppinsTextWidget(
                 text: 'Company Logo\n(Image)', size: fontHeader, color: dark),
             y10,
+            droppedFile != null
+                ? Container(
+                    height: 200,
+                    width: 300,
+                    child: DroppedFileWidget(file: droppedFile!))
+                : Container(
+                    width: 0,
+                  ),
             kIsWeb
                 ? Container(
                     height: 350,
@@ -454,7 +465,7 @@ class _JobPostPageState extends State<JobPostPage> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(this.context).pop;
+                      Navigator.of(context).pop;
                     },
                     child: PoppinsTextWidget(
                       text: "OK",
@@ -471,14 +482,16 @@ class _JobPostPageState extends State<JobPostPage> {
       setState(() {
         jobSalary = 0;
         jobType = null;
+        droppedFile = null;
       });
     }
   }
 
   void saveData() {
+    var collection = FirebaseFirestore.instance.collection('jobs');
     try {
-      var collection = FirebaseFirestore.instance.collection('jobs');
-      collection.doc(jobId).set({
+      collection.doc(docId).set({
+        'job_id': jobId,
         'job_title': jobTitleController.text,
         'job_description': jobDescriptionController.text,
         'job_type': jobType,
@@ -486,8 +499,8 @@ class _JobPostPageState extends State<JobPostPage> {
         'company_name': companyNameController.text,
         'company_address': companyAddressController.text,
         'company_info': companyDescriptionController.text,
-        'file_name': null,
-        'file_url': null,
+        // 'company_logo_file': null,
+        // 'company_logo_url': null,
       }).then((value) {
         if (kDebugMode) {
           print('Data saved successfuly!');
@@ -504,48 +517,94 @@ class _JobPostPageState extends State<JobPostPage> {
     }
   }
 
-  Widget buildImageBox() {
-    return Container(
-      padding: pad12,
-      decoration: BoxDecoration(
-          border: Border.all(color: grey, width: 0.5), borderRadius: bRadius20),
-      child: Column(children: [
-        Container(
-            // padding: pad10,
-            width: 150,
-            height: 150,
-            decoration: BoxDecoration(borderRadius: bRadius20, color: silver),
-            // ignore: prefer_const_constructors
-            child: (file != null)
-                ? SafeArea(
-                    child: Image.network(
-                      file!.path,
-                      fit: BoxFit.scaleDown,
-                    ),
-                  )
-                : (bytes != null)
-                    ? SafeArea(
-                        child: Image.network(
-                          bytes.toString(),
-                          fit: BoxFit.scaleDown,
-                        ),
-                      )
-                    : Icon(
-                        Icons.image_not_supported_rounded,
-                        size: 50,
-                        color: grey,
-                      )),
-        y20,
-        ButtonWidget(
-          label: 'Upload Image',
-          onTap: selectFile,
-          isInverted: true,
-        ),
-        y8,
-        PoppinsTextWidget(
-            text: '* Maximum File Size: 1 GB.', size: fontBody, color: dark)
-      ]),
+  Future<void> saveFiles() async {
+    if (droppedFile == null) return;
+    try {
+      var ref = FirebaseStorage.instance
+          .ref()
+          .child('jobs')
+          .child(jobId!)
+          .child(droppedFile!.name);
+
+      // Firebase.upload
+      var uploadTask = ref.putData(droppedFile!.bytes).catchError((error) {
+        if (kDebugMode) {
+          print('Error saving file:\n$error');
+        }
+      });
+
+      // var loadURL = await (await uploadTask).ref.getDownloadURL();
+
+      // String finalName = (await uploadTask).ref.name;
+      // String finalURL = loadURL.toString();
+
+      // var db = FirebaseFirestore.instance.collection('jobs');
+
+      // db.doc(docId).update({
+      //   'company_logo_file': finalName,
+      //   'company_logo_url': finalURL
+      // }).then((_) {
+      //   if (kDebugMode) {
+      //     print('Task File URL saved successfully.');
+      //   }
+      // }).catchError((error) {
+      //   if (kDebugMode) {
+      //     print(
+      //         'Failed to save the File URL for the select task.\nError: $error');
+      //   }
+      // });
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
+  }
+
+  Widget pickFile() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 18),
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            primary: Colors.blue,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20))),
+        icon: const Icon(Icons.attach_file_rounded, size: 32),
+        label: const Text('Attach File(s)',
+            style: TextStyle(color: Colors.white, fontSize: 20)),
+        onPressed: () async {
+          final events = await dropzoneController!.pickFiles();
+          if (events.isEmpty) return;
+          acceptFile(events.first);
+        },
+      ),
     );
+  }
+
+  Future<dynamic> acceptFile(dynamic event) async {
+    final name = event.name; // or: await dropzoneController.getFilename(event);
+    final mime = await dropzoneController!.getFileMIME(event);
+    final size = await dropzoneController!.getFileSize(event);
+    final url = await dropzoneController!.createFileUrl(event);
+    final bytes = await dropzoneController!.getFileData(event);
+
+    if (kDebugMode) {
+      print(name);
+      print(mime);
+      print(size);
+      print(url);
+    }
+
+    // ignore: unused_local_variable
+    final droppedFile = DroppedFile(
+      url: url,
+      name: name,
+      mime: mime,
+      size: size,
+      bytes: bytes,
+    );
+
+    // widget.onDroppedFile(droppedFile);
   }
 
   Future selectFile() async {
@@ -645,108 +704,5 @@ class _JobPostPageState extends State<JobPostPage> {
     Random _rnd = Random();
     return String.fromCharCodes(Iterable.generate(
         length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-  }
-
-  //Filepicker
-  Widget pickFile() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 18),
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            primary: Colors.blue,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20))),
-        icon: const Icon(Icons.attach_file_rounded, size: 32),
-        label: const Text('Attach File(s)',
-            style: TextStyle(color: Colors.white, fontSize: 20)),
-        onPressed: () async {
-          // final events = await dropzoneController.pickFiles();
-          // if (events.isEmpty) return;
-          // acceptFile(events.first);
-        },
-      ),
-    );
-  }
-
-  // TODO: Remove
-  Future<dynamic> acceptFile(dynamic event) async {
-    final name = event.name; // or: await dropzoneController.getFilename(event);
-    final mime = await dropzoneController!.getFileMIME(event);
-    final size = await dropzoneController!.getFileSize(event);
-    final url = await dropzoneController!.createFileUrl(event);
-    final bytes = await dropzoneController!.getFileData(event);
-
-    if (kDebugMode) {
-      print(name);
-      print(mime);
-      print(size);
-      print(url);
-    }
-
-    // ignore: unused_local_variable
-    final droppedFile = DroppedFile(
-      url: url,
-      name: name,
-      mime: mime,
-      size: size,
-      bytes: bytes,
-    );
-
-    // widget.onDroppedFile(droppedFile);
-  }
-
-  Future<void> saveFiles() async {
-    if (file == null) return;
-    try {
-      var ref = FirebaseStorage.instance
-          .ref()
-          .child('jobs')
-          .child(jobId!)
-          .child(droppedFile!.name);
-
-      // Firebase.upload
-      var uploadTask = ref.putData(droppedFile!.bytes).catchError((error) {
-        if (kDebugMode) {
-          print(error);
-        }
-      });
-
-      // await ref.getDownloadURL().then((String result) {
-      //   setState(() {
-      //     fileURL = result;
-      //   });
-      // });
-
-      var loadURL = await (await uploadTask).ref.getDownloadURL();
-
-      String finalName = (await uploadTask).ref.name;
-      String finalURL = loadURL.toString();
-
-      var db = FirebaseFirestore.instance.collection('jobs');
-
-      db
-          .doc(jobId)
-          .update({'file_name': finalName, 'file_url': finalURL}).then((_) {
-        if (kDebugMode) {
-          print('Task File URL saved successfully.');
-        }
-      }).catchError((error) {
-        if (kDebugMode) {
-          print(
-              'Failed to save the File URL for the select task.\nError: $error');
-        }
-      });
-
-//     var collection = FirebaseFirestore.instance.collection('collection');
-// collection
-//     .doc('doc_id')
-//     .set('file_url': fileURL, SetOptions(merge: true));
-
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-    }
   }
 }
