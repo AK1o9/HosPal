@@ -20,6 +20,7 @@ import 'package:path/path.dart' as _path;
 
 import '../../widgets/dropped_file_widget.dart';
 import '../../widgets/dropzone_widget.dart';
+import '../home_page.dart';
 
 class JobPostPage extends StatefulWidget {
   const JobPostPage({Key? key}) : super(key: key);
@@ -105,231 +106,277 @@ class _JobPostPageState extends State<JobPostPage> {
     jobId = 'J-${getRandomString(20)}';
     jobSalaryController.text = 'RM $jobSalary';
     return Material(
-      child: Container(
-        padding: pad20,
-        child: SingleChildScrollView(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const BackButton(),
-            y20,
-            y10,
-            PoppinsTextWidget(
-              text: 'Post a Job Vacancy',
+      child: Scaffold(
+        appBar: AppBar(
+          title: InkWell(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomePage()));
+            },
+            child: PoppinsTextWidget(
+              text: 'GigHub',
+              color: light,
               size: fontTitle,
-              color: dark,
-              isBold: false,
+              isBold: true,
             ),
-            y20,
-            y20,
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: dark,
+          leading: Padding(
+              padding: EdgeInsets.only(
+                  left: space18, top: space12, right: space12, bottom: space12),
+              child: InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {},
+                  child: Icon(Icons.menu_rounded, color: light, size: 28))),
+          actions: [
+            InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () {},
+                child: Icon(Icons.person, color: light, size: 28)),
+            x10,
+            x8,
+          ],
+        ),
+        body: Container(
+          padding: pad20,
+          child: SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const BackButton(),
+              y20,
+              y10,
+              PoppinsTextWidget(
+                text: 'Post a Job Vacancy',
+                size: fontTitle,
+                color: dark,
+                isBold: false,
+              ),
+              y20,
+              y20,
 
-            //Job Info
-            PoppinsTextWidget(text: 'Job', size: fontSubtitle, color: dark),
-            y20,
-            TextfieldWidget(
-              labelText: 'Job Title',
-              controller: jobTitleController,
-            ),
-            y20,
-            TextfieldWidget(
-                labelText: 'Job Description',
-                controller: jobDescriptionController),
-            y20,
-            Row(
-              children: [
-                Expanded(
-                  flex: 7,
-                  child: TextfieldWidget(
-                    labelText: 'Monthly Salary',
-                    controller: jobSalaryController,
-                    textInputType: TextInputType.number,
-                    icon: const Icon(Icons.monetization_on),
-                  ),
-                ),
-                x10,
-                Expanded(
-                  flex: 1,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onDoubleTap: () {
-                            if ((jobSalary - 50) >= 0) {
-                              setState(() {
-                                jobSalary = jobSalary - 50;
-                              });
-                            }
-                          },
-                          onLongPress: () {
-                            if ((jobSalary - 100) >= 0) {
-                              setState(() {
-                                jobSalary = jobSalary - 10;
-                              });
-                            }
-                          },
-                          onTap: () {
-                            if ((jobSalary - 10) >= 0) {
-                              setState(() {
-                                jobSalary = jobSalary - 100;
-                              });
-                            }
-                          },
-                          child: Container(
-                              padding: pad10,
-                              decoration: BoxDecoration(
-                                  color: silver, borderRadius: bRadius20),
-                              child: const Icon(Icons.remove)),
-                        ),
-                      ),
-                      x8,
-                      Expanded(
-                        child: InkWell(
-                          onDoubleTap: () {
-                            setState(() {
-                              jobSalary = jobSalary + 50;
-                            });
-                          },
-                          onLongPress: () {
-                            setState(() {
-                              jobSalary = jobSalary + 10;
-                            });
-                          },
-                          onTap: () {
-                            setState(() {
-                              jobSalary = jobSalary + 100;
-                            });
-                          },
-                          child: Container(
-                              padding: pad10,
-                              decoration: BoxDecoration(
-                                  color: silver, borderRadius: bRadius20),
-                              child: const Icon(Icons.add)),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            y20,
-            Row(
-              children: [
-                PoppinsTextWidget(
-                    text: 'Job Type: ', size: fontSubheader, color: dark),
-                x20,
-                DropdownButton<String>(
-                    value: jobType,
-                    elevation: 10,
-                    style: TextStyle(color: dark),
-                    underline: Container(
-                      height: 2,
-                      color: grey,
+              //Job Info
+              PoppinsTextWidget(text: 'Job', size: fontSubtitle, color: dark),
+              y20,
+              TextfieldWidget(
+                labelText: 'Job Title',
+                controller: jobTitleController,
+              ),
+              y20,
+              TextfieldWidget(
+                  labelText: 'Job Description',
+                  controller: jobDescriptionController),
+              y20,
+              Row(
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: TextfieldWidget(
+                      labelText: 'Monthly Salary',
+                      controller: jobSalaryController,
+                      textInputType: TextInputType.number,
+                      icon: const Icon(Icons.monetization_on),
                     ),
-                    items: <String>['Full Time', 'Part Time', 'Internship']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        jobType = newValue!;
-                      });
-                      if (kDebugMode) {
-                        print('Job type set to: $jobType.');
-                      }
-                    }),
-              ],
-            ),
-            y20,
-            TextfieldWidget(
-              labelText: 'Job Requirements',
-              controller: jobRequirementsController,
-              textInputType: TextInputType.multiline,
-            ),
-            y20,
-            TextfieldWidget(
-              labelText: 'Skills Required',
-              controller: jobSkillsController,
-            ),
-            Divider(height: space40),
-
-            //Company Info
-            PoppinsTextWidget(text: 'Company', size: fontSubtitle, color: dark),
-            y20,
-
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: TextfieldWidget(
-                              labelText: 'Company Name',
-                              controller: companyNameController,
-                              icon: const Icon(Icons.business),
-                            ),
+                  ),
+                  x10,
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            hoverColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onDoubleTap: () {
+                              if ((jobSalary - 50) >= 0) {
+                                setState(() {
+                                  jobSalary = jobSalary - 50;
+                                });
+                              }
+                            },
+                            onLongPress: () {
+                              if ((jobSalary - 100) >= 0) {
+                                setState(() {
+                                  jobSalary = jobSalary - 10;
+                                });
+                              }
+                            },
+                            onTap: () {
+                              if ((jobSalary - 10) >= 0) {
+                                setState(() {
+                                  jobSalary = jobSalary - 100;
+                                });
+                              }
+                            },
+                            child: Container(
+                                padding: pad10,
+                                decoration: BoxDecoration(
+                                    color: silver, borderRadius: bRadius20),
+                                child: const Icon(Icons.remove)),
                           ),
-                          x10,
-                          Expanded(
-                            flex: 2,
-                            child: TextfieldWidget(
-                              labelText: 'Company Address',
-                              controller: companyAddressController,
-                              icon: const Icon(Icons.location_on),
-                              textInputType: TextInputType.streetAddress,
-                            ),
+                        ),
+                        x8,
+                        Expanded(
+                          child: InkWell(
+                            hoverColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onDoubleTap: () {
+                              setState(() {
+                                jobSalary = jobSalary + 50;
+                              });
+                            },
+                            onLongPress: () {
+                              setState(() {
+                                jobSalary = jobSalary + 10;
+                              });
+                            },
+                            onTap: () {
+                              setState(() {
+                                jobSalary = jobSalary + 100;
+                              });
+                            },
+                            child: Container(
+                                padding: pad10,
+                                decoration: BoxDecoration(
+                                    color: silver, borderRadius: bRadius20),
+                                child: const Icon(Icons.add)),
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              y20,
+              Row(
+                children: [
+                  PoppinsTextWidget(
+                      text: 'Job Type: ', size: fontSubheader, color: dark),
+                  x20,
+                  DropdownButton<String>(
+                      value: jobType,
+                      elevation: 10,
+                      style: TextStyle(color: dark),
+                      underline: Container(
+                        height: 2,
+                        color: grey,
                       ),
-                      y20,
-                      TextfieldWidget(
-                          labelText: 'Company Description & Information',
-                          // hintText:
-                          //     "Short summary of Company's activities and achievements",
-                          controller: companyDescriptionController,
-                          textInputType: TextInputType.multiline),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            y20,
+                      items: <String>['Full Time', 'Part Time', 'Internship']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          jobType = newValue!;
+                        });
+                        if (kDebugMode) {
+                          print('Job type set to: $jobType.');
+                        }
+                      }),
+                ],
+              ),
+              y20,
+              TextfieldWidget(
+                labelText: 'Job Requirements',
+                controller: jobRequirementsController,
+                textInputType: TextInputType.multiline,
+              ),
+              y20,
+              TextfieldWidget(
+                labelText: 'Skills Required',
+                controller: jobSkillsController,
+              ),
+              Divider(height: space40),
 
-            //Drop Zone / File Picker
-            PoppinsTextWidget(
-                text: 'Company Logo', size: fontHeader, color: dark),
-            y10,
-            droppedFile != null
-                ? SizedBox(
-                    height: 200,
-                    // width: 300,
-                    child: DroppedFileWidget(file: droppedFile!))
-                : Container(
-                    width: 0,
-                  ),
-            kIsWeb
-                ? SizedBox(
-                    height: 400,
-                    // width: 300,
-                    child: DropzoneWidget(
-                        onDroppedFile: (file) =>
-                            setState(() => droppedFile = file)))
-                : pickFile(),
+              //Company Info
+              PoppinsTextWidget(
+                  text: 'Company', size: fontSubtitle, color: dark),
+              y20,
 
-            y30, y20,
-            Center(
-              child: ButtonWidget(
-                  label: 'Post Job Opening',
-                  onTap: () {
-                    validateData();
-                  }),
-            )
-          ]),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: TextfieldWidget(
+                                labelText: 'Company Name',
+                                controller: companyNameController,
+                                icon: const Icon(Icons.business),
+                              ),
+                            ),
+                            x10,
+                            Expanded(
+                              flex: 2,
+                              child: TextfieldWidget(
+                                labelText: 'Company Address',
+                                controller: companyAddressController,
+                                icon: const Icon(Icons.location_on),
+                                textInputType: TextInputType.streetAddress,
+                              ),
+                            ),
+                          ],
+                        ),
+                        y20,
+                        TextfieldWidget(
+                            labelText: 'Company Description & Information',
+                            // hintText:
+                            //     "Short summary of Company's activities and achievements",
+                            controller: companyDescriptionController,
+                            textInputType: TextInputType.multiline),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              y20,
+
+              //Drop Zone / File Picker
+              PoppinsTextWidget(
+                  text: 'Company Logo', size: fontHeader, color: dark),
+              y10,
+              droppedFile != null
+                  ? SizedBox(
+                      height: 200,
+                      // width: 300,
+                      child: DroppedFileWidget(file: droppedFile!))
+                  : Container(
+                      width: 0,
+                    ),
+              kIsWeb
+                  ? SizedBox(
+                      height: 400,
+                      // width: 300,
+                      child: DropzoneWidget(
+                          onDroppedFile: (file) =>
+                              setState(() => droppedFile = file)))
+                  : pickFile(),
+
+              y30, y20,
+              Center(
+                child: ButtonWidget(
+                    label: 'Post Job Opening',
+                    onTap: () {
+                      validateData();
+                    }),
+              )
+            ]),
+          ),
         ),
       ),
     );

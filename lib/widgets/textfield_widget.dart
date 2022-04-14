@@ -30,6 +30,9 @@ class TextfieldWidget extends StatelessWidget {
           suffixIcon: controller.text.isEmpty
               ? Container(width: 0)
               : IconButton(
+                  hoverColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   icon: const Icon(Icons.close),
                   onPressed: () => controller.clear(),
                 ),

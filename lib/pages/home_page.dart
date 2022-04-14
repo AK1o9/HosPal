@@ -234,16 +234,36 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PoppinsTextWidget(
-                      text: 'ALL JOBS',
-                      size: fontTitle,
-                      color: dark,
-                      isBold: true,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PoppinsTextWidget(
+                          text: 'BROWSE ALL JOBS',
+                          size: fontTitle,
+                          color: dark,
+                          isBold: true,
+                        ),
+                        IconButton(
+                            padding: EdgeInsets.only(right: space10),
+                            onPressed: () {
+                              // setState(() {}); //Not working
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          super.widget));
+                            },
+                            icon: Icon(
+                              Icons.refresh,
+                              color: dark,
+                              size: 28,
+                            ))
+                      ],
                     ),
                     y20,
                     // buildJobListing(),  //Note: Use this line to check the original format.
                     SafeArea(
-                      child: SizedBox(height: 200, child: buildJobListings()),
+                      child: SizedBox(height: 512, child: buildJobListings()),
                     ),
                   ],
                 ),
@@ -417,7 +437,7 @@ class _HomePageState extends State<HomePage> {
                             padding: EdgeInsets.only(
                                 top: space10,
                                 bottom: space10,
-                                left: space10,
+                                left: space20,
                                 right: space20),
                             decoration: BoxDecoration(
                                 borderRadius: bRadius20, color: dark),
