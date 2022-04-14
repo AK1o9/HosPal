@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gighub/pages/job/job_page.dart';
+import 'package:gighub/widgets/search_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 import '../constants/style.dart';
@@ -40,11 +41,14 @@ class _HomePageState extends State<HomePage> {
       scrollBehavior: MyCustomScrollBehavior(),
       home: Scaffold(
         appBar: AppBar(
-          title: PoppinsTextWidget(
-            text: 'GigHub',
-            color: light,
-            size: fontTitle,
-            isBold: true,
+          title: InkWell(
+            onTap: () {},
+            child: PoppinsTextWidget(
+              text: 'GigHub',
+              color: light,
+              size: fontTitle,
+              isBold: true,
+            ),
           ),
           centerTitle: true,
           elevation: 0,
@@ -52,20 +56,24 @@ class _HomePageState extends State<HomePage> {
           leading: Padding(
               padding: EdgeInsets.only(
                   left: space18, top: space12, right: space12, bottom: space12),
-              child: Icon(Icons.menu_rounded, color: light, size: 28)),
+              child: InkWell(
+                  onTap: () {},
+                  child: Icon(Icons.menu_rounded, color: light, size: 28))),
           actions: [
-            Icon(Icons.person, color: light, size: 28),
+            InkWell(
+                onTap: () {},
+                child: Icon(Icons.person, color: light, size: 28)),
             x10,
             x8,
           ],
         ),
         backgroundColor: silver,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: light,
+          backgroundColor: dark,
           elevation: 16,
           child: Icon(
-            Icons.add_reaction,
-            color: dark,
+            Icons.add,
+            color: light,
           ),
           onPressed: () {
             Navigator.of(context).push(
@@ -122,14 +130,19 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )),
                   //Filter button (for search results)
-                  Container(
-                      height: space50,
-                      width: space50,
-                      margin: EdgeInsets.only(left: space12),
-                      decoration:
-                          BoxDecoration(color: dark, borderRadius: bRadius12),
-                      child: Icon(Icons.filter_alt_rounded,
-                          color: light, size: 24))
+                  InkWell(
+                    onTap: () {
+                      SearchWidget();
+                    },
+                    child: Container(
+                        height: space50,
+                        width: space50,
+                        margin: EdgeInsets.only(left: space12),
+                        decoration:
+                            BoxDecoration(color: dark, borderRadius: bRadius12),
+                        child: Icon(Icons.filter_alt_rounded,
+                            color: light, size: 24)),
+                  )
                 ]),
               ),
               Container(
@@ -215,19 +228,14 @@ class _HomePageState extends State<HomePage> {
                       isBold: true,
                     ),
                     y20,
-                    buildJobListing(),
-                    // SingleChildScrollView(
-                    //   child: Expanded(
-                    //       child: Column(children: [
-                    //     buildJobListing(),
-                    //     buildJobListing(),
-                    //     buildJobListing(),
-                    //     buildJobListing(),
-                    //   ])),
-                    // )
+                    buildJobListing(), //TODO: use as reference for format. (temp)
+                    //TODO: Apply Format
+                    SafeArea(
+                      child: SizedBox(height: 200, child: buildJobListings()),
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           )),
         ),
@@ -374,22 +382,38 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildJobListings() {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          // if (!snapshot.hasData ||
-          //     snapshot.connectionState == ConnectionState.waiting) {
-          //   return const Center(child: CircularProgressIndicator());
-          // }
+    CollectionReference collection =
+        FirebaseFirestore.instance.collection('jobs');
+    return FutureBuilder<QuerySnapshot>(
+        future: collection.get(),
+        builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, item) {
-                  return Text(
-                      snapshot.data!.docs[item].toString() /* ['title'] */);
-                });
+            var documents = snapshot.data!.docs;
+            return ListView(
+              children: documents
+                  .map((document) => Card(
+                        child: ListTile(
+                          title: Text(document['job_title']),
+                        ),
+                      ))
+                  .toList(),
+            );
+            // return ListView.builder(
+            //     itemCount: snapshot.data!.docs.length,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       return Text(snapshot.data!.docs[index].id);
+            //     });
+          } else if (snapshot.hasError) {
+            return PoppinsTextWidget(
+              text: 'Oops! Something went wrong...',
+              size: fontLabel,
+              color: light,
+              isBold: true,
+              isCenter: true,
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
           }
-          return const Center(child: CircularProgressIndicator());
         });
   }
 
@@ -491,4 +515,20 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
         PointerDeviceKind.touch,
         PointerDeviceKind.mouse,
       };
+}
+
+class DataController /* extends GetxController */ {
+  Future getData(String collection) async {
+    final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    QuerySnapshot snapshot =
+        await firebaseFirestore.collection(collection).get();
+    return snapshot.docs;
+  }
+
+  Future queryData(String queryString) async {
+    return FirebaseFirestore.instance
+        .collection('jobs')
+        .where('job_title', isGreaterThanOrEqualTo: queryString)
+        .get();
+  }
 }

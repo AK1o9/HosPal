@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:gighub/widgets/button_widget.dart';
+import 'package:gighub/widgets/elevated_button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:gighub/widgets/textfield_widget.dart';
 import 'package:file_picker/file_picker.dart';
@@ -302,20 +303,20 @@ class _JobPostPageState extends State<JobPostPage> {
 
             //Drop Zone / File Picker
             PoppinsTextWidget(
-                text: 'Company Logo\n(Image)', size: fontHeader, color: dark),
+                text: 'Company Logo', size: fontHeader, color: dark),
             y10,
             droppedFile != null
-                ? Container(
+                ? SizedBox(
                     height: 200,
-                    width: 300,
+                    // width: 300,
                     child: DroppedFileWidget(file: droppedFile!))
                 : Container(
                     width: 0,
                   ),
             kIsWeb
-                ? Container(
-                    height: 350,
-                    width: 300,
+                ? SizedBox(
+                    height: 400,
+                    // width: 300,
                     child: DropzoneWidget(
                         onDroppedFile: (file) =>
                             setState(() => droppedFile = file)))
@@ -345,34 +346,35 @@ class _JobPostPageState extends State<JobPostPage> {
       showDialog(
           barrierDismissible: true,
           context: context,
-          builder: (_) => AlertDialog(
-                backgroundColor: Colors.red,
-                title: PoppinsTextWidget(
-                  text: 'Error',
-                  size: fontTitle,
-                  color: light,
-                  isBold: true,
-                ),
-                content: PoppinsTextWidget(
-                  text: "Please make sure to fill up all of the fields.",
-                  size: fontSubtitle,
-                  color: light,
-                ),
-                // actionsAlignment: MainAxisAlignment.center,
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(this.context).pop;
-                    },
-                    child: PoppinsTextWidget(
-                      text: "OK",
-                      size: fontSubtitle,
-                      color: light,
-                      isBold: true,
-                    ),
-                  ),
-                ],
-              ));
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.red,
+              title: PoppinsTextWidget(
+                text: 'Error',
+                size: fontTitle,
+                color: light,
+                isBold: true,
+              ),
+              content: PoppinsTextWidget(
+                text: "Please make sure to fill up all of the fields.",
+                size: fontSubtitle,
+                color: light,
+              ),
+              actions: const [
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.of(context).pop;
+                //   },
+                //   child: PoppinsTextWidget(
+                //     text: "OK",
+                //     size: fontSubtitle,
+                //     color: light,
+                //     isBold: true,
+                //   ),
+                // ),
+              ],
+            );
+          });
     } else if (jobSalary < 1500 && jobType != 'Internship') {
       //Below Minimum wage.
       showDialog(
@@ -392,20 +394,6 @@ class _JobPostPageState extends State<JobPostPage> {
                   size: fontSubtitle,
                   color: light,
                 ),
-                // actionsAlignment: MainAxisAlignment.center,
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(this.context).pop;
-                    },
-                    child: PoppinsTextWidget(
-                      text: "OK",
-                      size: fontSubtitle,
-                      color: light,
-                      isBold: true,
-                    ),
-                  ),
-                ],
               ));
     } else if (jobType == '' || jobType == null) {
       //Please set a job type.
@@ -425,20 +413,6 @@ class _JobPostPageState extends State<JobPostPage> {
                   size: fontSubtitle,
                   color: light,
                 ),
-                // actionsAlignment: MainAxisAlignment.center,
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(this.context).pop;
-                    },
-                    child: PoppinsTextWidget(
-                      text: "OK",
-                      size: fontSubtitle,
-                      color: light,
-                      isBold: true,
-                    ),
-                  ),
-                ],
               ));
     } else {
       //Save data
@@ -455,26 +429,13 @@ class _JobPostPageState extends State<JobPostPage> {
                   color: dark,
                   isBold: true,
                 ),
+                contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 35),
                 content: PoppinsTextWidget(
                   text:
                       "You can view your post under 'My listings' from the main menu.",
                   size: fontSubtitle,
                   color: dark,
                 ),
-                // actionsAlignment: MainAxisAlignment.center,
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop;
-                    },
-                    child: PoppinsTextWidget(
-                      text: "OK",
-                      size: fontSubtitle,
-                      color: dark,
-                      isBold: true,
-                    ),
-                  ),
-                ],
               ));
 
       //Reset fields & data
@@ -499,8 +460,8 @@ class _JobPostPageState extends State<JobPostPage> {
         'company_name': companyNameController.text,
         'company_address': companyAddressController.text,
         'company_info': companyDescriptionController.text,
-        // 'company_logo_file': null,
-        // 'company_logo_url': null,
+        'logo_file': null,
+        'logo_url': null,
       }).then((value) {
         if (kDebugMode) {
           print('Data saved successfuly!');
@@ -520,6 +481,8 @@ class _JobPostPageState extends State<JobPostPage> {
   Future<void> saveFiles() async {
     if (droppedFile == null) return;
     try {
+      String _docId =
+          docId!; //Note: This variable fixes an issue in where docId would keep resetting to a different string
       var ref = FirebaseStorage.instance
           .ref()
           .child('jobs')
@@ -533,26 +496,25 @@ class _JobPostPageState extends State<JobPostPage> {
         }
       });
 
-      // var loadURL = await (await uploadTask).ref.getDownloadURL();
+      var loadURL = await (await uploadTask).ref.getDownloadURL();
 
-      // String finalName = (await uploadTask).ref.name;
-      // String finalURL = loadURL.toString();
+      String finalName = (await uploadTask).ref.name;
+      String finalURL = loadURL.toString();
 
-      // var db = FirebaseFirestore.instance.collection('jobs');
+      var db = FirebaseFirestore.instance.collection('jobs');
 
-      // db.doc(docId).update({
-      //   'company_logo_file': finalName,
-      //   'company_logo_url': finalURL
-      // }).then((_) {
-      //   if (kDebugMode) {
-      //     print('Task File URL saved successfully.');
-      //   }
-      // }).catchError((error) {
-      //   if (kDebugMode) {
-      //     print(
-      //         'Failed to save the File URL for the select task.\nError: $error');
-      //   }
-      // });
+      db
+          .doc(_docId)
+          .update({'logo_file': finalName, 'logo_url': finalURL}).then((_) {
+        if (kDebugMode) {
+          print('Task File URL saved successfully.');
+        }
+      }).catchError((error) {
+        if (kDebugMode) {
+          print(
+              'Failed to save the File URL for the select task.\nError: $error');
+        }
+      });
     } catch (e) {
       if (kDebugMode) {
         print(e);

@@ -3,6 +3,8 @@ import 'package:gighub/constants/style.dart';
 import 'package:gighub/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gighub/pages/job/job_search.dart';
+import 'package:gighub/pages/test_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
