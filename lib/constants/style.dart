@@ -39,11 +39,13 @@ BorderRadius bRadius12 = BorderRadius.circular(12),
     bRadius30 = BorderRadius.circular(30);
 
 //Sized Boxes [x = horizontal (width); y = vertical (height)]
-const SizedBox x8 = SizedBox(width: 8),
+const SizedBox x4 = SizedBox(width: 4),
+    x8 = SizedBox(width: 8),
     x10 = SizedBox(width: 10),
     x20 = SizedBox(width: 20),
     x30 = SizedBox(width: 30);
-const SizedBox y8 = SizedBox(height: 8),
+const SizedBox y4 = SizedBox(height: 4),
+    y8 = SizedBox(height: 8),
     y10 = SizedBox(height: 10),
     y20 = SizedBox(height: 20),
     y30 = SizedBox(height: 30);

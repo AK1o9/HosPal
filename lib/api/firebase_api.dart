@@ -67,7 +67,7 @@ class FirebaseApi {
     await ref.writeToFile(file);
   }
 
-  // ignore: missing_return
+  // ignore: missing_return, body_might_complete_normally_nullable
   static Future<File?> downloadFileOnWeb(FirebaseFile file) async {
     void downloadFile(String url) {
       html.AnchorElement anchorElement = html.AnchorElement(href: url);

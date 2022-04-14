@@ -11,7 +11,9 @@ class DroppedFileWidget extends StatelessWidget {
   Widget build(BuildContext context) => buildFilePreview();
 
   Widget buildFilePreview() {
+    // ignore: unnecessary_null_comparison
     var preview = (file != null)
+        // ignore: avoid_unnecessary_containers
         ? Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -25,6 +27,7 @@ class DroppedFileWidget extends StatelessWidget {
                         border:
                             Border.all(width: 5, color: Colors.blue.shade300)),
                     child: buildImage()),
+                // ignore: unnecessary_null_comparison
                 if (file != null) buildFileDetails(file),
               ],
             ),
@@ -86,6 +89,7 @@ class DroppedFileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
+    // ignore: unnecessary_null_comparison
     if (file == null) return buildEmptyFile('No File');
 
     return Image.network(

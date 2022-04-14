@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   void clearAll() {
     searchController.clear();
-    //May also include other controllers in the page.
+    //NOTE: May also include other controllers in the page.
   }
 
   @override
@@ -42,7 +42,13 @@ class _HomePageState extends State<HomePage> {
       home: Scaffold(
         appBar: AppBar(
           title: InkWell(
-            onTap: () {},
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomePage()));
+            },
             child: PoppinsTextWidget(
               text: 'GigHub',
               color: light,
@@ -57,10 +63,14 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.only(
                   left: space18, top: space12, right: space12, bottom: space12),
               child: InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onTap: () {},
                   child: Icon(Icons.menu_rounded, color: light, size: 28))),
           actions: [
             InkWell(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 onTap: () {},
                 child: Icon(Icons.person, color: light, size: 28)),
             x10,
@@ -131,6 +141,9 @@ class _HomePageState extends State<HomePage> {
                   )),
                   //Filter button (for search results)
                   InkWell(
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                     onTap: () {
                       SearchWidget();
                     },
@@ -228,8 +241,7 @@ class _HomePageState extends State<HomePage> {
                       isBold: true,
                     ),
                     y20,
-                    buildJobListing(), //TODO: use as reference for format. (temp)
-                    //TODO: Apply Format
+                    // buildJobListing(),  //Note: Use this line to check the original format.
                     SafeArea(
                       child: SizedBox(height: 200, child: buildJobListings()),
                     ),
@@ -318,6 +330,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+//Sample Data
   Widget buildJobTile() {
     return InkWell(
       onTap: () {
@@ -392,17 +405,122 @@ class _HomePageState extends State<HomePage> {
             return ListView(
               children: documents
                   .map((document) => Card(
-                        child: ListTile(
-                          title: Text(document['job_title']),
+                        shape: RoundedRectangleBorder(borderRadius: bRadius20),
+                        color: dark,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const JobPage()));
+                          },
+                          child: Container(
+                            height: 120,
+                            padding: EdgeInsets.only(
+                                top: space10,
+                                bottom: space10,
+                                left: space10,
+                                right: space20),
+                            decoration: BoxDecoration(
+                                borderRadius: bRadius20, color: dark),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(space10),
+                                            width: 72,
+                                            height: 72,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        space12),
+                                                color: light),
+                                            child: Icon(
+                                              Icons.photo_rounded,
+                                              color: grey,
+                                              size: 45,
+                                            ),
+                                          ),
+                                          x20,
+                                          Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              PoppinsTextWidget(
+                                                text: document['job_title'],
+                                                size: fontLabel,
+                                                color: light,
+                                                isBold: true,
+                                              ),
+                                              y4,
+                                              Row(
+                                                children: [
+                                                  PoppinsTextWidget(
+                                                    text: document[
+                                                        'company_name'],
+                                                    size: fontLabel,
+                                                    color: light,
+                                                  ),
+                                                  x10,
+                                                  PoppinsTextWidget(
+                                                    text: '|',
+                                                    size: fontLabel,
+                                                    color: light,
+                                                  ),
+                                                  x10,
+                                                  PoppinsTextWidget(
+                                                    text: document[
+                                                        'company_address'],
+                                                    size: fontLabel,
+                                                    color: light,
+                                                  ),
+                                                ],
+                                              ),
+                                              y8,
+                                              Container(
+                                                padding: pad8,
+                                                decoration: BoxDecoration(
+                                                    borderRadius: bRadius30,
+                                                    color: light),
+                                                child: PoppinsTextWidget(
+                                                    text: document['job_type'],
+                                                    size: fontBody,
+                                                    color: dark),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      Container(
+                                        padding: pad8,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.lightGreenAccent),
+                                            borderRadius: bRadius20),
+                                        child: PoppinsTextWidget(
+                                          text:
+                                              'RM ${document['monthly_salary']}',
+                                          size: fontLabel,
+                                          color: light, //Colors.lightGreen,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ]),
+                          ),
                         ),
                       ))
                   .toList(),
             );
-            // return ListView.builder(
-            //     itemCount: snapshot.data!.docs.length,
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return Text(snapshot.data!.docs[index].id);
-            //     });
           } else if (snapshot.hasError) {
             return PoppinsTextWidget(
               text: 'Oops! Something went wrong...',
@@ -417,6 +535,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+//Sample data
   Widget buildJobListing() {
     return InkWell(
       onTap: () {

@@ -3,8 +3,6 @@ import 'package:gighub/constants/style.dart';
 import 'package:gighub/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gighub/pages/job/job_search.dart';
-import 'package:gighub/pages/test_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +15,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
+  // ignore: override_on_non_overriding_member
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,
         PointerDeviceKind.mouse,
@@ -31,7 +30,6 @@ class MyApp extends StatelessWidget {
             primaryColor: dark,
             primarySwatch:
                 Colors.blue /* TODO: Change to black or other dark colors */),
-        // ignore: prefer_const_constructors
-        home: HomePage());
+        home: const HomePage());
   }
 }

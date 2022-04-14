@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gighub/constants/style.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
+
+//NOTE: May be a temp file.
 
 class SearchWidget extends SearchDelegate {
   final CollectionReference _firebaseFirestore =
@@ -34,7 +37,9 @@ class SearchWidget extends SearchDelegate {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
-            print(snapshot.data);
+            if (kDebugMode) {
+              print(snapshot.data);
+            }
             return ListView(children: [
               ...snapshot.data!.docs
                   .where((QueryDocumentSnapshot element) => element['job_title']

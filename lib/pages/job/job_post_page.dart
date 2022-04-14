@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:gighub/widgets/button_widget.dart';
-import 'package:gighub/widgets/elevated_button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:gighub/widgets/textfield_widget.dart';
 import 'package:file_picker/file_picker.dart';
