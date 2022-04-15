@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gighub/pages/job/job_page.dart';
-import 'package:gighub/widgets/search_widget.dart';
+import 'package:gighub/widgets/button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 import '../constants/style.dart';
 import 'job/job_post_page.dart';
+import 'job/job_search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -105,47 +106,23 @@ class _HomePageState extends State<HomePage> {
               y30,
               Container(
                 width: double.infinity,
-                height: space50,
                 margin: EdgeInsets.only(right: space18),
                 child: Row(children: [
-                  //Search bar
-                  Expanded(
-                      child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    decoration: BoxDecoration(
-                      color: light, //dark,
-                      borderRadius: bRadius12,
-                    ),
-                    child: TextField(
-                      controller: searchController,
-                      cursorColor: dark, //light,
-                      decoration: InputDecoration(
-                          icon: Icon(
-                            Icons.search,
-                            size: 25,
-                            color: dark, //light,
-                          ),
-                          border: InputBorder.none,
-                          hintText: 'Search for a job of your choice.',
-                          hintStyle: TextStyle(color: /* light */ grey),
-                          suffixIcon: searchController.text.isNotEmpty
-                              ? IconButton(
-                                  icon: Icon(
-                                    Icons.close,
-                                    color: dark,
-                                  ),
-                                  onPressed: () => searchController.clear(),
-                                )
-                              : Container(width: 0)),
-                    ),
-                  )),
-                  //Filter button (for search results)
+                  //Search button
+                  ButtonWidget(
+                      icon: Icons.search_rounded,
+                      label: 'Search',
+                      onTap: () {
+                        showSearch(
+                            context: context, delegate: MySearchDelegate());
+                      }),
+                  //Filter button (for search results) //TODO: Remove or replace in the search delegate.
                   InkWell(
                     hoverColor: Colors.transparent,
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onTap: () {
-                      SearchWidget();
+                      //Filter
                     },
                     child: Container(
                         height: space50,
@@ -208,21 +185,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     y20,
                     SafeArea(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Expanded(
-                            child: Row(children: [
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                        ])),
-                      ),
-                    )
+                        child: Container(width: 300, child: buildJobTiles2()))
                   ],
                 ),
               ),
@@ -273,6 +236,82 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget buildJobTiles2() {
+    return FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance.collection('jobs').get(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            return ListView(
+              scrollDirection: Axis.horizontal,
+              children: snapshot.data!.docs.map((document) {
+                return Container(
+                  height: 200,
+                  width: 260,
+                  margin: EdgeInsets.only(right: space30),
+                  padding: pad20,
+                  decoration:
+                      BoxDecoration(borderRadius: bRadius20, color: dark),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: pad10,
+                              width: 72,
+                              height: 72,
+                              decoration: BoxDecoration(
+                                  borderRadius: bRadius12, color: light),
+                              //TODO: Replace w/ logo
+                              child: Icon(
+                                Icons.photo_rounded,
+                                color: grey,
+                                size: 45,
+                              ),
+                            ),
+                            Container(
+                              padding: pad8,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.lightGreenAccent),
+                                  borderRadius: bRadius20),
+                              child: PoppinsTextWidget(
+                                text: 'RM ${document['monthly_salary']}',
+                                size: fontLabel,
+                                color: light, //Colors.lightGreen,
+                              ),
+                            )
+                          ],
+                        ),
+                        y20,
+                        PoppinsTextWidget(
+                          text: document['job_title'],
+                          size: fontLabel,
+                          color: light,
+                          isBold: true,
+                        ),
+                        PoppinsTextWidget(
+                          text: document['company_name'],
+                          size: fontLabel,
+                          color: light,
+                        ),
+                        PoppinsTextWidget(
+                          text: document['company_address'],
+                          size: fontLabel,
+                          color: light,
+                        )
+                      ]),
+                );
+              }).toList(),
+            );
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 
   Widget buildJobTiles() {
