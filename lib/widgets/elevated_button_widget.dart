@@ -16,11 +16,16 @@ class ElevatedButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onTap,
-      style: ElevatedButton.styleFrom(primary: dark),
-      child: PoppinsTextWidget(
-          text: label, size: fontLabel, color: isInverted ? dark : light),
+    return Padding(
+      padding: pad18,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          primary: dark,
+        ),
+        child: PoppinsTextWidget(
+            text: label, size: fontLabel, color: isInverted ? dark : light),
+      ),
     );
   }
 }

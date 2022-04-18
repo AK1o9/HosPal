@@ -1,22 +1,130 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'dart:convert';
 
 import '../../constants/style.dart';
 import '../../widgets/text_poppins_widget.dart';
 import '../home_page.dart';
 
 class JobPage extends StatefulWidget {
-  // final docId;
+  final String? docId; //TODO: Remove ?
 
-  const JobPage({Key? key}) : super(key: key);
+  const JobPage({Key? key, this.docId}) : super(key: key);
 
   @override
   State<JobPage> createState() => _JobPageState();
 }
 
 class _JobPageState extends State<JobPage> {
+  //Data to be obtained from Firestore
+  String? jobTitle;
+  String? jobDescription;
+
+  String? jobType;
+  int? jobSalary;
+  int? jobDuration; //TODO: Add to FB
+  String? jobLevel; //TODO: Add to FB
+
+  String? jobSkills;
+  String? jobRequirements;
+
+  String? companyName;
+  String? companyAddress;
+  String? companyDescription;
+  String? companyLogoURL;
+  String? companyLogoName; //TODO: Remove if unused (in the future)
+
+  DateTime? publicationDate;
+  DateTime? publicationTime;
+
+  CollectionReference collection =
+      FirebaseFirestore.instance.collection('jobs');
+
+  Future getData() async {
+    // var docSnapshot = await collection.doc(widget.docId).get();
+    // if (docSnapshot.exists) {
+    //   Map<String, dynamic> data = docSnapshot.data()!;
+    //   var name = data['job_title'];
+    // }
+    return await collection.get();
+  }
+
+  Widget buildData(String field /* from Firestore */, double fontSize,
+      Color fontColor, bool isBold) {
+    return FutureBuilder<DocumentSnapshot>(
+        future: collection.doc(widget.docId).get(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            // return const Text("Loading...");
+            return const Center(child: CircularProgressIndicator());
+          }
+          var document = snapshot.data;
+          return PoppinsTextWidget(
+            text: document![field].toString(),
+            size: fontSize,
+            color: fontColor,
+            isBold: isBold,
+          );
+        });
+  }
+
+  Widget buildWhenPosted() {
+    return FutureBuilder<DocumentSnapshot>(
+        future: collection.doc(widget.docId).get(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            // return const Text("Loading...");
+            return const Center(child: CircularProgressIndicator());
+          }
+          var document = snapshot.data!;
+          var a = document['publication_date'],
+              b = document['publication_time'];
+
+          Widget getWhenPosted(String date, String time) {
+            //Notes:
+            //Date format: dd/mm/yyyy
+            //Time format: hh:mm (24h)
+            var currentDateTime = DateTime.now();
+            String
+                result; //Posted $answer $differentialUnits ago OR Posted on date, time.
+            String differentialTerm; //From: minutes -> years
+
+            var a = date.split('/');
+            var b = a[0] + '-' + a[1] + '-' + a[2];
+
+            String publishedWhen = date + ' ' + time;
+            DateTime published = DateTime.tryParse(publishedWhen)!;
+
+            if (kDebugMode) {
+              print(published);
+            }
+
+            if (published == null) published = DateTime.now();
+
+            return PoppinsTextWidget(
+              text: published.toString(),
+              size: fontLabel,
+              color: dark.withOpacity(.4),
+              isBold: false,
+            );
+          }
+
+          return getWhenPosted(a, b);
+          // return PoppinsTextWidget(
+          //   text: '...',
+          //   size: fontLabel,
+          //   color: dark.withOpacity(.4),
+          //   isBold: false,
+          // );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // jobTitle = collection.doc(widget.docId).get();
     return Scaffold(
         appBar: AppBar(
           title: InkWell(
@@ -100,14 +208,18 @@ class _JobPageState extends State<JobPage> {
                               child: Center(
                                 child: Column(children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 15),
-                                    child: PoppinsTextWidget(
+                                      padding: const EdgeInsets.only(top: 15),
+                                      child: buildData(
+                                          'job_title',
+                                          fontSubtitle,
+                                          dark,
+                                          true) /* PoppinsTextWidget(
                                       text: "IT Intern",
                                       size: fontSubtitle,
                                       color: dark,
                                       isBold: true,
-                                    ),
-                                  ),
+                                    ), */
+                                      ),
                                   Divider(
                                     thickness: 0.5,
                                     color: Colors.black.withOpacity(.4),
@@ -116,19 +228,22 @@ class _JobPageState extends State<JobPage> {
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          "Mobile App Development",
-                                          style: GoogleFonts.roboto(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                              color: Colors.lightBlue),
-                                        ),
+                                        buildData('company_name', fontLabel,
+                                            Colors.blue, true)
+                                        // Text(
+                                        //   "Mobile App Development Company",
+                                        //   style: GoogleFonts.roboto(
+                                        //       fontWeight: FontWeight.bold,
+                                        //       fontSize: 15,
+                                        //       color: Colors.lightBlue),
+                                        // ),
                                       ],
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 20, top: 10),
+                                    // child: buildWhenPosted() //TODO: Uncomment
                                     child: Row(
                                       children: [
                                         Text(
@@ -145,11 +260,12 @@ class _JobPageState extends State<JobPage> {
                                     padding: const EdgeInsets.only(
                                         left: 20, top: 10),
                                     child: Row(
-                                      children: const [
-                                        Icon(Icons.location_on,
+                                      children: [
+                                        const Icon(Icons.location_on,
                                             color: Colors.blue),
                                         x8,
-                                        Text("Kuala Lumpur, Malaysia")
+                                        buildData('company_address', fontLabel,
+                                            dark, false)
                                       ],
                                     ),
                                   ),
@@ -173,15 +289,10 @@ class _JobPageState extends State<JobPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      "Develop application programming interfaces (APIs) to support mobile functionality while keeping up to date with terminology, concepts and best practices for coding mobile apps using flutter.",
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 15,
-                                          color: dark,
-                                          height: 1.7),
-                                    ),
-                                  ),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, left: 0),
+                                      child: buildData('job_description',
+                                          fontLabel, dark, false)),
                                   Divider(
                                     thickness: 0.5,
                                     color: Colors.black.withOpacity(.4),
@@ -193,26 +304,65 @@ class _JobPageState extends State<JobPage> {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            Row(
-                                              children: [
-                                                Icon(Icons.monetization_on,
-                                                    color: dark),
-                                                Text(
-                                                  "  RM 1250 - 2500",
-                                                  style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 15,
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: space10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Icon(Icons.monetization_on,
                                                       color: dark),
-                                                ),
-                                              ],
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: space4),
+                                                    child: Row(
+                                                      children: [
+                                                        PoppinsTextWidget(
+                                                          text: 'MYR',
+                                                          size: fontLabel,
+                                                          color: dark,
+                                                          isBold: true,
+                                                        ),
+                                                        x4,
+                                                        buildData(
+                                                            'job_pay_from',
+                                                            fontLabel,
+                                                            dark,
+                                                            true),
+                                                        PoppinsTextWidget(
+                                                          text: '  -  ',
+                                                          size: fontLabel,
+                                                          color: dark,
+                                                          isBold: true,
+                                                        ),
+                                                        buildData(
+                                                            'job_pay_till',
+                                                            fontLabel,
+                                                            dark,
+                                                            true),
+                                                      ],
+                                                    ),
+                                                  )
+                                                  // Text(
+                                                  //   "  RM 1250 - 2500",
+                                                  //   style: GoogleFonts.roboto(
+                                                  //       fontWeight:
+                                                  //           FontWeight.bold,
+                                                  //       fontSize: 15,
+                                                  //       color: dark),
+                                                  // ),
+                                                ],
+                                              ),
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  right: 30),
+                                                  right: 0),
                                               child: Text(
-                                                "Monthly",
+                                                "Income",
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 13,
                                                     color:
@@ -227,13 +377,14 @@ class _JobPageState extends State<JobPage> {
                                               children: [
                                                 Icon(Icons.calendar_month,
                                                     color: dark),
-                                                Text(
-                                                  "  3 - 6 months",
-                                                  style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 15,
-                                                      color: dark),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: space4),
+                                                  child: buildData(
+                                                      'job_duration',
+                                                      fontLabel,
+                                                      dark,
+                                                      true),
                                                 ),
                                               ],
                                             ),
@@ -256,14 +407,11 @@ class _JobPageState extends State<JobPage> {
                                               children: [
                                                 Icon(Icons.category,
                                                     color: dark),
-                                                Text(
-                                                  "  Internship",
-                                                  style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 15,
-                                                      color: dark),
-                                                ),
+                                                Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: space4),
+                                                    child: buildData('job_type',
+                                                        fontLabel, dark, true))
                                               ],
                                             ),
                                             Padding(
@@ -551,15 +699,13 @@ class _JobPageState extends State<JobPage> {
                                                 fontSize: fontLabel),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: Text(
-                                              "Teczo Sdn Bhd",
-                                              style: GoogleFonts.openSans(
-                                                  color: dark.withOpacity(.4),
-                                                  fontSize: fontLabel),
-                                            ),
-                                          ),
+                                              padding: const EdgeInsets.only(
+                                                  right: 20),
+                                              child: buildData(
+                                                  'company_name',
+                                                  fontLabel,
+                                                  dark.withOpacity(.4),
+                                                  false)),
                                         ],
                                       ),
                                     ),
@@ -577,42 +723,41 @@ class _JobPageState extends State<JobPage> {
                                                 fontSize: fontLabel),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: Text(
-                                              "Kuala Lumpur, Malaysia",
-                                              style: GoogleFonts.openSans(
-                                                  color: dark.withOpacity(.4),
-                                                  fontSize: fontLabel),
-                                            ),
-                                          ),
+                                              padding: const EdgeInsets.only(
+                                                  right: 20),
+                                              child: buildData(
+                                                  'company_address',
+                                                  fontLabel,
+                                                  dark.withOpacity(.4),
+                                                  false)),
                                         ],
                                       ),
                                     ),
                                     y8,
                                     Padding(
                                       padding: const EdgeInsets.only(left: 20),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Description: ",
-                                            style: GoogleFonts.openSans(
-                                                color: dark.withOpacity(.4),
-                                                fontSize: fontLabel),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: Text(
-                                              "IT Services provider",
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Description: ",
                                               style: GoogleFonts.openSans(
                                                   color: dark.withOpacity(.4),
                                                   fontSize: fontLabel),
                                             ),
-                                          ),
-                                        ],
+                                            Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 20),
+                                                child: buildData(
+                                                    'company_info',
+                                                    fontLabel,
+                                                    dark.withOpacity(.4),
+                                                    false)),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     y8,

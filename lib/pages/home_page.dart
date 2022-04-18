@@ -4,9 +4,10 @@ import 'package:gighub/pages/job/job_page.dart';
 import 'package:gighub/widgets/button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:gighub/widgets/textfield_widget.dart';
 import '../constants/style.dart';
 import 'job/job_post_page.dart';
-import 'job/job_search.dart';
+import 'job/job_search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -108,33 +109,86 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 margin: EdgeInsets.only(right: space18),
                 child: Row(children: [
+                  //Search bar
+                  Expanded(
+                    flex: 10,
+                    child: TextfieldWidget(
+                      labelText: 'Job title, company name or keyword',
+                      controller: searchController,
+                      icon: Icon(Icons.search_outlined, color: dark //or aqua,
+                          ),
+                    ),
+                  ),
+                  // //Filter button (for search results) //TODO: Remove or replace in the search delegate.
+                  // Expanded(
+                  //   child: InkWell(
+                  //     hoverColor: Colors.transparent,
+                  //     splashColor: Colors.transparent,
+                  //     highlightColor: Colors.transparent,
+                  //     onTap: () {
+                  //       //Filter
+                  //     },
+                  //     child: Container(
+                  //         height: space50,
+                  //         width: space50,
+                  //         margin: EdgeInsets.only(left: space12),
+                  //         decoration: BoxDecoration(
+                  //             color: dark, borderRadius: bRadius12),
+                  //         child: Icon(Icons.filter_alt_rounded,
+                  //             color: light, size: 24)),
+                  //   ),
+                  // ),
                   //Search button
-                  ButtonWidget(
-                      icon: Icons.search_rounded,
-                      label: 'Search',
-                      onTap: () {
-                        showSearch(
-                            context: context, delegate: MySearchDelegate());
-                      }),
-                  //Filter button (for search results) //TODO: Remove or replace in the search delegate.
-                  InkWell(
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () {
-                      //Filter
-                    },
-                    child: Container(
-                        height: space50,
-                        width: space50,
-                        margin: EdgeInsets.only(left: space12),
-                        decoration:
-                            BoxDecoration(color: dark, borderRadius: bRadius12),
-                        child: Icon(Icons.filter_alt_rounded,
-                            color: light, size: 24)),
-                  )
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: space10),
+                      child: ButtonWidget(
+                          icon: Icons.search_rounded,
+                          label: 'Search',
+                          onTap: () {
+                            showSearch(
+                                context: context, delegate: MySearchDelegate());
+                          }),
+                    ),
+                  ),
                 ]),
               ),
+              searchController.text.isNotEmpty
+                  ? Container(
+                      margin: EdgeInsets.only(top: space50),
+                      padding: pad20,
+                      decoration:
+                          BoxDecoration(borderRadius: bRadius20, color: light),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          PoppinsTextWidget(
+                            text: 'SEARCH RESULTS',
+                            size: fontTitle,
+                            color: dark,
+                            isBold: true,
+                          ),
+                          y20,
+                          SafeArea(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(children: [
+                                buildJobTile(),
+                                buildJobTile(),
+                                buildJobTile(),
+                                buildJobTile(),
+                                buildJobTile(),
+                                buildJobTile(),
+                                buildJobTile(),
+                                buildJobTile(),
+                              ]),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : Container(width: 0),
               Container(
                 margin: EdgeInsets.only(top: space50),
                 padding: pad20,
@@ -153,8 +207,7 @@ class _HomePageState extends State<HomePage> {
                     SafeArea(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Expanded(
-                            child: Row(children: [
+                        child: Row(children: [
                           buildJobTile(),
                           buildJobTile(),
                           buildJobTile(),
@@ -163,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                           buildJobTile(),
                           buildJobTile(),
                           buildJobTile(),
-                        ])),
+                        ]),
                       ),
                     )
                   ],
@@ -185,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     y20,
                     SafeArea(
-                        child: Container(width: 300, child: buildJobTiles2()))
+                        child: SizedBox(height: 200, child: buildJobTiles2()))
                   ],
                 ),
               ),
@@ -247,64 +300,73 @@ class _HomePageState extends State<HomePage> {
             return ListView(
               scrollDirection: Axis.horizontal,
               children: snapshot.data!.docs.map((document) {
-                return Container(
-                  height: 200,
-                  width: 260,
-                  margin: EdgeInsets.only(right: space30),
-                  padding: pad20,
-                  decoration:
-                      BoxDecoration(borderRadius: bRadius20, color: dark),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: pad10,
-                              width: 72,
-                              height: 72,
-                              decoration: BoxDecoration(
-                                  borderRadius: bRadius12, color: light),
-                              //TODO: Replace w/ logo
-                              child: Icon(
-                                Icons.photo_rounded,
-                                color: grey,
-                                size: 45,
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => JobPage(
+                              docId: document.id,
+                            )));
+                  },
+                  child: Container(
+                    height: 200,
+                    width: 260,
+                    margin: EdgeInsets.only(right: space30),
+                    padding: pad20,
+                    decoration:
+                        BoxDecoration(borderRadius: bRadius20, color: dark),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: pad10,
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                    borderRadius: bRadius12, color: light),
+                                //TODO: Replace w/ logo
+                                child: Icon(
+                                  Icons.photo_rounded,
+                                  color: grey,
+                                  size: 45,
+                                ),
                               ),
-                            ),
-                            Container(
-                              padding: pad8,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.lightGreenAccent),
-                                  borderRadius: bRadius20),
-                              child: PoppinsTextWidget(
-                                text: 'RM ${document['monthly_salary']}',
-                                size: fontLabel,
-                                color: light, //Colors.lightGreen,
-                              ),
-                            )
-                          ],
-                        ),
-                        y20,
-                        PoppinsTextWidget(
-                          text: document['job_title'],
-                          size: fontLabel,
-                          color: light,
-                          isBold: true,
-                        ),
-                        PoppinsTextWidget(
-                          text: document['company_name'],
-                          size: fontLabel,
-                          color: light,
-                        ),
-                        PoppinsTextWidget(
-                          text: document['company_address'],
-                          size: fontLabel,
-                          color: light,
-                        )
-                      ]),
+                              Container(
+                                padding: pad8,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.lightGreenAccent),
+                                    borderRadius: bRadius20),
+                                child: PoppinsTextWidget(
+                                  text:
+                                      'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
+                                  size: fontLabel,
+                                  color: light, //Colors.lightGreen,
+                                ),
+                              )
+                            ],
+                          ),
+                          y20,
+                          PoppinsTextWidget(
+                            text: document['job_title'],
+                            size: fontLabel,
+                            color: light,
+                            isBold: true,
+                          ),
+                          PoppinsTextWidget(
+                            text: document['company_name'],
+                            size: fontLabel,
+                            color: light,
+                          ),
+                          PoppinsTextWidget(
+                            text: document['company_address'],
+                            size: fontLabel,
+                            color: light,
+                          )
+                        ]),
+                  ),
                 );
               }).toList(),
             );
@@ -469,7 +531,8 @@ class _HomePageState extends State<HomePage> {
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const JobPage()));
+                                builder: (context) =>
+                                    JobPage(docId: document.id)));
                           },
                           child: Container(
                             height: 120,
@@ -567,7 +630,7 @@ class _HomePageState extends State<HomePage> {
                                             borderRadius: bRadius20),
                                         child: PoppinsTextWidget(
                                           text:
-                                              'RM ${document['monthly_salary']}',
+                                              'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
                                           size: fontLabel,
                                           color: light, //Colors.lightGreen,
                                         ),

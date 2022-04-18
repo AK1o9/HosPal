@@ -20,7 +20,7 @@ class _TestPageState extends State<TestPage> {
       debugShowCheckedModeBanner: false,
       home: Container(
         padding: pad20,
-        child: buildJobListings(),
+        child: SafeArea(child: SizedBox(height: 250, child: buildJobTiles2())),
       ),
     );
   }
@@ -73,6 +73,82 @@ class _TestPageState extends State<TestPage> {
           } else {
             return const Center(child: CircularProgressIndicator());
           }
+        });
+  }
+
+  Widget buildJobTiles2() {
+    return FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance.collection('jobs').get(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            return ListView(
+              scrollDirection: Axis.horizontal,
+              children: snapshot.data!.docs.map((document) {
+                return Container(
+                  height: 200,
+                  width: 260,
+                  margin: EdgeInsets.only(right: space30),
+                  padding: pad20,
+                  decoration:
+                      BoxDecoration(borderRadius: bRadius20, color: dark),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: pad10,
+                              width: 72,
+                              height: 72,
+                              decoration: BoxDecoration(
+                                  borderRadius: bRadius12, color: light),
+                              //TODO: Replace w/ logo
+                              child: Icon(
+                                Icons.photo_rounded,
+                                color: grey,
+                                size: 45,
+                              ),
+                            ),
+                            Container(
+                              padding: pad8,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.lightGreenAccent),
+                                  borderRadius: bRadius20),
+                              child: PoppinsTextWidget(
+                                text: 'RM ${document['job_pay_till']}',
+                                size: fontLabel,
+                                color: light, //Colors.lightGreen,
+                              ),
+                            )
+                          ],
+                        ),
+                        y20,
+                        PoppinsTextWidget(
+                          text: document['job_title'],
+                          size: fontLabel,
+                          color: light,
+                          isBold: true,
+                        ),
+                        PoppinsTextWidget(
+                          text: document['company_name'],
+                          size: fontLabel,
+                          color: light,
+                        ),
+                        PoppinsTextWidget(
+                          text: document['company_address'],
+                          size: fontLabel,
+                          color: light,
+                        )
+                      ]),
+                );
+              }).toList(),
+            );
+          }
+
+          return const Center(child: CircularProgressIndicator());
         });
   }
 }

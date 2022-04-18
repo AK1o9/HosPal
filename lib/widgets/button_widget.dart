@@ -18,26 +18,31 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onTap: onTap,
-      child: Container(
-        padding: pad18,
-        decoration: BoxDecoration(
-            borderRadius: bRadius30,
-            color: isInverted ? light : dark,
-            border: isInverted ? Border.all(color: dark, width: 0.5) : null),
-        child: Row(
-          children: [
-            icon != null
-                ? Icon(icon, color: light, size: 18)
-                : Container(width: 0),
-            icon != null ? x4 : Container(width: 0),
-            PoppinsTextWidget(
-                text: label, size: fontLabel, color: isInverted ? dark : light),
-          ],
+    return Center(
+      child: InkWell(
+        hoverColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: onTap,
+        child: Container(
+          padding: pad18,
+          decoration: BoxDecoration(
+              borderRadius: bRadius30,
+              color: isInverted ? light : dark,
+              border: isInverted ? Border.all(color: dark, width: 0.5) : null),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon != null
+                  ? Icon(icon, color: light, size: 18)
+                  : Container(width: 0),
+              icon != null ? x4 : Container(width: 0),
+              PoppinsTextWidget(
+                  text: label,
+                  size: fontLabel,
+                  color: isInverted ? dark : light),
+            ],
+          ),
         ),
       ),
     );

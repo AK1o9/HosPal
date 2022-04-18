@@ -8,7 +8,8 @@ import '../../constants/style.dart';
 //NOTE: May be a temp class.
 
 class JobSearchPage extends StatefulWidget {
-  const JobSearchPage({Key? key}) : super(key: key);
+  final String keyword;
+  const JobSearchPage({Key? key, this.keyword = ''}) : super(key: key);
 
   @override
   State<JobSearchPage> createState() => _JobSearchPageState();
@@ -140,7 +141,9 @@ class MySearchDelegate extends SearchDelegate {
                 return ListTile(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const JobPage()));
+                        builder: (context) => JobPage(
+                              docId: data.id,
+                            )));
                   },
                   title: Text(jobTitle),
                   subtitle: Text(

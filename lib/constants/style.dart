@@ -5,6 +5,7 @@ Color dark = Colors.black;
 Color light = Colors.white;
 Color silver = const Color.fromARGB(255, 230, 230, 230);
 Color grey = Colors.black38; //Color.fromARGB(255, 139, 139, 139);
+Color aqua = Colors.blue;
 
 //Font sizes
 double fontTitle = 24,
@@ -15,7 +16,8 @@ double fontTitle = 24,
     fontBody = 12;
 
 //Spacing
-double space8 = 8,
+double space4 = 4,
+    space8 = 8,
     space10 = 10,
     space12 = 12,
     space18 = 18,

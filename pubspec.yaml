@@ -32,6 +32,9 @@ dependencies:
   flutter_dropzone: ^3.0.5  #For drag & drop files.
   dotted_border: ^2.0.0+2   #Border for dropzone.
 
+  #DateFormat & more...
+  intl: ^0.17.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

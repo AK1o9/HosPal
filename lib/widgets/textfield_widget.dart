@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextfieldWidget extends StatelessWidget {
   final String labelText;
@@ -39,6 +40,9 @@ class TextfieldWidget extends StatelessWidget {
           border: const OutlineInputBorder(),
         ),
         keyboardType: textInputType,
+        inputFormatters: textInputType == TextInputType.number
+            ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+            : null,
         textInputAction: TextInputAction.done,
       ),
     );

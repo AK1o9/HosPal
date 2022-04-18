@@ -93,7 +93,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                           height: 12,
                         ),
                         const Text(
-                          'Maximum file size: 2 GB.',
+                          'Maximum file size: 1 GB.',
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                       ],
