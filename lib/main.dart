@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gighub/pages/job/job_page.dart';
 import 'package:gighub/pages/job/job_search_page.dart';
+import 'package:gighub/pages/job/job_search_page_2.dart';
 
 import 'pages/test_page.dart';
 

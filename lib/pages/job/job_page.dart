@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -775,14 +776,16 @@ class _JobPageState extends State<JobPage> {
                                                     fontSize: fontLabel),
                                               ),
                                             ])),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: const [
-                                        Icon(Icons.image,
-                                            size: 200, color: Colors.black),
-                                      ],
-                                    )
+                                    buildLogo('J-phEINTu4I4mzJmcSoPVY',
+                                        'K Tech Logo Draft (1).jpg')
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.start,
+                                    //   children: const [
+                                    //     Icon(Icons.image,
+                                    //         size: 200, color: Colors.black),
+                                    //   ],
+                                    // )
                                   ],
                                 )),
                           ],
@@ -793,5 +796,60 @@ class _JobPageState extends State<JobPage> {
             ],
           ),
         ));
+  }
+
+  Future _getLogo(BuildContext context, String jobId, String imageName) async {
+    Image image;
+    await FireStorageService.loadImage(context, jobId, imageName).then((value) {
+      image = Image.network(value.toString(), fit: BoxFit.scaleDown);
+    });
+  }
+
+  Widget buildLogo(String jobId, String imageName) {
+    var image = FirebaseStorage.instance.ref('jobs/$jobId/$imageName');
+    return FutureBuilder(
+      future: _getLogo(context, jobId, imageName),
+      builder: (context, snapshot) {
+        if (snapshot.hasData &&
+            snapshot.connectionState == ConnectionState.done) {
+          return SizedBox(
+            width: MediaQuery.of(context).size.width / 1.2,
+            height: MediaQuery.of(context).size.width / 1.2,
+            // child: snapshot.data!,
+          );
+        }
+        return SizedBox(
+            width: MediaQuery.of(context).size.width / 1.2,
+            height: MediaQuery.of(context).size.width / 1.2,
+            child: const CircularProgressIndicator());
+      },
+      // builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+      //   if (snapshot.hasData &&
+      //       snapshot.connectionState == ConnectionState.done) {
+      //     return SizedBox(
+      //         width: 200,
+      //         height: 200,
+      //         child: Image.network(snapshot.data!, fit: BoxFit.scaleDown));
+      //   }
+      //   return Icon(
+      //     Icons.photo_rounded,
+      //     color: grey,
+      //     size: 200,
+      //   );
+      // }
+    );
+  }
+}
+
+class FireStorageService extends ChangeNotifier {
+  FireStorageService();
+  static Future<dynamic> loadImage(
+      BuildContext context, String jobId, String image) async {
+    return await FirebaseStorage.instance
+        .ref()
+        .child('jobs')
+        .child(jobId)
+        .child(image)
+        .getDownloadURL();
   }
 }

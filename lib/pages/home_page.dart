@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gighub/pages/job/job_page.dart';
 import 'package:gighub/widgets/button_widget.dart';
@@ -119,6 +120,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                     ),
                   ),
+
                   // //Filter button (for search results) //TODO: Remove or replace in the search delegate.
                   // Expanded(
                   //   child: InkWell(
@@ -138,6 +140,7 @@ class _HomePageState extends State<HomePage> {
                   //             color: light, size: 24)),
                   //   ),
                   // ),
+
                   //Search button
                   Expanded(
                     flex: 2,
@@ -174,14 +177,14 @@ class _HomePageState extends State<HomePage> {
                             child: SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
                               child: Row(children: [
-                                buildJobTile(),
-                                buildJobTile(),
-                                buildJobTile(),
-                                buildJobTile(),
-                                buildJobTile(),
-                                buildJobTile(),
-                                buildJobTile(),
-                                buildJobTile(),
+                                buildSampleJobTile(),
+                                buildSampleJobTile(),
+                                buildSampleJobTile(),
+                                buildSampleJobTile(),
+                                buildSampleJobTile(),
+                                buildSampleJobTile(),
+                                buildSampleJobTile(),
+                                buildSampleJobTile(),
                               ]),
                             ),
                           )
@@ -208,14 +211,14 @@ class _HomePageState extends State<HomePage> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(children: [
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
-                          buildJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
                         ]),
                       ),
                     )
@@ -238,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     y20,
                     SafeArea(
-                        child: SizedBox(height: 200, child: buildJobTiles2()))
+                        child: SizedBox(height: 200, child: buildJobTiles()))
                   ],
                 ),
               ),
@@ -262,7 +265,6 @@ class _HomePageState extends State<HomePage> {
                         IconButton(
                             padding: EdgeInsets.only(right: space10),
                             onPressed: () {
-                              // setState(() {}); //Not working
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
@@ -277,7 +279,6 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     y20,
-                    // buildJobListing(),  //Note: Use this line to check the original format.
                     SafeArea(
                       child: SizedBox(height: 512, child: buildJobListings()),
                     ),
@@ -291,7 +292,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildJobTiles2() {
+  Widget buildLogo(String jobId, String imageName) {
+    var image = FirebaseStorage.instance
+        .ref()
+        .child('jobs')
+        .child(jobId)
+        .child(imageName);
+    return FutureBuilder(
+        future: image.getDownloadURL(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            return Image.network(snapshot.data!, fit: BoxFit.cover);
+          }
+          return Icon(
+            Icons.photo_rounded,
+            color: grey,
+            size: 45,
+          );
+        });
+  }
+
+  Widget buildJobTiles() {
     return FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance.collection('jobs').get(),
         builder: (context, snapshot) {
@@ -321,18 +343,22 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: pad10,
-                                width: 72,
-                                height: 72,
-                                decoration: BoxDecoration(
-                                    borderRadius: bRadius12, color: light),
-                                //TODO: Replace w/ logo
-                                child: Icon(
+                                  padding: pad10,
+                                  width: 72,
+                                  height: 72,
+                                  decoration: BoxDecoration(
+                                      borderRadius: bRadius12, color: light),
+                                  //TODO: Replace w/ logo
+                                  child: SafeArea(
+                                    child: buildLogo('J-phEINTu4I4mzJmcSoPVY',
+                                        'K Tech Logo Draft (1).jpg' /* , document['logo'] */),
+                                  )
+                                  /* Icon(
                                   Icons.photo_rounded,
                                   color: grey,
                                   size: 45,
-                                ),
-                              ),
+                                ), */
+                                  ),
                               Container(
                                 padding: pad8,
                                 decoration: BoxDecoration(
@@ -376,83 +402,8 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  Widget buildJobTiles() {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('jobs').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData ||
-              snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return ListView(
-              scrollDirection: Axis.horizontal,
-              children: snapshot.data!.docs.map((document) {
-                return Container(
-                  height: 200,
-                  width: 260,
-                  margin: EdgeInsets.only(right: space30),
-                  padding: pad20,
-                  decoration:
-                      BoxDecoration(borderRadius: bRadius20, color: dark),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: pad10,
-                              width: 72,
-                              height: 72,
-                              decoration: BoxDecoration(
-                                  borderRadius: bRadius12, color: light),
-                              child: Icon(
-                                Icons.photo_rounded,
-                                color: grey,
-                                size: 45,
-                              ),
-                            ),
-                            Container(
-                              padding: pad8,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.lightGreenAccent),
-                                  borderRadius: bRadius20),
-                              child: PoppinsTextWidget(
-                                text: 'RM ${document['monthly_salary']}',
-                                size: fontLabel,
-                                color: light, //Colors.lightGreen,
-                              ),
-                            )
-                          ],
-                        ),
-                        y20,
-                        PoppinsTextWidget(
-                          text: document['job_title'],
-                          size: fontLabel,
-                          color: light,
-                          isBold: true,
-                        ),
-                        PoppinsTextWidget(
-                          text: document['company_name'],
-                          size: fontLabel,
-                          color: light,
-                        ),
-                        PoppinsTextWidget(
-                          text: document['company_address'],
-                          size: fontLabel,
-                          color: light,
-                        )
-                      ]),
-                );
-              }).toList(),
-            );
-          }
-        });
-  }
-
 //Sample Data
-  Widget buildJobTile() {
+  Widget buildSampleJobTile() {
     return InkWell(
       onTap: () {
         Navigator.of(context)
@@ -655,97 +606,6 @@ class _HomePageState extends State<HomePage> {
             return const Center(child: CircularProgressIndicator());
           }
         });
-  }
-
-//Sample data
-  Widget buildJobListing() {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const JobPage()));
-      },
-      child: Container(
-        height: 100,
-        margin: EdgeInsets.only(bottom: space20),
-        padding: EdgeInsets.only(
-            top: space10, bottom: space10, left: space10, right: space20),
-        decoration: BoxDecoration(borderRadius: bRadius20, color: dark),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(space10),
-                        width: 72,
-                        height: 72,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(space12),
-                            color: light),
-                        child: Icon(
-                          Icons.photo_rounded,
-                          color: grey,
-                          size: 45,
-                        ),
-                      ),
-                      x20,
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          PoppinsTextWidget(
-                            text: 'IT Intern',
-                            size: fontLabel,
-                            color: light,
-                            isBold: true,
-                          ),
-                          y8,
-                          Row(
-                            children: [
-                              PoppinsTextWidget(
-                                text: 'Teczo Sdn. Bhd.',
-                                size: fontLabel,
-                                color: light,
-                              ),
-                              x10,
-                              PoppinsTextWidget(
-                                text: '|',
-                                size: fontLabel,
-                                color: light,
-                              ),
-                              x10,
-                              PoppinsTextWidget(
-                                text: 'Kuala Lumpur, Malaysia',
-                                size: fontLabel,
-                                color: light,
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  Container(
-                    padding: pad8,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.lightGreenAccent),
-                        borderRadius: bRadius20),
-                    child: PoppinsTextWidget(
-                      text: 'RM 1250 - 2500',
-                      size: fontLabel,
-                      color: light, //Colors.lightGreen,
-                    ),
-                  )
-                ],
-              ),
-            ]),
-      ),
-    );
   }
 }
 
