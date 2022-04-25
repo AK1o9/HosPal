@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:gighub/constants/style.dart';
-import 'package:gighub/pages/home_page.dart';
+import 'package:gighub/pages/front_page.dart';
+import 'package:gighub/pages/js_home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gighub/pages/job/job_page.dart';
@@ -35,6 +36,6 @@ class MyApp extends StatelessWidget {
             primaryColor: dark,
             primarySwatch:
                 Colors.blue /* TODO: Change to black or other dark colors */),
-        home: const HomePage());
+        home: const /* FrontPage() */ JobseekerHomePage());
   }
 }

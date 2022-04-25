@@ -22,7 +22,7 @@ import 'package:path/path.dart' as _path;
 import '../../widgets/dropped_file_widget.dart';
 import '../../widgets/dropzone_widget.dart';
 import '../../widgets/elevated_button_widget.dart';
-import '../home_page.dart';
+import '../js_home_page.dart';
 
 class JobPostPage extends StatefulWidget {
   const JobPostPage({Key? key}) : super(key: key);
@@ -126,8 +126,8 @@ class _JobPostPageState extends State<JobPostPage> {
             highlightColor: Colors.transparent,
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomePage()));
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: (context) => const HomePage()));
             },
             child: PoppinsTextWidget(
               text: 'GigHub',
@@ -662,46 +662,52 @@ class _JobPostPageState extends State<JobPostPage> {
   }
 
   Future<void> saveFiles() async {
-    if (droppedFile == null) return;
-    try {
-      String _docId =
-          docId!; //Note: This variable fixes an issue in where docId would keep resetting to a different string
-      var ref = FirebaseStorage.instance
-          .ref()
-          .child('jobs')
-          .child(jobId!)
-          .child(droppedFile!.name);
+    if (droppedFile == null) {
+      return;
+    } else if (kIsWeb) {
+      try {
+        String _docId =
+            docId!; //Note: This variable fixes an issue in where docId would keep resetting to a different string
+        var ref = FirebaseStorage.instance
+            .ref()
+            .child('jobs')
+            .child(jobId!)
+            .child(droppedFile!.name);
 
-      // Firebase.upload
-      var uploadTask = ref.putData(droppedFile!.bytes).catchError((error) {
+        // Firebase.upload
+        var uploadTask = ref.putData(droppedFile!.bytes).catchError((error) {
+          if (kDebugMode) {
+            print('Error saving file:\n$error');
+          }
+        });
+
+        var loadURL = await (await uploadTask).ref.getDownloadURL();
+
+        String finalName = (await uploadTask).ref.name;
+        String finalURL = loadURL.toString();
+
+        var db = FirebaseFirestore.instance.collection('jobs');
+
+        db
+            .doc(_docId)
+            .update({'logo_file': finalName, 'logo_url': finalURL}).then((_) {
+          if (kDebugMode) {
+            print('Task File URL saved successfully.');
+          }
+        }).catchError((error) {
+          if (kDebugMode) {
+            print(
+                'Failed to save the File URL for the select task.\nError: $error');
+          }
+        });
+      } catch (e) {
         if (kDebugMode) {
-          print('Error saving file:\n$error');
+          print(e);
         }
-      });
-
-      var loadURL = await (await uploadTask).ref.getDownloadURL();
-
-      String finalName = (await uploadTask).ref.name;
-      String finalURL = loadURL.toString();
-
-      var db = FirebaseFirestore.instance.collection('jobs');
-
-      db
-          .doc(_docId)
-          .update({'logo_file': finalName, 'logo_url': finalURL}).then((_) {
-        if (kDebugMode) {
-          print('Task File URL saved successfully.');
-        }
-      }).catchError((error) {
-        if (kDebugMode) {
-          print(
-              'Failed to save the File URL for the select task.\nError: $error');
-        }
-      });
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
       }
+    } else {
+      //File Upload for Android.
+      return;
     }
   }
 

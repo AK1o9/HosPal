@@ -10,14 +10,14 @@ import '../constants/style.dart';
 import 'job/job_post_page.dart';
 import 'job/job_search_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class JobseekerHomePage extends StatefulWidget {
+  const JobseekerHomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<JobseekerHomePage> createState() => _JobseekerHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _JobseekerHomePageState extends State<JobseekerHomePage> {
   final searchController = TextEditingController();
 
   @override
@@ -49,8 +49,8 @@ class _HomePageState extends State<HomePage> {
             highlightColor: Colors.transparent,
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomePage()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const JobseekerHomePage()));
             },
             child: PoppinsTextWidget(
               text: 'GigHub',
@@ -343,22 +343,21 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                  padding: pad10,
-                                  width: 72,
-                                  height: 72,
-                                  decoration: BoxDecoration(
-                                      borderRadius: bRadius12, color: light),
-                                  //TODO: Replace w/ logo
-                                  child: SafeArea(
-                                    child: buildLogo('J-phEINTu4I4mzJmcSoPVY',
-                                        'K Tech Logo Draft (1).jpg' /* , document['logo'] */),
-                                  )
-                                  /* Icon(
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                    borderRadius: bRadius12, color: light),
+                                //TODO: Replace w/ logo
+                                // child: SafeArea(
+                                //   child: buildLogo('J-LLP1X68Fp6minnZ28rcg',
+                                //       'Glitch WP.jpg' /* , document['logo'] */),
+                                // )
+                                child: Icon(
                                   Icons.photo_rounded,
                                   color: grey,
                                   size: 45,
-                                ), */
-                                  ),
+                                ),
+                              ),
                               Container(
                                 padding: pad8,
                                 decoration: BoxDecoration(

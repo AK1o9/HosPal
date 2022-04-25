@@ -8,7 +8,7 @@ import 'dart:convert';
 
 import '../../constants/style.dart';
 import '../../widgets/text_poppins_widget.dart';
-import '../home_page.dart';
+import '../js_home_page.dart';
 
 class JobPage extends StatefulWidget {
   final String? docId; //TODO: Remove ?
@@ -133,8 +133,8 @@ class _JobPageState extends State<JobPage> {
             highlightColor: Colors.transparent,
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomePage()));
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: (context) => const HomePage()));
             },
             child: PoppinsTextWidget(
               text: 'GigHub',
@@ -687,6 +687,9 @@ class _JobPageState extends State<JobPage> {
                                       ),
                                     ),
                                     y8,
+                                    buildLogo('J-phEINTu4I4mzJmcSoPVY',
+                                        'K Tech Logo Draft (1).jpg'),
+                                    y8,
                                     Padding(
                                       padding: const EdgeInsets.only(left: 20),
                                       child: Row(
@@ -761,31 +764,6 @@ class _JobPageState extends State<JobPage> {
                                         ),
                                       ),
                                     ),
-                                    y8,
-                                    Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 20),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Logo",
-                                                style: GoogleFonts.openSans(
-                                                    color: dark.withOpacity(.4),
-                                                    fontSize: fontLabel),
-                                              ),
-                                            ])),
-                                    buildLogo('J-phEINTu4I4mzJmcSoPVY',
-                                        'K Tech Logo Draft (1).jpg')
-                                    // Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.start,
-                                    //   children: const [
-                                    //     Icon(Icons.image,
-                                    //         size: 200, color: Colors.black),
-                                    //   ],
-                                    // )
                                   ],
                                 )),
                           ],
@@ -808,20 +786,15 @@ class _JobPageState extends State<JobPage> {
   Widget buildLogo(String jobId, String imageName) {
     var image = FirebaseStorage.instance.ref('jobs/$jobId/$imageName');
     return FutureBuilder(
-      future: _getLogo(context, jobId, imageName),
+      future: image.getDownloadURL(),
       builder: (context, snapshot) {
         if (snapshot.hasData &&
             snapshot.connectionState == ConnectionState.done) {
-          return SizedBox(
-            width: MediaQuery.of(context).size.width / 1.2,
-            height: MediaQuery.of(context).size.width / 1.2,
-            // child: snapshot.data!,
+          return Image.network(
+            snapshot.data!.toString(),
           );
         }
-        return SizedBox(
-            width: MediaQuery.of(context).size.width / 1.2,
-            height: MediaQuery.of(context).size.width / 1.2,
-            child: const CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
       // builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
       //   if (snapshot.hasData &&
@@ -839,6 +812,19 @@ class _JobPageState extends State<JobPage> {
       // }
     );
   }
+
+  Future<Widget> _getImage(BuildContext context, String image) async {
+    Image? m;
+    await FireStorageService.loadFromStorage(context, image)
+        .then((downloadUrl) {
+      m = Image.network(
+        downloadUrl.toString(),
+        fit: BoxFit.scaleDown,
+      );
+    });
+
+    return m!;
+  }
 }
 
 class FireStorageService extends ChangeNotifier {
@@ -851,5 +837,9 @@ class FireStorageService extends ChangeNotifier {
         .child(jobId)
         .child(image)
         .getDownloadURL();
+  }
+
+  static Future<dynamic> loadFromStorage(BuildContext context, String image) {
+    throw ("Platform not found");
   }
 }
