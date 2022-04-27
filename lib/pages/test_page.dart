@@ -20,7 +20,8 @@ class _TestPageState extends State<TestPage> {
       debugShowCheckedModeBanner: false,
       home: Container(
         padding: pad20,
-        child: SafeArea(child: SizedBox(height: 250, child: buildJobTiles2())),
+        child: SafeArea(
+            child: SizedBox(/* height: 250, */ child: buildJobListings())),
       ),
     );
   }

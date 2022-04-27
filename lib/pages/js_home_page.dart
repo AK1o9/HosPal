@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
+import 'package:gighub/api/search_service.dart';
 import 'package:gighub/pages/job/job_page.dart';
 import 'package:gighub/widgets/button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
@@ -246,7 +247,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: space50),
+                margin: EdgeInsets.only(top: space50, right: space20),
                 padding: pad20,
                 decoration:
                     BoxDecoration(borderRadius: bRadius20, color: light),

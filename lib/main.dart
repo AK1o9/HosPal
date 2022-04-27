@@ -8,6 +8,7 @@ import 'package:gighub/pages/job/job_page.dart';
 import 'package:gighub/pages/job/job_search_page.dart';
 import 'package:gighub/pages/job/job_search_page_2.dart';
 
+import 'pages/emp_home_page.dart';
 import 'pages/test_page.dart';
 
 void main() async {
@@ -36,6 +37,6 @@ class MyApp extends StatelessWidget {
             primaryColor: dark,
             primarySwatch:
                 Colors.blue /* TODO: Change to black or other dark colors */),
-        home: const /* FrontPage() */ JobseekerHomePage());
+        home: const FrontPage() /* JobSearchPage2() */);
   }
 }
