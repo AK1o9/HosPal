@@ -413,8 +413,8 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
   Widget buildSampleJobTile() {
     return InkWell(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const JobPage()));
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => const JobPage()));
       },
       child: Container(
         height: 200,

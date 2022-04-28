@@ -388,8 +388,8 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
   Widget buildSampleJobTile() {
     return InkWell(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const JobPage()));
+        // Navigator.of(context)
+        //     .push(MaterialPageRoute(builder: (context) => const JobPage()));
       },
       child: Container(
         height: 200,

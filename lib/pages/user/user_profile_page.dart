@@ -2,8 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:country/country.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:csc_picker/csc_picker.dart';
 import '../../constants/style.dart';
 import '../../widgets/text_poppins_widget.dart';
@@ -56,8 +54,6 @@ class _UserProfilePageState extends State<UserProfilePage>
           highlightColor: Colors.transparent,
           onTap: () {
             Navigator.of(context).pop();
-            // Navigator.of(context).push(
-            //     MaterialPageRoute(builder: (context) => const HomePage()));
           },
           child: PoppinsTextWidget(
             text: 'GigHub',
@@ -83,8 +79,6 @@ class _UserProfilePageState extends State<UserProfilePage>
               highlightColor: Colors.transparent,
               onTap: () {
                 Navigator.of(context).pop();
-                // Navigator.push(context,
-                //  MaterialPageRoute(builder: (context) => const HomePage()));
               },
               child: Icon(Icons.home, color: light, size: 28)),
           x10,
@@ -838,7 +832,7 @@ class _UserProfilePageState extends State<UserProfilePage>
                                   fontSize: 15, color: Colors.black),
                             ),
                             Text(
-                              'Received',
+                              'Receive',
                               style: GoogleFonts.roboto(
                                   fontSize: 15, color: Colors.black),
                             ),
@@ -851,7 +845,7 @@ class _UserProfilePageState extends State<UserProfilePage>
                     Expanded(
                       child: TabBarView(controller: _tabController, children: [
                         giveTestimonials(),
-                        receivedTestimonials(),
+                        receiveTestimonials(),
                       ]),
                     )
                   ],
@@ -1563,7 +1557,7 @@ class _UserProfilePageState extends State<UserProfilePage>
         child: TextField(
           decoration: InputDecoration(
               labelText: "Enter person email",
-              hintText: "Ex: Peter Parker",
+              hintText: "Ex: Peter@gmail.com",
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
           onChanged: (value) {
@@ -1580,7 +1574,7 @@ class _UserProfilePageState extends State<UserProfilePage>
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              "Write testimonial *",
+              "Enter testimonial *",
               style: GoogleFonts.roboto(
                   fontWeight: FontWeight.bold, fontSize: 15, color: dark),
             ),
@@ -1601,7 +1595,7 @@ class _UserProfilePageState extends State<UserProfilePage>
             });
           },
           decoration: InputDecoration(
-              hintText: "Enter testimonial",
+              hintText: "Write testimonial here",
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(width: 1, color: dark),
               )),
@@ -1637,55 +1631,130 @@ class _UserProfilePageState extends State<UserProfilePage>
     ]);
   }
 
-  Widget receivedTestimonials() {
-    return ListView(
-      scrollDirection: Axis.vertical,
-      children: [
-        ListTile(
-          leading: const Icon(Icons.bookmark, color: Colors.blue),
-          title: Text(
-            "Received from Ahmed",
-            style: GoogleFonts.roboto(),
-          ),
-          subtitle: Text(
-            "Date: 16-03-2022",
-            style: GoogleFonts.openSans(),
-          ),
-          //trailing: Icons,
+  Widget receiveTestimonials() {
+    return Column(children: [
+      y10,
+      Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              "Receive from *",
+              style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold, fontSize: 15, color: dark),
+            ),
+          ],
         ),
-        Divider(
-          thickness: .5,
-          color: dark.withOpacity(.4),
+      ),
+      y8,
+      Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: TextField(
+          decoration: InputDecoration(
+              labelText: "Enter person email",
+              hintText: "Ex: Peter@gmail.com",
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          onChanged: (value) {
+            setState(() {
+              personEmail = value;
+            });
+          },
         ),
-        ListTile(
-          leading: const Icon(Icons.bookmark, color: Colors.blue),
-          title: Text(
-            "Received from Pravin",
-            style: GoogleFonts.roboto(),
-          ),
-          subtitle: Text(
-            "Date: 31-12-2021",
-            style: GoogleFonts.openSans(),
-          ),
-          //trailing: Icons,
+      ),
+      y20,
+      //y10,
+      Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              "Date *",
+              style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold, fontSize: 15, color: dark),
+            ),
+          ],
         ),
-        Divider(
-          thickness: .5,
-          color: dark.withOpacity(.4),
+      ),
+      y8,
+      Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: TextField(
+          decoration: InputDecoration(
+              labelText: "Date",
+              hintText: "Ex: 12-03-2022",
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          onChanged: (value) {
+            setState(() {
+              personEmail = value;
+            });
+          },
         ),
-        ListTile(
-          leading: const Icon(Icons.bookmark, color: Colors.blue),
-          title: Text(
-            "Received from Cisse",
-            style: GoogleFonts.roboto(),
+      ),
+      y20,
+      Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              "Enter testimonial *",
+              style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold, fontSize: 15, color: dark),
+            ),
+          ],
+        ),
+      ),
+      y8,
+      Padding(
+        padding: const EdgeInsets.only(right: 10, left: 10),
+        child: TextField(
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.newline,
+          minLines: 1,
+          maxLines: 7,
+          onChanged: (value) {
+            setState(() {
+              testimonial = value;
+            });
+          },
+          decoration: InputDecoration(
+              hintText: "Paste testimonial here",
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: dark),
+              )),
+        ),
+      ),
+      y20,
+      Divider(
+        thickness: .5,
+        color: dark.withOpacity(.4),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10, top: 10),
+            child: SizedBox(
+              height: 40,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    primary: dark,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30))),
+                child: Center(
+                  child: PoppinsTextWidget(
+                      text: "Get testimonial", size: fontLabel, color: light),
+                ),
+              ),
+            ),
           ),
-          subtitle: Text(
-            "Date: 07-01-2022",
-            style: GoogleFonts.openSans(),
-          ),
-          //trailing: Icons,
-        )
-      ],
-    );
+        ],
+      ),
+    ]);
   }
 }
