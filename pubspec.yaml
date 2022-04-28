@@ -35,6 +35,11 @@ dependencies:
   #DateFormat & more...
   intl: ^0.17.0
 
+  #Profile-related
+  csc_picker: ^0.2.6
+  fluentui_system_icons: ^1.1.166
+  country: ^2.0.0 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

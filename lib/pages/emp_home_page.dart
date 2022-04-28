@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gighub/pages/job/job_page.dart';
+import 'package:gighub/pages/job/job_search_page_2.dart';
+import 'package:gighub/pages/user/user_profile_page.dart';
 import 'package:gighub/widgets/button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +76,10 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
             InkWell(
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const UserProfilePage()));
+                },
                 child: Icon(Icons.person, color: light, size: 28)),
             x10,
             x8,
@@ -113,12 +118,19 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                   //Search bar
                   Expanded(
                     flex: 10,
-                    child: TextfieldWidget(
+                    child: /* InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const JobSearchPage2()));
+                      },
+                      child: */
+                        TextfieldWidget(
                       labelText: 'Job title, company name or keyword',
                       controller: searchController,
                       icon: Icon(Icons.search_outlined, color: dark //or aqua,
                           ),
                     ),
+                    // ),
                   ),
 
                   // //Filter button (for search results) //TODO: Remove or replace in the search delegate.
@@ -152,6 +164,8 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                           onTap: () {
                             showSearch(
                                 context: context, delegate: MySearchDelegate());
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => const JobSearchPage2()));
                           }),
                     ),
                   ),

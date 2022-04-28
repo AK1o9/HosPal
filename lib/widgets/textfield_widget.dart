@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../constants/style.dart';
+
 class TextfieldWidget extends StatelessWidget {
   final String labelText;
   final TextEditingController controller;
@@ -23,9 +25,12 @@ class TextfieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: avoid_unnecessary_containers
     return Container(
+      // color: Colors.white,
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
+          filled: true,
+          fillColor: light,
           labelText: labelText,
           prefixIcon: icon,
           suffixIcon: controller.text.isEmpty

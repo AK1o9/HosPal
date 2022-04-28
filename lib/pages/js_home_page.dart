@@ -10,6 +10,8 @@ import 'package:gighub/widgets/textfield_widget.dart';
 import '../constants/style.dart';
 import 'job/job_post_page.dart';
 import 'job/job_search_page.dart';
+import 'job/job_search_page_2.dart';
+import 'user/user_profile_page.dart';
 
 class JobseekerHomePage extends StatefulWidget {
   const JobseekerHomePage({Key? key}) : super(key: key);
@@ -75,7 +77,10 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
             InkWell(
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const UserProfilePage()));
+                },
                 child: Icon(Icons.person, color: light, size: 28)),
             x10,
             x8,
@@ -151,8 +156,10 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                           icon: Icons.search_rounded,
                           label: 'Search',
                           onTap: () {
-                            showSearch(
-                                context: context, delegate: MySearchDelegate());
+                            // showSearch(
+                            //     context: context, delegate: MySearchDelegate());
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const JobSearchPage2()));
                           }),
                     ),
                   ),

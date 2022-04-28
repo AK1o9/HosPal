@@ -90,32 +90,51 @@ class _JobSearchPage2State extends State<JobSearchPage2> {
           Container(
             padding: pad20,
             decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-            child: Row(children: [
-              //ListView,
-              Expanded(
-                  child: SafeArea(
-                      child: SizedBox(height: 300, child: buildJobStream()))),
-              // PoppinsTextWidget(
-              //     text: 'Results', size: fontTitle, color: dark)),
+            child: IntrinsicHeight(
+              child: Row(children: [
+                //ListView,
+                Expanded(
+                    child: SafeArea(
+                        child: SizedBox(height: 300, child: buildJobStream()))),
+                // PoppinsTextWidget(
+                //     text: 'Results', size: fontTitle, color: dark)),
 
-              // child: showResults()),
+                // child: showResults()),
 
-              //Side Preview
-              Expanded(
-                  child: resultDocId == null
-                      ? PoppinsTextWidget(
-                          text: 'View',
-                          size: fontTitle,
-                          color: dark,
-                          isCenter: true,
-                        )
-                      : PoppinsTextWidget(
-                          text: resultDocId!,
-                          size: fontTitle,
-                          color: dark,
-                          isCenter: true,
-                        ))
-            ]),
+                VerticalDivider(
+                  thickness: 0.5,
+                  width: space20,
+                  color: grey,
+                  // indent: space20,
+                  // endIndent: space20,
+                ),
+
+                //Side Preview
+                Expanded(
+                    child: resultDocId == null
+                        ? PoppinsTextWidget(
+                            text: 'View',
+                            size: fontTitle,
+                            color: dark,
+                            isCenter: true,
+                          )
+                        : buildJobView()
+                    /* Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                PoppinsTextWidget(
+                                  text: resultDocId!,
+                                  size: fontTitle,
+                                  color: dark,
+                                  isCenter: true,
+                                ),
+                              ],
+                            ),
+                          ) */
+                    )
+              ]),
+            ),
           ),
           // ListView.builder(
           //   itemCount: _resultsList.length,
@@ -307,6 +326,70 @@ class _JobSearchPage2State extends State<JobSearchPage2> {
     setState(() {
       _resultsList = showResults;
     });
+  }
+
+  Widget buildJobView() {
+    return FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance
+            .collection('jobs')
+            .doc(resultDocId)
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            return Container(
+              padding: pad12,
+              child: Container(
+                padding: pad8,
+                // decoration:
+                //     BoxDecoration(border: Border.all(width: 0.25, color: grey)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: PoppinsTextWidget(
+                        text: snapshot.data!['job_title'],
+                        size: fontTitle,
+                        color: dark,
+                      ),
+                    ),
+                    y20,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: dark,
+                          child: Icon(
+                            Icons.image_rounded,
+                            color: light,
+                          ),
+                        ),
+                        x8,
+                        PoppinsTextWidget(
+                            text: snapshot.data!['company_name'],
+                            size: fontSubtitle,
+                            color: dark),
+                      ],
+                    ),
+                    y30,
+                    PoppinsTextWidget(
+                      text: 'Job Description',
+                      size: fontHeader,
+                      color: dark,
+                      isBold: true,
+                    ),
+                    y4,
+                    SizedBox(
+                        width: 500,
+                        child: Text(snapshot.data!['job_description'])),
+                  ],
+                ),
+              ),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 
   buildJobCard(BuildContext context, document) {
