@@ -7,6 +7,22 @@ Color silver = const Color.fromARGB(255, 230, 230, 230);
 Color grey = Colors.black38; //Color.fromARGB(255, 139, 139, 139);
 Color aqua = Colors.blue;
 
+Map<int, Color> darkColors = {
+  50: dark,
+  100: Colors.black87,
+  200: Colors.black54,
+  300: Colors.black45,
+  400: Colors.black38,
+  500: Colors.black26,
+  600: Colors.black12,
+  700: Colors.white10,
+  800: Colors.white12,
+  900: Colors.white24,
+};
+
+MaterialColor darkTheme =
+    MaterialColor(0xFF000000, darkColors); //Primary swatch
+
 //Font sizes
 double fontTitle = 24,
     fontSubtitle = 20,

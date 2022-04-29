@@ -25,30 +25,34 @@ class TextfieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: avoid_unnecessary_containers
     return Container(
-      // color: Colors.white,
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: light,
-          labelText: labelText,
-          prefixIcon: icon,
-          suffixIcon: controller.text.isEmpty
-              ? Container(width: 0)
-              : IconButton(
-                  hoverColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  icon: const Icon(Icons.close),
-                  onPressed: () => controller.clear(),
-                ),
-          border: const OutlineInputBorder(),
+      child: Theme(
+        data: ThemeData.from(
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: darkTheme),
         ),
-        keyboardType: textInputType,
-        inputFormatters: textInputType == TextInputType.number
-            ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
-            : null,
-        textInputAction: TextInputAction.done,
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            filled: false,
+            fillColor: light,
+            labelText: labelText,
+            prefixIcon: icon,
+            suffixIcon: controller.text.isEmpty
+                ? Container(width: 0)
+                : IconButton(
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    icon: const Icon(Icons.close),
+                    onPressed: () => controller.clear(),
+                  ),
+            border: const OutlineInputBorder(),
+          ),
+          keyboardType: textInputType,
+          inputFormatters: textInputType == TextInputType.number
+              ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+              : null,
+          textInputAction: TextInputAction.done,
+        ),
       ),
     );
   }

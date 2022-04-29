@@ -6,6 +6,7 @@ import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 import '../classes/dropped_file.dart';
+import '../constants/style.dart';
 
 class DropzoneWidget extends StatefulWidget {
   final ValueChanged<DroppedFile> onDroppedFile;
@@ -23,8 +24,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final dropzoneColor =
-        isDropzoneHighlighted ? Colors.lightBlue : Colors.blue;
+    final dropzoneColor = isDropzoneHighlighted ? Colors.black54 : dark;
     return Padding(
       padding: const EdgeInsets.all(10),
       child: ClipRRect(
@@ -76,12 +76,16 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                           style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 12),
-                              primary: Colors.blue.shade300,
+                              primary: light,
                               shape: const RoundedRectangleBorder()),
-                          icon: const Icon(Icons.attach_file, size: 28),
+                          icon: Icon(
+                            Icons.attach_file,
+                            size: 28,
+                            color: dark,
+                          ),
                           label: const Text('Attach Files',
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
+                                  TextStyle(color: Colors.black, fontSize: 20)),
                           onPressed: () async {
                             final events =
                                 await dropzoneController!.pickFiles();

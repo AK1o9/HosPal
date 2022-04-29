@@ -7,15 +7,15 @@ import '../../constants/style.dart';
 
 //NOTE: May be a temp class.
 
-class JobSearchPage extends StatefulWidget {
+class JobSearchDelegatePage extends StatefulWidget {
   final String keyword;
-  const JobSearchPage({Key? key, this.keyword = ''}) : super(key: key);
+  const JobSearchDelegatePage({Key? key, this.keyword = ''}) : super(key: key);
 
   @override
-  State<JobSearchPage> createState() => _JobSearchPageState();
+  State<JobSearchDelegatePage> createState() => _JobSearchPageState();
 }
 
-class _JobSearchPageState extends State<JobSearchPage> {
+class _JobSearchPageState extends State<JobSearchDelegatePage> {
   String? searchQuery;
 
   final searchBarController = TextEditingController();

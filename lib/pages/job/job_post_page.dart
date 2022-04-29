@@ -21,8 +21,6 @@ import 'package:path/path.dart' as _path;
 
 import '../../widgets/dropped_file_widget.dart';
 import '../../widgets/dropzone_widget.dart';
-import '../../widgets/elevated_button_widget.dart';
-import '../js_home_page.dart';
 
 class JobPostPage extends StatefulWidget {
   const JobPostPage({Key? key}) : super(key: key);
@@ -34,8 +32,9 @@ class JobPostPage extends StatefulWidget {
 class _JobPostPageState extends State<JobPostPage> {
   String? docId;
   String? jobId;
-  String? jobType; //Types: Full Time, Part Time, Internship
-  String? jobLevel; //Levels: Intermediate, Amateur, Proffesional...
+  String? jobType = 'Part Time'; //Types: Full Time, Part Time, Internship
+  String? jobLevel =
+      'Intermediate'; //Levels: Intermediate, Amateur, Proffesional...
   String?
       jobLocation; //Location requirements: Local, Local + Remote, Global (Fully Remote)
   List<String>? jobSkills =
@@ -43,7 +42,7 @@ class _JobPostPageState extends State<JobPostPage> {
   String? jobRequirements; // -> Multiline String
   int jobSalary = 0; //TODO: Remove?
   int jobDuration = 0; //TODO: Remove?
-  String? jobDurationInterval; //Intervals: Days, Months, Years
+  String? jobDurationInterval = 'Month(s)'; //Intervals: Days, Months, Years
 
   final jobTitleController = TextEditingController();
   final jobDescriptionController = TextEditingController();
@@ -116,8 +115,6 @@ class _JobPostPageState extends State<JobPostPage> {
   Widget build(BuildContext context) {
     docId = getRandomString(22);
     jobId = 'J-${getRandomString(20)}';
-    // jobPayFromController.text = 'RM $jobSalary';
-    // jobDurationController.text = '$jobDuration Month(s)';
     return Material(
       child: Scaffold(
         appBar: AppBar(
@@ -126,8 +123,6 @@ class _JobPostPageState extends State<JobPostPage> {
             highlightColor: Colors.transparent,
             onTap: () {
               Navigator.of(context).pop();
-              // Navigator.of(context).push(
-              //     MaterialPageRoute(builder: (context) => const HomePage()));
             },
             child: PoppinsTextWidget(
               text: 'GigHub',
@@ -199,7 +194,7 @@ class _JobPostPageState extends State<JobPostPage> {
                   Expanded(
                     flex: 2,
                     child: TextfieldWidget(
-                      labelText: 'From *',
+                      labelText: 'From',
                       controller: jobPayFromController,
                       textInputType: TextInputType.number,
                       icon: const Icon(Icons.monetization_on),
@@ -209,7 +204,7 @@ class _JobPostPageState extends State<JobPostPage> {
                   Expanded(
                     flex: 2,
                     child: TextfieldWidget(
-                      labelText: 'To *',
+                      labelText: 'To',
                       controller: jobPayTillController,
                       textInputType: TextInputType.number,
                       icon: const Icon(Icons.monetization_on),
@@ -243,9 +238,9 @@ class _JobPostPageState extends State<JobPostPage> {
                               color: grey,
                             ),
                             items: <String>[
-                              'Days',
-                              'Months',
-                              'Years',
+                              'Day(s)',
+                              'Month(s)',
+                              'Year(s)',
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -264,74 +259,6 @@ class _JobPostPageState extends State<JobPostPage> {
                       ],
                     ),
                   )
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: Row(
-                  //     children: [
-                  //       Expanded(
-                  //         child: InkWell(
-                  //           hoverColor: Colors.transparent,
-                  //           splashColor: Colors.transparent,
-                  //           highlightColor: Colors.transparent,
-                  //           // onDoubleTap: () {
-                  //           //   if ((jobDuration - 50) >= 0) {
-                  //           //     setState(() {
-                  //           //       jobDuration = jobDuration - 50;
-                  //           //     });
-                  //           //   }
-                  //           // },
-                  //           // onLongPress: () {
-                  //           //   if ((jobDuration - 100) >= 0) {
-                  //           //     setState(() {
-                  //           //       jobDuration = jobDuration - 10;
-                  //           //     });
-                  //           //   }
-                  //           // },
-                  //           onTap: () {
-                  //             if (jobDuration > 1) {
-                  //               setState(() {
-                  //                 jobDuration--;
-                  //               });
-                  //             }
-                  //           },
-                  //           child: Container(
-                  //               padding: pad10,
-                  //               decoration: BoxDecoration(
-                  //                   color: silver, borderRadius: bRadius20),
-                  //               child: const Icon(Icons.remove)),
-                  //         ),
-                  //       ),
-                  //       x8,
-                  //       Expanded(
-                  //         child: InkWell(
-                  //           hoverColor: Colors.transparent,
-                  //           splashColor: Colors.transparent,
-                  //           highlightColor: Colors.transparent,
-                  //           // onDoubleTap: () {
-                  //           //   setState(() {
-                  //           //     jobDuration = jobDuration + 50;
-                  //           //   });
-                  //           // },
-                  //           // onLongPress: () {
-                  //           //   setState(() {
-                  //           //     jobDuration = jobDuration + 10;
-                  //           //   });
-                  //           // },
-                  //           onTap: () {
-                  //             setState(() {
-                  //               jobDuration++;
-                  //             });
-                  //           },
-                  //           child: Container(
-                  //               padding: pad10,
-                  //               decoration: BoxDecoration(
-                  //                   color: silver, borderRadius: bRadius20),
-                  //               child: const Icon(Icons.add)),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
                 ],
               ),
               y20,
@@ -379,6 +306,7 @@ class _JobPostPageState extends State<JobPostPage> {
                         color: grey,
                       ),
                       items: <String>[
+                        'Expert',
                         'Proffessional',
                         'Amateur',
                         'Student',
@@ -478,8 +406,6 @@ class _JobPostPageState extends State<JobPostPage> {
                         y20,
                         TextfieldWidget(
                             labelText: 'Company Description & Information',
-                            // hintText:
-                            //     "Short summary of Company's activities and achievements",
                             controller: companyDescriptionController,
                             textInputType: TextInputType.multiline),
                       ],
@@ -630,6 +556,7 @@ class _JobPostPageState extends State<JobPostPage> {
     try {
       collection.doc(docId).set({
         'job_id': jobId,
+        'job_level': jobLevel,
         'job_title': jobTitleController.text,
         'job_description': jobDescriptionController.text,
         'job_type': jobType,
@@ -645,6 +572,7 @@ class _JobPostPageState extends State<JobPostPage> {
         'publication_date':
             DateFormat('dd/MM/yyyy').format(DateTime.now()), //reformat
         'publication_time': DateFormat.Hms().format(DateTime.now()),
+        'search_keys': setSearchKeys(jobTitleController.text),
       }).then((value) {
         if (kDebugMode) {
           print('Data saved successfuly!');
@@ -733,7 +661,7 @@ class _JobPostPageState extends State<JobPostPage> {
   }
 
   Future<dynamic> acceptFile(dynamic event) async {
-    final name = event.name; // or: await dropzoneController.getFilename(event);
+    final name = event.name;
     final mime = await dropzoneController!.getFileMIME(event);
     final size = await dropzoneController!.getFileSize(event);
     final url = await dropzoneController!.createFileUrl(event);
@@ -770,7 +698,6 @@ class _JobPostPageState extends State<JobPostPage> {
       setState(() {
         bytes = result.files.single.bytes;
         byteFile = result.files.single;
-        // file = File(path!).writeAsBytes(bytes!) as File?;
       });
     } else {
       final path = result.files.single.path;
@@ -804,7 +731,6 @@ class _JobPostPageState extends State<JobPostPage> {
       task = FirebaseApi.uploadFile(destination, file!);
       setState(() {});
     } else {
-      //if (bytes != null){
       final fileName = byteFile!.name;
       final destination = 'jobs/$jobId/$fileName';
 
@@ -874,9 +800,6 @@ class _JobPostPageState extends State<JobPostPage> {
                     jobSkills!.removeAt(index);
                   });
                 },
-                // onHover: (hovering) {
-                //   isHovering = hovering;
-                // },
                 child: Card(
                     color: silver,
                     child: Center(
@@ -884,12 +807,6 @@ class _JobPostPageState extends State<JobPostPage> {
                       padding: pad12,
                       child: Column(
                         children: [
-                          // isHovering
-                          //     ? IconButton(
-                          //         onPressed: () {},
-                          //         icon: const Icon(Icons.remove, size: 16))
-                          //     : Container(width: 0),
-                          // isHovering ? y10 : Container(width: 0),
                           PoppinsTextWidget(
                             text: jobSkills![index],
                             size: fontBody,
@@ -900,18 +817,15 @@ class _JobPostPageState extends State<JobPostPage> {
                     ))),
               );
             }));
-    // return ListView.builder(
-    //     scrollDirection: Axis.horizontal,
-    //     itemCount: jobSkills!.length,
-    //     itemBuilder: (context, index) {
-    //       return ListTile(
-    //         title: PoppinsTextWidget(
-    //             text: jobSkills![index], size: fontLabel, color: dark),
-    //       );
-    //       // return Container(
-    //       //     padding: pad10,
-    //       //     child: PoppinsTextWidget(
-    //       //         text: jobSkills![index], size: fontLabel, color: dark));
-    //     });
+  }
+
+  setSearchKeys(String keyword) {
+    List<String> searchKeyList = [];
+    String temp = "";
+    for (int i = 0; i < keyword.length; i++) {
+      temp = temp + keyword[i];
+      searchKeyList.add(temp);
+    }
+    return searchKeyList;
   }
 }

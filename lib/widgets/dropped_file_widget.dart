@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gighub/constants/style.dart';
 
 import '../classes/dropped_file.dart';
 
@@ -24,8 +25,7 @@ class DroppedFileWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
-                        border:
-                            Border.all(width: 5, color: Colors.blue.shade300)),
+                        border: Border.all(width: 5, color: Colors.black12)),
                     child: buildImage()),
                 // ignore: unnecessary_null_comparison
                 if (file != null) buildFileDetails(file),
@@ -54,7 +54,7 @@ class DroppedFileWidget extends StatelessWidget {
             height: 200,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: Colors.blue),
+                borderRadius: BorderRadius.circular(20), color: dark),
             child: preview));
   }
 

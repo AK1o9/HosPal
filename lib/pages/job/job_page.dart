@@ -3,15 +3,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'dart:convert';
 
 import '../../constants/style.dart';
 import '../../widgets/text_poppins_widget.dart';
-import '../js_home_page.dart';
 
 class JobPage extends StatefulWidget {
-  final String? docId; //TODO: Remove ?
+  final String? docId; //TODO: Could be replaced in the future
 
   const JobPage({Key? key, this.docId}) : super(key: key);
 
@@ -434,14 +431,12 @@ class _JobPageState extends State<JobPage> {
                                               children: [
                                                 Icon(Icons.psychology,
                                                     color: dark),
-                                                Text(
-                                                  "  Intermediate",
-                                                  style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 15,
-                                                      color: dark),
-                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: space4),
+                                                  child: buildData('job_level',
+                                                      15, dark, true),
+                                                )
                                               ],
                                             ),
                                             Text(
@@ -687,8 +682,9 @@ class _JobPageState extends State<JobPage> {
                                       ),
                                     ),
                                     y8,
-                                    buildLogo('J-phEINTu4I4mzJmcSoPVY',
-                                        'K Tech Logo Draft (1).jpg'),
+                                    //TODO
+                                    buildLogo('J-LLP1X68Fp6minnZ28rcg',
+                                        'Glitch WP.jpg'),
                                     y8,
                                     Padding(
                                       padding: const EdgeInsets.only(left: 20),
@@ -753,8 +749,8 @@ class _JobPageState extends State<JobPage> {
                                                   fontSize: fontLabel),
                                             ),
                                             Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 20),
+                                                padding: EdgeInsets.only(
+                                                    right: space20),
                                                 child: buildData(
                                                     'company_info',
                                                     fontLabel,

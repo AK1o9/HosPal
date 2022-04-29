@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gighub/pages/job/job_page.dart';
-import 'package:gighub/pages/job/job_search_page_2.dart';
+import 'package:gighub/pages/job/job_custom_search_page.dart';
 import 'package:gighub/pages/user/user_profile_page.dart';
 import 'package:gighub/widgets/button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gighub/widgets/textfield_widget.dart';
 import '../../constants/style.dart';
+import '../widgets/text_nunito_widget.dart';
 import 'job/job_post_page.dart';
-import 'job/job_search_page.dart';
+import 'job/job_delegate_search_page.dart';
 
 class EmployerHomePage extends StatefulWidget {
   const EmployerHomePage({Key? key}) : super(key: key);
@@ -112,100 +113,83 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
               ),
               y30,
               Container(
-                width: double.infinity,
-                margin: EdgeInsets.only(right: space18),
-                child: Row(children: [
-                  //Search bar
-                  Expanded(
-                    flex: 10,
-                    child: /* InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const JobSearchPage2()));
-                      },
-                      child: */
-                        TextfieldWidget(
-                      labelText: 'Job title, company name or keyword',
-                      controller: searchController,
-                      icon: Icon(Icons.search_outlined, color: dark //or aqua,
-                          ),
-                    ),
-                    // ),
-                  ),
-
-                  // //Filter button (for search results) //TODO: Remove or replace in the search delegate.
-                  // Expanded(
-                  //   child: InkWell(
-                  //     hoverColor: Colors.transparent,
-                  //     splashColor: Colors.transparent,
-                  //     highlightColor: Colors.transparent,
-                  //     onTap: () {
-                  //       //Filter
-                  //     },
-                  //     child: Container(
-                  //         height: space50,
-                  //         width: space50,
-                  //         margin: EdgeInsets.only(left: space12),
-                  //         decoration: BoxDecoration(
-                  //             color: dark, borderRadius: bRadius12),
-                  //         child: Icon(Icons.filter_alt_rounded,
-                  //             color: light, size: 24)),
-                  //   ),
-                  // ),
-
-                  //Search button
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: space10),
-                      child: ButtonWidget(
-                          icon: Icons.search_rounded,
-                          label: 'Search',
-                          onTap: () {
-                            showSearch(
-                                context: context, delegate: MySearchDelegate());
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => const JobSearchPage2()));
-                          }),
-                    ),
-                  ),
-                ]),
-              ),
-              searchController.text.isNotEmpty
-                  ? Container(
-                      margin: EdgeInsets.only(top: space50),
-                      padding: pad20,
-                      decoration:
-                          BoxDecoration(borderRadius: bRadius20, color: light),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          PoppinsTextWidget(
-                            text: 'SEARCH RESULTS',
-                            size: fontTitle,
-                            color: dark,
-                            isBold: true,
-                          ),
-                          y20,
-                          SafeArea(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(children: [
-                                buildSampleJobTile(),
-                                buildSampleJobTile(),
-                                buildSampleJobTile(),
-                                buildSampleJobTile(),
-                                buildSampleJobTile(),
-                                buildSampleJobTile(),
-                                buildSampleJobTile(),
-                                buildSampleJobTile(),
-                              ]),
-                            ),
-                          )
-                        ],
+                margin: EdgeInsets.only(right: space20),
+                padding: pad20,
+                decoration:
+                    BoxDecoration(borderRadius: bRadius20, color: light),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        'job_search.jpg',
+                        height: 400,
                       ),
-                    )
-                  : Container(width: 0),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.only(right: space18),
+                      child: Row(children: [
+                        //Search bar
+                        Expanded(
+                          flex: 10,
+                          child: /* InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const JobSearchPage2()));
+                            },
+                            child: */
+                              TextfieldWidget(
+                            labelText: 'Job title, company name or keyword',
+                            controller: searchController,
+                            icon: Icon(Icons.search_outlined,
+                                color: dark //or aqua,
+                                ),
+                          ),
+                          // ),
+                        ),
+
+                        // //Filter button (for search results) //TODO: Remove or replace in the search delegate.
+                        // Expanded(
+                        //   child: InkWell(
+                        //     hoverColor: Colors.transparent,
+                        //     splashColor: Colors.transparent,
+                        //     highlightColor: Colors.transparent,
+                        //     onTap: () {
+                        //       //Filter
+                        //     },
+                        //     child: Container(
+                        //         height: space50,
+                        //         width: space50,
+                        //         margin: EdgeInsets.only(left: space12),
+                        //         decoration: BoxDecoration(
+                        //             color: dark, borderRadius: bRadius12),
+                        //         child: Icon(Icons.filter_alt_rounded,
+                        //             color: light, size: 24)),
+                        //   ),
+                        // ),
+
+                        //Search button
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: space10),
+                            child: ButtonWidget(
+                                icon: Icons.search_rounded,
+                                label: 'Search',
+                                onTap: () {
+                                  showSearch(
+                                      context: context,
+                                      delegate: MySearchDelegate());
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) => const JobSearchPage2()));
+                                }),
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ],
+                ),
+              ),
               Container(
                 margin: EdgeInsets.only(top: space50, right: space20),
                 padding: pad20,
@@ -222,7 +206,22 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                     ),
                     y20,
                     SafeArea(
-                      child: SizedBox(height: 512, child: buildApplicants()),
+                      child: SizedBox(
+                          height: 420,
+                          child: Center(
+                            child: Image.asset('empty_folder.jpg'),
+                          ) /* buildApplicants() */),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: space50 * 2),
+                      child: Center(
+                        child: NunitoTextWidget(
+                          text: "Oops! Looks like it's empty in here.",
+                          size: 32,
+                          color: dark,
+                          isBold: true,
+                        ),
+                      ),
                     )
                   ],
                 ),
