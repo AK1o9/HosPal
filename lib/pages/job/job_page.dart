@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -683,9 +685,9 @@ class _JobPageState extends State<JobPage> {
                                     ),
                                     y8,
                                     //TODO
-                                    buildLogo('J-LLP1X68Fp6minnZ28rcg',
-                                        'Glitch WP.jpg'),
-                                    y8,
+                                    // buildLogo('J-LLP1X68Fp6minnZ28rcg',
+                                    //     'Glitch WP.jpg'),
+                                    // y8,
                                     Padding(
                                       padding: const EdgeInsets.only(left: 20),
                                       child: Row(

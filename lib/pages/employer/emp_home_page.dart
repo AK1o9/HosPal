@@ -3,15 +3,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:gighub/pages/job/job_page.dart';
 import 'package:gighub/pages/job/job_custom_search_page.dart';
-import 'package:gighub/pages/user/user_profile_page.dart';
 import 'package:gighub/widgets/button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gighub/widgets/textfield_widget.dart';
 import '../../constants/style.dart';
-import '../widgets/text_nunito_widget.dart';
-import 'job/job_post_page.dart';
-import 'job/job_delegate_search_page.dart';
+import '../../widgets/text_nunito_widget.dart';
+import '../job/job_post_page.dart';
+import 'emp_profile_page.dart';
 
 class EmployerHomePage extends StatefulWidget {
   const EmployerHomePage({Key? key}) : super(key: key);
@@ -79,7 +78,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                 highlightColor: Colors.transparent,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const UserProfilePage()));
+                      builder: (context) => EmployerProfilePage()));
                 },
                 child: Icon(Icons.person, color: light, size: 28)),
             x10,
@@ -107,7 +106,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
             children: [
               y30,
               PoppinsTextWidget(
-                text: "Welcome back Ahmed,\nLet's find you a some employees!",
+                text: "Welcome back, Ahmed.\nLet's find you some employees!",
                 size: fontSubtitle,
                 color: dark,
               ),
@@ -177,11 +176,10 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                 icon: Icons.search_rounded,
                                 label: 'Search',
                                 onTap: () {
-                                  showSearch(
-                                      context: context,
-                                      delegate: MySearchDelegate());
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => const JobSearchPage2()));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => JobCustomSearchPage(
+                                            query: searchController.text,
+                                          )));
                                 }),
                           ),
                         ),

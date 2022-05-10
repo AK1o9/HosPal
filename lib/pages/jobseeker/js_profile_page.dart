@@ -1,20 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:csc_picker/csc_picker.dart';
-import '../../constants/style.dart';
-import '../../widgets/text_poppins_widget.dart';
 import 'package:intl/intl.dart';
 
-class UserProfilePage extends StatefulWidget {
-  const UserProfilePage({Key? key}) : super(key: key);
+import '../../constants/style.dart';
+import '../../widgets/text_poppins_widget.dart';
+
+class JobseekerProfilePage extends StatefulWidget {
+  final String? profileId;
+  const JobseekerProfilePage({Key? key, this.profileId}) : super(key: key);
 
   @override
-  State<UserProfilePage> createState() => _UserProfilePageState();
+  State<JobseekerProfilePage> createState() => _UserProfilePageState();
 }
 
-class _UserProfilePageState extends State<UserProfilePage>
+class _UserProfilePageState extends State<JobseekerProfilePage>
     with SingleTickerProviderStateMixin {
   String datetime = DateTime.now().toString();
   var companyName = "";
@@ -48,449 +51,559 @@ class _UserProfilePageState extends State<UserProfilePage>
   Widget build(BuildContext context) {
     _dateController.text = getDate();
     return Scaffold(
-      appBar: AppBar(
-        title: InkWell(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: PoppinsTextWidget(
-            text: 'GigHub',
-            color: light,
-            size: fontTitle,
-            isBold: true,
+        appBar: AppBar(
+          title: InkWell(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: PoppinsTextWidget(
+              text: 'GigHub',
+              color: light,
+              size: fontTitle,
+              isBold: true,
+            ),
           ),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: dark,
-        leading: Padding(
-            padding: EdgeInsets.only(
-                left: space18, top: space12, right: space12, bottom: space12),
-            child: InkWell(
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: dark,
+          leading: Padding(
+              padding: EdgeInsets.only(
+                  left: space18, top: space12, right: space12, bottom: space12),
+              child: InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {},
+                  child: Icon(Icons.menu_rounded, color: light, size: 28))),
+          actions: [
+            InkWell(
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
-                onTap: () {},
-                child: Icon(Icons.menu_rounded, color: light, size: 28))),
-        actions: [
-          InkWell(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Icon(Icons.home, color: light, size: 28)),
-          x10,
-          x8,
-        ],
-      ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: <Widget>[
-            y20,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(top: 15, left: 200),
-                    child: PoppinsTextWidget(
-                      text: 'My profile',
-                      size: fontHeader,
-                      color: dark,
-                      isBold: true,
-                    )),
-              ],
-            ),
-            y10,
-            y4,
-            Padding(
-              padding: const EdgeInsets.only(left: 170, right: 170),
-              child: SizedBox(
-                height: 400,
-                child: Expanded(
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            color: Colors.black.withOpacity(.4), width: .5),
-                        boxShadow: [
-                          BoxShadow(
-                              offset: const Offset(0, 6),
-                              color: Colors.grey.withOpacity(.1),
-                              blurRadius: 12)
-                        ],
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 60, top: 20),
-                              child: ListTile(
-                                leading: const CircleAvatar(
-                                  // minRadius: 50,
-                                  // maxRadius: 50,
-                                  backgroundImage: NetworkImage(
-                                      "https://cdn-icons-png.flaticon.com/128/197/197374.png"),
-                                ),
-                                title: Text(
-                                  "Arnold Schwarnezeger",
-                                  style: GoogleFonts.oswald(
-                                      color: dark,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Row(
-                                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Icon(Icons.location_on,
-                                        color: Colors.blue, size: 10),
-                                    Text(
-                                      "  California, LA, USA",
-                                      style: GoogleFonts.roboto(fontSize: 13),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            //Icon(Icons.settings, color: dark),
-                            Divider(
-                              thickness: 0.5,
-                              color: dark.withOpacity(.4),
-                            ),
-                            SizedBox(
-                              height: 300,
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                      flex: 2,
-                                      child: Center(
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "CONTACTS",
-                                                    style: GoogleFonts.roboto(
-                                                        color: dark,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  const Icon(Icons.mail,
-                                                      color: Colors.blue,
-                                                      size: 12),
-                                                  Text(
-                                                    " arnold@gmail.com",
-                                                    style: GoogleFonts.openSans(
-                                                        color: dark
-                                                            .withOpacity(.4),
-                                                        fontSize: 12),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 5, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  const Icon(Icons.tty,
-                                                      color: Colors.blue,
-                                                      size: 12),
-                                                  Text(
-                                                    " (+1)56437893",
-                                                    style: GoogleFonts.openSans(
-                                                        color: dark
-                                                            .withOpacity(.4),
-                                                        fontSize: 12),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "LANGUAGES",
-                                                    style: GoogleFonts.roboto(
-                                                        color: dark,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 5, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "English: ",
-                                                    style: GoogleFonts.openSans(
-                                                        color: dark,
-                                                        fontSize: 12),
-                                                  ),
-                                                  Text(
-                                                    "Native",
-                                                    style: GoogleFonts.openSans(
-                                                        color: dark
-                                                            .withOpacity(.4),
-                                                        fontSize: 12),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 5, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "French: ",
-                                                    style: GoogleFonts.openSans(
-                                                        color: dark,
-                                                        fontSize: 12),
-                                                  ),
-                                                  Text(
-                                                    "Intermediare",
-                                                    style: GoogleFonts.openSans(
-                                                        color: dark
-                                                            .withOpacity(.4),
-                                                        fontSize: 12),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "EDUCATION",
-                                                    style: GoogleFonts.roboto(
-                                                        color: dark,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 7, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Massachusetts Institute of Technology",
-                                                    style: GoogleFonts.roboto(
-                                                        color: dark
-                                                            .withOpacity(.6),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 5, left: 15),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Bachelor of Computer Science\n(BCompSc), Software Engineering\n1999-2003",
-                                                    style: GoogleFonts.roboto(
-                                                        color: dark
-                                                            .withOpacity(.4),
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                  VerticalDivider(
-                                    thickness: 0.5,
-                                    color: Colors.black.withOpacity(.4),
-                                  ),
-                                  Flexible(
-                                      flex: 4,
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20, left: 20),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Full Stack Developer",
-                                                  style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 17,
-                                                      color: dark),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20, left: 20),
-                                            child: Text(
-                                              "Full Stack Developer with 6+ years of hands-on experience designing, developing, and implementing applications and solutions using a range of technologies and programming languages. Seeking to leverage broad development experience and hands-on technical expertise in a challenging role as a Full-stack Developer.",
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 15,
-                                                  color: dark,
-                                                  height: 1.7),
-                                            ),
-                                          ),
-                                          Divider(
-                                            thickness: .5,
-                                            color: dark.withOpacity(.4),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20, left: 20),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Skills",
-                                                  style: GoogleFonts.roboto(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 17,
-                                                      color: dark),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 20, top: 20),
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey[300],
-                                                    border: Border.all(
-                                                        color: dark
-                                                            .withOpacity(.5)),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Text(
-                                                  "Mobile Development",
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 13,
-                                                      color: dark),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 20, top: 20),
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey[300],
-                                                    border: Border.all(
-                                                        color: dark
-                                                            .withOpacity(.5)),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Text(
-                                                  "Web Development",
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 13,
-                                                      color: dark),
-                                                ),
-                                              ),
-                                              Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 20, top: 20),
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey[300],
-                                                    border: Border.all(
-                                                        color: dark
-                                                            .withOpacity(.5)),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Text(
-                                                  "Communication Skills",
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 13,
-                                                      color: dark),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      )),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )),
-                ),
-              ),
-            ),
-            y20,
-            y10,
-            buildTestimonials(),
-            y20,
-            y10,
-            buildCertifications(),
-            y20,
-            y10,
-            buildExperiences()
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Icon(Icons.home, color: light, size: 28)),
+            x10,
+            x8,
           ],
         ),
-      ),
-    );
+        body: buildInfo());
+  }
+
+  Widget buildInfo() {
+    return FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance
+            .collection('profile')
+            .doc(/* widget.profileId! */
+                'MqHrdclhjQZ16XqvjkOV')
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData &&
+              snapshot.connectionState == ConnectionState.done) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: <Widget>[
+                  y20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.only(top: 15, left: 200),
+                          child: PoppinsTextWidget(
+                            text: 'My profile',
+                            size: fontHeader,
+                            color: dark,
+                            isBold: true,
+                          )),
+                    ],
+                  ),
+                  y10,
+                  y4,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 170, right: 170),
+                    child: SizedBox(
+                      height: 400,
+                      child: Expanded(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(.4),
+                                  width: .5),
+                              boxShadow: [
+                                BoxShadow(
+                                    offset: const Offset(0, 6),
+                                    color: Colors.grey.withOpacity(.1),
+                                    blurRadius: 12)
+                              ],
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 60, top: 20),
+                                    child: ListTile(
+                                      leading: const CircleAvatar(
+                                        // minRadius: 50,
+                                        // maxRadius: 50,
+                                        backgroundImage: NetworkImage(
+                                            "https://cdn-icons-png.flaticon.com/128/197/197374.png"),
+                                      ),
+                                      title: Padding(
+                                        padding: EdgeInsets.only(left: space4),
+                                        child: Text(
+                                          snapshot.data!['name'],
+                                          style: GoogleFonts.oswald(
+                                              color: dark,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      subtitle: Row(
+                                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Icon(Icons.location_on,
+                                              color: Colors.blue, size: 10),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: space4),
+                                            child: Text(
+                                              snapshot.data!['address'],
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 13),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  //Icon(Icons.settings, color: dark),
+                                  Divider(
+                                    thickness: 0.5,
+                                    color: dark.withOpacity(.4),
+                                  ),
+                                  SizedBox(
+                                    height: 300,
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                            flex: 2,
+                                            child: Center(
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 10, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "CONTACTS",
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  color: dark,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 15),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 10, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Icon(Icons.mail,
+                                                            color: Colors.blue,
+                                                            size: 12),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: space4),
+                                                          child: Text(
+                                                            snapshot
+                                                                .data!['email'],
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                                    color: dark
+                                                                        .withOpacity(
+                                                                            .4),
+                                                                    fontSize:
+                                                                        12),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Icon(Icons.tty,
+                                                            color: Colors.blue,
+                                                            size: 12),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: space4),
+                                                          child: Text(
+                                                            snapshot.data![
+                                                                'contact_number'],
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                                    color: dark
+                                                                        .withOpacity(
+                                                                            .4),
+                                                                    fontSize:
+                                                                        12),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 10, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "LANGUAGES",
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  color: dark,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 15),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "English: ",
+                                                          style: GoogleFonts
+                                                              .openSans(
+                                                                  color: dark,
+                                                                  fontSize: 12),
+                                                        ),
+                                                        Text(
+                                                          "Native",
+                                                          style: GoogleFonts
+                                                              .openSans(
+                                                                  color: dark
+                                                                      .withOpacity(
+                                                                          .4),
+                                                                  fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "French: ",
+                                                          style: GoogleFonts
+                                                              .openSans(
+                                                                  color: dark,
+                                                                  fontSize: 12),
+                                                        ),
+                                                        Text(
+                                                          "Intermediare",
+                                                          style: GoogleFonts
+                                                              .openSans(
+                                                                  color: dark
+                                                                      .withOpacity(
+                                                                          .4),
+                                                                  fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 10, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "EDUCATION",
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  color: dark,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 15),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 7, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          snapshot.data![
+                                                                  'education']
+                                                              ['institution'],
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  color: dark
+                                                                      .withOpacity(
+                                                                          .6),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 15),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 5, left: 15),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          '${snapshot.data!['education']['degree']}\n${snapshot.data!['education']['year_start']} - ${snapshot.data!['education']['year_end']}',
+                                                          style: GoogleFonts
+                                                              .roboto(
+                                                                  color: dark
+                                                                      .withOpacity(
+                                                                          .4),
+                                                                  fontSize: 15),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                        VerticalDivider(
+                                          thickness: 0.5,
+                                          color: Colors.black.withOpacity(.4),
+                                        ),
+                                        Flexible(
+                                            flex: 4,
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 20, left: 20),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data![
+                                                            'description_title'],
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 17,
+                                                                color: dark),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 20, left: 20),
+                                                  child: Text(
+                                                    snapshot.data![
+                                                        'description_body'],
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 15,
+                                                        color: dark,
+                                                        height: 1.7),
+                                                  ),
+                                                ),
+                                                Divider(
+                                                  thickness: .5,
+                                                  color: dark.withOpacity(.4),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 20, left: 20),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "Skills",
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 17,
+                                                                color: dark),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 20,
+                                                              top: 20),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Colors.grey[300],
+                                                          border: Border.all(
+                                                              color: dark
+                                                                  .withOpacity(
+                                                                      .5)),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Text(
+                                                        "Mobile Development",
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontSize: 13,
+                                                                color: dark),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 20,
+                                                              top: 20),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Colors.grey[300],
+                                                          border: Border.all(
+                                                              color: dark
+                                                                  .withOpacity(
+                                                                      .5)),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Text(
+                                                        "Web Development",
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontSize: 13,
+                                                                color: dark),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 20,
+                                                              top: 20),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              Colors.grey[300],
+                                                          border: Border.all(
+                                                              color: dark
+                                                                  .withOpacity(
+                                                                      .5)),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Text(
+                                                        "Communication Skills",
+                                                        style:
+                                                            GoogleFonts.roboto(
+                                                                fontSize: 13,
+                                                                color: dark),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            )),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )),
+                      ),
+                    ),
+                  ),
+                  y20,
+                  y10,
+                  buildTestimonials(),
+                  y20,
+                  y10,
+                  buildCertifications(),
+                  y20,
+                  y10,
+                  buildExperiences()
+                ],
+              ),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 
   // testimonials widget
@@ -815,15 +928,14 @@ class _UserProfilePageState extends State<UserProfilePage>
                           color: Colors.white),
                       child: TabBar(
                           isScrollable: true,
-                          indicatorPadding: EdgeInsets.all(10),
+                          indicatorPadding: pad10,
                           //labelColor: Colors.grey,
                           unselectedLabelColor: Colors.black,
-                          labelStyle: TextStyle(fontSize: 20),
-                          labelPadding: EdgeInsets.only(
+                          labelStyle: const TextStyle(fontSize: 20),
+                          labelPadding: const EdgeInsets.only(
                               left: 35, right: 35, top: 10, bottom: 10),
                           indicator: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(20)),
+                              color: Colors.grey, borderRadius: bRadius20),
                           controller: _tabController,
                           tabs: [
                             Text(
@@ -838,10 +950,6 @@ class _UserProfilePageState extends State<UserProfilePage>
                             ),
                           ]),
                     ),
-                    // Divider(
-                    //   thickness: .5,
-                    //   color: dark.withOpacity(.4),
-                    // ),
                     Expanded(
                       child: TabBarView(controller: _tabController, children: [
                         giveTestimonials(),

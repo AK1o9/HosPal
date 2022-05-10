@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gighub/constants/style.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
-import 'package:universal_html/html.dart';
-
-import '../../api/search_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class JobCustomSearchPage extends StatefulWidget {
   final String? query;
@@ -25,6 +22,7 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
   void initState() {
     super.initState();
     searchController.addListener(_onSearchChanged);
+    searchController.text = widget.query!;
   }
 
   @override
@@ -36,7 +34,7 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
 
   void clearAll() {
     searchController.clear();
-    //NOTE: May also include other controllers in the page.
+    //NOTE: May also include other controllers in the page for filtering search results.
   }
 
   @override
@@ -91,7 +89,8 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                         //     text: 'Results', size: fontTitle, color: dark)),
                         SafeArea(
                             child: SizedBox(
-                                height: 300, child: buildJobResults()))),
+                                height: /* 300 */ 600,
+                                child: buildJobResults()))),
 
                 VerticalDivider(
                   thickness: 0.5,
@@ -103,12 +102,17 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                 Expanded(
                     child: resultDocId == null
                         ? PoppinsTextWidget(
-                            text: 'View',
+                            text: '',
                             size: fontTitle,
                             color: dark,
                             isCenter: true,
                           )
-                        : buildJobView())
+                        : SingleChildScrollView(
+                            child: Column(
+                            children: [
+                              buildJobView(),
+                            ],
+                          )))
               ]),
             ),
           ),
@@ -220,7 +224,81 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                             color: dark),
                       ],
                     ),
+                    y10,
+                    Center(
+                      child: PoppinsTextWidget(
+                        text:
+                            'Published on ${snapshot.data!['publication_date']}, ${snapshot.data!['publication_time']}',
+                        size: fontLabel,
+                        color: grey,
+                      ),
+                    ),
                     y30,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PoppinsTextWidget(
+                            text: 'Salary',
+                            size: fontHeader,
+                            color: dark,
+                            isBold: true),
+                        y4,
+                        PoppinsTextWidget(
+                            text:
+                                'RM ${snapshot.data!['job_pay_from']} - RM ${snapshot.data!['job_pay_till']}',
+                            size: fontHeader,
+                            color: dark)
+                      ],
+                    ),
+                    y20,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PoppinsTextWidget(
+                            text: 'Duration',
+                            size: fontHeader,
+                            color: dark,
+                            isBold: true),
+                        y4,
+                        PoppinsTextWidget(
+                            text: snapshot.data!['job_duration'],
+                            size: fontHeader,
+                            color: dark)
+                      ],
+                    ),
+                    y30,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PoppinsTextWidget(
+                            text: 'Job Type',
+                            size: fontHeader,
+                            color: dark,
+                            isBold: true),
+                        y4,
+                        PoppinsTextWidget(
+                            text: snapshot.data!['job_type'],
+                            size: fontHeader,
+                            color: dark)
+                      ],
+                    ),
+                    y20,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        PoppinsTextWidget(
+                            text: 'Job Level',
+                            size: fontHeader,
+                            color: dark,
+                            isBold: true),
+                        y4,
+                        PoppinsTextWidget(
+                            text: snapshot.data!['job_level'],
+                            size: fontHeader,
+                            color: dark)
+                      ],
+                    ),
+                    y20,
                     PoppinsTextWidget(
                       text: 'Job Description',
                       size: fontHeader,
@@ -230,7 +308,9 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                     y4,
                     SizedBox(
                         width: 500,
-                        child: Text(snapshot.data!['job_description'])),
+                        child: Text(snapshot.data!['job_description'],
+                            style: GoogleFonts.getFont('Poppins',
+                                textStyle: TextStyle(fontSize: fontHeader)))),
                   ],
                 ),
               ),

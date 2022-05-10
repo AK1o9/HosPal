@@ -5,7 +5,7 @@ import 'package:gighub/pages/job/job_page.dart';
 
 import '../../constants/style.dart';
 
-//NOTE: May be a temp class.
+//NOTE: May be deleted.
 
 class JobSearchDelegatePage extends StatefulWidget {
   final String keyword;

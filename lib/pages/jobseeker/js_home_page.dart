@@ -7,11 +7,10 @@ import 'package:gighub/widgets/button_widget.dart';
 import 'package:gighub/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gighub/widgets/textfield_widget.dart';
-import '../constants/style.dart';
-import 'job/job_post_page.dart';
-import 'job/job_delegate_search_page.dart';
-import 'job/job_custom_search_page.dart';
-import 'user/user_profile_page.dart';
+import '../../constants/style.dart';
+import '../job/job_custom_search_page.dart';
+import '../job/job_post_page.dart';
+import 'js_profile_page.dart';
 
 class JobseekerHomePage extends StatefulWidget {
   const JobseekerHomePage({Key? key}) : super(key: key);
@@ -79,7 +78,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                 highlightColor: Colors.transparent,
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const UserProfilePage()));
+                      builder: (context) => JobseekerProfilePage()));
                 },
                 child: Icon(Icons.person, color: light, size: 28)),
             x10,
@@ -107,7 +106,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
             children: [
               y30,
               PoppinsTextWidget(
-                text: "Welcome back Ahmed,\nLet's find you a job!",
+                text: "Welcome back, Ahmed.\nLet's find you a job!",
                 size: fontSubtitle,
                 color: dark,
               ),
@@ -173,8 +172,9 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                 // showSearch(
                                 //     context: context, delegate: MySearchDelegate());
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const JobCustomSearchPage()));
+                                    builder: (context) => JobCustomSearchPage(
+                                          query: searchController.text,
+                                        )));
                               }),
                         ),
                       ),

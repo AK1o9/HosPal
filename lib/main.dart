@@ -1,15 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:gighub/constants/style.dart';
 import 'package:gighub/pages/front_page.dart';
-import 'package:gighub/pages/js_home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gighub/pages/job/job_page.dart';
-import 'package:gighub/pages/job/job_delegate_search_page.dart';
-import 'package:gighub/pages/job/job_custom_search_page.dart';
-
-import 'pages/emp_home_page.dart';
-import 'pages/test_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,10 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'GigHub',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primaryColor: dark,
-            primarySwatch:
-                darkTheme /* TODO: Change to black or other dark colors */),
-        home: const FrontPage() /* JobSearchPage2() */);
+        theme: ThemeData(primaryColor: dark, primarySwatch: darkTheme),
+        home: const FrontPage());
   }
 }
