@@ -125,7 +125,7 @@ class _JobPostPageState extends State<JobPostPage> {
               Navigator.of(context).pop();
             },
             child: PoppinsTextWidget(
-              text: 'GigHub',
+              text: 'hospal',
               color: light,
               size: fontTitle,
               isBold: true,

@@ -55,7 +55,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                   builder: (context) => const EmployerHomePage()));
             },
             child: PoppinsTextWidget(
-              text: 'GigHub',
+              text: 'HosPal',
               color: light,
               size: fontTitle,
               isBold: true,
@@ -63,7 +63,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
           ),
           centerTitle: true,
           elevation: 0,
-          backgroundColor: dark,
+          backgroundColor: midOrange,
           leading: Padding(
               padding: EdgeInsets.only(
                   left: space18, top: space12, right: space12, bottom: space12),
@@ -118,12 +118,12 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                     BoxDecoration(borderRadius: bRadius20, color: light),
                 child: Column(
                   children: [
-                    Center(
-                      child: Image.asset(
-                        'job_search.jpg',
-                        height: 400,
-                      ),
-                    ),
+                    // Center(
+                    //   child: Image.asset(
+                    //     'job_search.jpg',
+                    //     height: 400,
+                    //   ),
+                    // ),
                     Container(
                       width: double.infinity,
                       margin: EdgeInsets.only(right: space18),
@@ -199,7 +199,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                     PoppinsTextWidget(
                       text: 'RECENT APPLICANTS',
                       size: fontTitle,
-                      color: dark,
+                      color: midOrange,
                       isBold: true,
                     ),
                     y20,
@@ -216,7 +216,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                         child: NunitoTextWidget(
                           text: "Oops! Looks like it's empty in here.",
                           size: 32,
-                          color: dark,
+                          color: darkOrange,
                           isBold: true,
                         ),
                       ),
@@ -238,7 +238,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                         PoppinsTextWidget(
                           text: 'MY POSTS',
                           size: fontTitle,
-                          color: dark,
+                          color: midOrange,
                           isBold: true,
                         ),
                         IconButton(
@@ -252,7 +252,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                             },
                             icon: Icon(
                               Icons.refresh,
-                              color: dark,
+                              color: midOrange,
                               size: 28,
                             ))
                       ],
@@ -457,7 +457,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
               children: documents
                   .map((document) => Card(
                         shape: RoundedRectangleBorder(borderRadius: bRadius20),
-                        color: dark,
+                        color: midOrange,
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -472,7 +472,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                 left: space20,
                                 right: space20),
                             decoration: BoxDecoration(
-                                borderRadius: bRadius20, color: dark),
+                                borderRadius: bRadius20, color: midOrange),
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -546,7 +546,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                                 child: PoppinsTextWidget(
                                                     text: document['job_type'],
                                                     size: fontBody,
-                                                    color: dark),
+                                                    color: darkOrange),
                                               )
                                             ],
                                           )

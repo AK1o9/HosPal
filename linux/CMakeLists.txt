@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "gighub")
-set(APPLICATION_ID "com.example.gighub")
+set(BINARY_NAME "hospal")
+set(APPLICATION_ID "com.example.hospal")
 
 cmake_policy(SET CMP0063 NEW)
 

@@ -55,7 +55,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                   builder: (context) => const JobseekerHomePage()));
             },
             child: PoppinsTextWidget(
-              text: 'GigHub',
+              text: 'HosPal',
               color: light,
               size: fontTitle,
               isBold: true,
@@ -63,7 +63,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
           ),
           centerTitle: true,
           elevation: 0,
-          backgroundColor: dark,
+          backgroundColor: midBlue,
           leading: Padding(
               padding: EdgeInsets.only(
                   left: space18, top: space12, right: space12, bottom: space12),
@@ -87,7 +87,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
         ),
         backgroundColor: silver,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: dark,
+          backgroundColor: darkBlue,
           elevation: 16,
           child: Icon(
             Icons.add,
@@ -117,13 +117,13 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                 decoration:
                     BoxDecoration(borderRadius: bRadius20, color: light),
                 child: Column(children: [
-                  Center(
-                    child: Image.asset(
-                      'search.jpg',
-                      height: 400,
-                    ),
-                  ),
-                  y10,
+                  // Center(
+                  //   child: Image.asset(
+                  //     'search.jpg',
+                  //     height: 400,
+                  //   ),
+                  // ),
+                  // y10,
                   Container(
                     width: double.infinity,
                     margin: EdgeInsets.only(right: space18),
@@ -228,7 +228,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                     PoppinsTextWidget(
                       text: 'FEATURED',
                       size: fontTitle,
-                      color: dark,
+                      color: midBlue,
                       isBold: true,
                     ),
                     y20,
@@ -261,7 +261,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                     PoppinsTextWidget(
                       text: 'NEAR YOU',
                       size: fontTitle,
-                      color: dark,
+                      color: midBlue,
                       isBold: true,
                     ),
                     y20,
@@ -284,7 +284,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                         PoppinsTextWidget(
                           text: 'BROWSE ALL JOBS',
                           size: fontTitle,
-                          color: dark,
+                          color: midBlue,
                           isBold: true,
                         ),
                         IconButton(
@@ -298,7 +298,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                             },
                             icon: Icon(
                               Icons.refresh,
-                              color: dark,
+                              color: midBlue,
                               size: 28,
                             ))
                       ],
@@ -440,7 +440,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
         width: 260,
         margin: EdgeInsets.only(right: space30),
         padding: pad20,
-        decoration: BoxDecoration(borderRadius: bRadius20, color: dark),
+        decoration: BoxDecoration(borderRadius: bRadius20, color: midBlue),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -450,7 +450,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                 width: 72,
                 height: 72,
                 decoration:
-                    BoxDecoration(borderRadius: bRadius12, color: light),
+                    BoxDecoration(borderRadius: bRadius12, color: silver),
                 child: Icon(
                   Icons.photo_rounded,
                   color: grey,
@@ -504,7 +504,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
               children: documents
                   .map((document) => Card(
                         shape: RoundedRectangleBorder(borderRadius: bRadius20),
-                        color: dark,
+                        color: midBlue,
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -519,7 +519,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                 left: space20,
                                 right: space20),
                             decoration: BoxDecoration(
-                                borderRadius: bRadius20, color: dark),
+                                borderRadius: bRadius20, color: midBlue),
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -540,7 +540,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                 borderRadius:
                                                     BorderRadius.circular(
                                                         space12),
-                                                color: light),
+                                                color: silver),
                                             child: Icon(
                                               Icons.photo_rounded,
                                               color: grey,
@@ -593,7 +593,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                 child: PoppinsTextWidget(
                                                     text: document['job_type'],
                                                     size: fontBody,
-                                                    color: dark),
+                                                    color: darkBlue),
                                               )
                                             ],
                                           )

@@ -1,4 +1,4 @@
-package com.example.gighub
+package com.example.hospal
 
 import io.flutter.embedding.android.FlutterActivity
 

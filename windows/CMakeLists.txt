@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(gighub LANGUAGES CXX)
+project(hospal LANGUAGES CXX)
 
-set(BINARY_NAME "gighub")
+set(BINARY_NAME "hospal")
 
 cmake_policy(SET CMP0063 NEW)
 

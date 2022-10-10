@@ -59,7 +59,7 @@ class _UserProfilePageState extends State<JobseekerProfilePage>
               Navigator.of(context).pop();
             },
             child: PoppinsTextWidget(
-              text: 'GigHub',
+              text: 'hospal',
               color: light,
               size: fontTitle,
               isBold: true,

@@ -33,7 +33,7 @@ class _EmployerProfileState extends State<EmployerProfilePage> {
                   //     MaterialPageRoute(builder: (context) => const HomePage()));
                 },
                 child: PoppinsTextWidget(
-                  text: 'GigHub',
+                  text: 'hospal',
                   color: light,
                   size: fontTitle,
                   isBold: true,

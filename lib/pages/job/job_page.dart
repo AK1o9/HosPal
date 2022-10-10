@@ -136,7 +136,7 @@ class _JobPageState extends State<JobPage> {
               //     MaterialPageRoute(builder: (context) => const HomePage()));
             },
             child: PoppinsTextWidget(
-              text: 'GigHub',
+              text: 'hospal',
               color: light,
               size: fontTitle,
               isBold: true,

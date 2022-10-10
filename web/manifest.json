@@ -1,6 +1,6 @@
 {
-    "name": "gighub",
-    "short_name": "gighub",
+    "name": "hospal",
+    "short_name": "hospal",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
