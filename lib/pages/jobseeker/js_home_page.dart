@@ -8,6 +8,7 @@ import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hospal/widgets/textfield_widget.dart';
 import '../../constants/style.dart';
+import '../../widgets/custom_button_widget.dart';
 import '../job/job_custom_search_page.dart';
 import '../job/job_post_page.dart';
 import 'js_profile_page.dart';
@@ -86,18 +87,6 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
           ],
         ),
         backgroundColor: silver,
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: darkBlue,
-          elevation: 16,
-          child: Icon(
-            Icons.add,
-            color: light,
-          ),
-          onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const JobPostPage()));
-          },
-        ),
         body: Container(
           margin: EdgeInsets.only(left: space18),
           child: SingleChildScrollView(
@@ -132,11 +121,12 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                       Expanded(
                         flex: 10,
                         child: TextfieldWidget(
+                          colorTheme: blueTheme,
                           labelText: 'Job title, company name or keyword',
                           controller: searchController,
-                          icon:
-                              Icon(Icons.search_outlined, color: dark //or aqua,
-                                  ),
+                          icon: Icon(Icons.search_outlined,
+                              color: midBlue //or aqua,
+                              ),
                         ),
                       ),
 
@@ -165,9 +155,10 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                         flex: 2,
                         child: Padding(
                           padding: EdgeInsets.only(left: space10),
-                          child: ButtonWidget(
+                          child: CustomButtonWidget(
                               icon: Icons.search_rounded,
                               label: 'Search',
+                              color: midBlue,
                               onTap: () {
                                 // showSearch(
                                 //     context: context, delegate: MySearchDelegate());

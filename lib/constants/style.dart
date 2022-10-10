@@ -7,7 +7,7 @@ Color silver = const Color.fromARGB(255, 230, 230, 230);
 Color grey = Colors.black38; //Color.fromARGB(255, 139, 139, 139);
 Color aqua = Colors.blue;
 Color midBlue = const Color.fromARGB(225, 17, 0, 255);
-Color darkBlue = Color.fromARGB(255, 6, 0, 68);
+Color darkBlue = const Color.fromARGB(255, 6, 0, 68);
 Color midOrange = const Color.fromARGB(223, 255, 140, 32);
 Color darkOrange = const Color.fromARGB(255, 172, 83, 0);
 
@@ -24,8 +24,38 @@ Map<int, Color> darkColors = {
   900: Colors.white24,
 };
 
+Map<int, Color> blueColors = {
+  50: Colors.blue.shade50,
+  100: Colors.blue.shade100,
+  200: Colors.blue.shade200,
+  300: Colors.blue.shade300,
+  400: Colors.blue.shade400,
+  500: Colors.blue.shade500,
+  600: Colors.blue.shade600,
+  700: Colors.blue.shade700,
+  800: Colors.blue.shade800,
+  900: Colors.blue.shade900,
+};
+
+Map<int, Color> orangeColors = {
+  50: Colors.orange.shade50,
+  100: Colors.orange.shade100,
+  200: Colors.orange.shade200,
+  300: Colors.orange.shade300,
+  400: Colors.orange.shade400,
+  500: Colors.orange.shade500,
+  600: Colors.orange.shade600,
+  700: Colors.orange.shade700,
+  800: Colors.orange.shade800,
+  900: Colors.orange.shade900,
+};
+
 MaterialColor darkTheme =
     MaterialColor(0xFF000000, darkColors); //Primary swatch
+MaterialColor blueTheme =
+    MaterialColor(0xFF0547cb, blueColors); //Primary swatch
+MaterialColor orangeTheme =
+    MaterialColor(0xFFffaa00, orangeColors); //Primary swatch
 
 //Font sizes
 double fontTitle = 24,

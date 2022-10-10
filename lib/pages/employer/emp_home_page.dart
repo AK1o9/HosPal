@@ -8,6 +8,7 @@ import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hospal/widgets/textfield_widget.dart';
 import '../../constants/style.dart';
+import '../../widgets/custom_button_widget.dart';
 import '../../widgets/text_nunito_widget.dart';
 import '../job/job_post_page.dart';
 import 'emp_profile_page.dart';
@@ -87,7 +88,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
         ),
         backgroundColor: silver,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: dark,
+          backgroundColor: darkOrange,
           elevation: 16,
           child: Icon(
             Icons.add,
@@ -138,10 +139,11 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                             },
                             child: */
                               TextfieldWidget(
+                            colorTheme: orangeTheme,
                             labelText: 'Job title, company name or keyword',
                             controller: searchController,
                             icon: Icon(Icons.search_outlined,
-                                color: dark //or aqua,
+                                color: midOrange //or aqua,
                                 ),
                           ),
                           // ),
@@ -172,8 +174,9 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                           flex: 2,
                           child: Padding(
                             padding: EdgeInsets.only(left: space10),
-                            child: ButtonWidget(
+                            child: CustomButtonWidget(
                                 icon: Icons.search_rounded,
+                                color: midOrange,
                                 label: 'Search',
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(

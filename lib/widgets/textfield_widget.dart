@@ -8,6 +8,7 @@ class TextfieldWidget extends StatelessWidget {
   final TextEditingController controller;
 
   //Optional
+  final MaterialColor? colorTheme;
   final String hintText;
   final Icon? icon;
   final TextInputType textInputType;
@@ -16,6 +17,7 @@ class TextfieldWidget extends StatelessWidget {
       {Key? key,
       required this.labelText,
       required this.controller,
+      this.colorTheme,
       this.hintText = '',
       this.icon,
       this.textInputType = TextInputType.none})
@@ -27,7 +29,7 @@ class TextfieldWidget extends StatelessWidget {
     return Container(
       child: Theme(
         data: ThemeData.from(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: darkTheme),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: colorTheme!),
         ),
         child: TextField(
           controller: controller,
