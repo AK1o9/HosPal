@@ -9,7 +9,7 @@ import 'emp_about.dart';
 import 'emp_post_page.dart';
 
 class EmployerProfilePage extends StatefulWidget {
-  EmployerProfilePage({Key? key}) : super(key: key);
+  const EmployerProfilePage({Key? key}) : super(key: key);
 
   @override
   State<EmployerProfilePage> createState() => _EmployerProfileState();

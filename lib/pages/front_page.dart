@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gighub/constants/style.dart';
-import 'package:gighub/widgets/button_widget.dart';
+import 'package:hospal/constants/style.dart';
+import 'package:hospal/widgets/button_widget.dart';
 
 import 'employer/emp_home_page.dart';
 import 'jobseeker/js_home_page.dart';

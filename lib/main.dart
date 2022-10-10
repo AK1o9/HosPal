@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
-import 'package:gighub/constants/style.dart';
-import 'package:gighub/pages/front_page.dart';
+import 'package:hospal/constants/style.dart';
+import 'package:hospal/pages/front_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'GigHub',
+        title: 'HosPal',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: dark, primarySwatch: darkTheme),
         home: const FrontPage());

@@ -1,6 +1,6 @@
-import 'package:gighub/constants/style.dart';
-import 'package:gighub/widgets/text_nunito_widget.dart';
-import 'package:gighub/widgets/text_poppins_widget.dart';
+import 'package:hospal/constants/style.dart';
+import 'package:hospal/widgets/text_nunito_widget.dart';
+import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {

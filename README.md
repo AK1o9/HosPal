@@ -1,4 +1,4 @@
-# GigHub
+# HosPal
 
 A Job-searching Application made using Flutter.
 

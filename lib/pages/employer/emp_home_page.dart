@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
-import 'package:gighub/pages/job/job_page.dart';
-import 'package:gighub/pages/job/job_custom_search_page.dart';
-import 'package:gighub/widgets/button_widget.dart';
-import 'package:gighub/widgets/text_poppins_widget.dart';
+import 'package:hospal/pages/job/job_page.dart';
+import 'package:hospal/pages/job/job_custom_search_page.dart';
+import 'package:hospal/widgets/button_widget.dart';
+import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:gighub/widgets/textfield_widget.dart';
+import 'package:hospal/widgets/textfield_widget.dart';
 import '../../constants/style.dart';
 import '../../widgets/text_nunito_widget.dart';
 import '../job/job_post_page.dart';

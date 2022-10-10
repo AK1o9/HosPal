@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gighub/constants/style.dart';
-import 'package:gighub/widgets/text_poppins_widget.dart';
+import 'package:hospal/constants/style.dart';
+import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class JobCustomSearchPage extends StatefulWidget {

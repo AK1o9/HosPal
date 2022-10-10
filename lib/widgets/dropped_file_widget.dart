@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gighub/constants/style.dart';
+import 'package:hospal/constants/style.dart';
 
 import '../classes/dropped_file.dart';
 
