@@ -136,7 +136,7 @@ class _JobPageState extends State<JobPage> {
               //     MaterialPageRoute(builder: (context) => const HomePage()));
             },
             child: PoppinsTextWidget(
-              text: 'hospal',
+              text: 'HosPal',
               color: light,
               size: fontTitle,
               isBold: true,
@@ -144,7 +144,7 @@ class _JobPageState extends State<JobPage> {
           ),
           centerTitle: true,
           elevation: 0,
-          backgroundColor: dark,
+          backgroundColor: midBlue,
           leading: Padding(
               padding: EdgeInsets.only(
                   left: space18, top: space12, right: space12, bottom: space12),

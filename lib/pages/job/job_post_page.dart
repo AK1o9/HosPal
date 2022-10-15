@@ -125,7 +125,7 @@ class _JobPostPageState extends State<JobPostPage> {
               Navigator.of(context).pop();
             },
             child: PoppinsTextWidget(
-              text: 'hospal',
+              text: 'HosPal',
               color: light,
               size: fontTitle,
               isBold: true,
@@ -133,7 +133,7 @@ class _JobPostPageState extends State<JobPostPage> {
           ),
           centerTitle: true,
           elevation: 0,
-          backgroundColor: dark,
+          backgroundColor: midOrange,
           leading: Padding(
               padding: EdgeInsets.only(
                   left: space18, top: space12, right: space12, bottom: space12),

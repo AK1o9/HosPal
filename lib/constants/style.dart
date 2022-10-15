@@ -6,9 +6,10 @@ Color light = Colors.white;
 Color silver = const Color.fromARGB(255, 230, 230, 230);
 Color grey = Colors.black38; //Color.fromARGB(255, 139, 139, 139);
 Color aqua = Colors.blue;
-Color midBlue = const Color.fromARGB(225, 17, 0, 255);
-Color darkBlue = const Color.fromARGB(255, 6, 0, 68);
-Color midOrange = const Color.fromARGB(223, 255, 140, 32);
+Color midBlue = const Color.fromARGB(255, 77, 85, 200);
+Color darkBlue = const Color.fromARGB(255, 59, 75, 163);
+Color lightOrange = const Color.fromARGB(255, 255, 191, 27);
+Color midOrange = const Color.fromARGB(255, 223, 147, 33);
 Color darkOrange = const Color.fromARGB(255, 172, 83, 0);
 
 Map<int, Color> darkColors = {

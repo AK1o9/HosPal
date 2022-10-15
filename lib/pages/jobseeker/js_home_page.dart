@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:hospal/widgets/textfield_widget.dart';
 import '../../constants/style.dart';
 import '../../widgets/custom_button_widget.dart';
+import '../../widgets/text_nunito_widget.dart';
 import '../job/job_custom_search_page.dart';
 import '../job/job_post_page.dart';
 import 'js_profile_page.dart';
@@ -86,23 +87,28 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
             x8,
           ],
         ),
-        backgroundColor: silver,
+        backgroundColor: light,
         body: Container(
           margin: EdgeInsets.only(left: space18),
           child: SingleChildScrollView(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              y30,
+              // y30,
+              // PoppinsTextWidget(
+              //   text: "Welcome back, Ahmed.\nLet's find you a job!",
+              //   size: fontSubtitle,
+              //   color: dark,
+              // ),
+              y20,
               PoppinsTextWidget(
-                text: "Welcome back, Ahmed.\nLet's find you a job!",
-                size: fontSubtitle,
-                color: dark,
+                  text: "Home", size: 64, isBold: true, color: midBlue),
+              Divider(
+                height: space40,
               ),
-              y30,
               Container(
                 margin: EdgeInsets.only(right: space20),
-                padding: pad20,
+                padding: pad10,
                 decoration:
                     BoxDecoration(borderRadius: bRadius20, color: light),
                 child: Column(children: [
@@ -209,17 +215,17 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
               //       )
               //     : Container(width: 0),
               Container(
-                margin: EdgeInsets.only(top: space50, right: space20),
+                margin: EdgeInsets.only(top: space20, right: space20),
                 padding: pad20,
                 decoration:
-                    BoxDecoration(borderRadius: bRadius20, color: light),
+                    BoxDecoration(borderRadius: bRadius20, color: midBlue),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PoppinsTextWidget(
                       text: 'FEATURED',
                       size: fontTitle,
-                      color: midBlue,
+                      color: light,
                       isBold: true,
                     ),
                     y20,
@@ -242,30 +248,47 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: space50, right: space20),
+                margin: EdgeInsets.only(top: space20, right: space20),
                 padding: pad20,
                 decoration:
-                    BoxDecoration(borderRadius: bRadius20, color: light),
+                    BoxDecoration(borderRadius: bRadius20, color: midBlue),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PoppinsTextWidget(
                       text: 'NEAR YOU',
                       size: fontTitle,
-                      color: midBlue,
+                      color: light,
                       isBold: true,
                     ),
                     y20,
                     SafeArea(
-                        child: SizedBox(height: 200, child: buildJobTiles()))
+                        child: SizedBox(
+                      height: 200,
+                      child: //buildJobTiles()
+                          SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(children: [
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                          buildSampleJobTile(),
+                        ]),
+                      ),
+                    ))
                   ],
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: space50, right: space20),
+                margin: EdgeInsets.only(
+                    top: space20, right: space20, bottom: space20),
                 padding: pad20,
                 decoration:
-                    BoxDecoration(borderRadius: bRadius20, color: light),
+                    BoxDecoration(borderRadius: bRadius20, color: midBlue),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -275,7 +298,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                         PoppinsTextWidget(
                           text: 'BROWSE ALL JOBS',
                           size: fontTitle,
-                          color: midBlue,
+                          color: light,
                           isBold: true,
                         ),
                         IconButton(
@@ -431,7 +454,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
         width: 260,
         margin: EdgeInsets.only(right: space30),
         padding: pad20,
-        decoration: BoxDecoration(borderRadius: bRadius20, color: midBlue),
+        decoration: BoxDecoration(borderRadius: bRadius20, color: light),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -451,12 +474,11 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
               Container(
                 padding: pad8,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.lightGreenAccent),
-                    borderRadius: bRadius20),
+                    border: Border.all(color: dark), borderRadius: bRadius20),
                 child: PoppinsTextWidget(
                   text: 'RM 1250 - 2500',
                   size: fontLabel,
-                  color: light, //Colors.lightGreen,
+                  color: dark, //Colors.lightGreen,
                 ),
               )
             ],
@@ -465,18 +487,18 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
           PoppinsTextWidget(
             text: 'IT Intern',
             size: fontLabel,
-            color: light,
+            color: dark,
             isBold: true,
           ),
           PoppinsTextWidget(
             text: 'Teczo Sdn. Bhd.',
             size: fontLabel,
-            color: light,
+            color: dark,
           ),
           PoppinsTextWidget(
             text: 'Kuala Lumpur, Malaysia',
             size: fontLabel,
-            color: light,
+            color: dark,
           )
         ]),
       ),
@@ -495,7 +517,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
               children: documents
                   .map((document) => Card(
                         shape: RoundedRectangleBorder(borderRadius: bRadius20),
-                        color: midBlue,
+                        color: light,
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -510,7 +532,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                 left: space20,
                                 right: space20),
                             decoration: BoxDecoration(
-                                borderRadius: bRadius20, color: midBlue),
+                                borderRadius: bRadius20, color: light),
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -548,7 +570,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                               PoppinsTextWidget(
                                                 text: document['job_title'],
                                                 size: fontLabel,
-                                                color: light,
+                                                color: dark,
                                                 isBold: true,
                                               ),
                                               y4,
@@ -558,20 +580,20 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                     text: document[
                                                         'company_name'],
                                                     size: fontLabel,
-                                                    color: light,
+                                                    color: dark,
                                                   ),
                                                   x10,
                                                   PoppinsTextWidget(
                                                     text: '|',
                                                     size: fontLabel,
-                                                    color: light,
+                                                    color: dark,
                                                   ),
                                                   x10,
                                                   PoppinsTextWidget(
                                                     text: document[
                                                         'company_address'],
                                                     size: fontLabel,
-                                                    color: light,
+                                                    color: dark,
                                                   ),
                                                 ],
                                               ),
@@ -580,11 +602,11 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                 padding: pad8,
                                                 decoration: BoxDecoration(
                                                     borderRadius: bRadius30,
-                                                    color: light),
+                                                    color: dark),
                                                 child: PoppinsTextWidget(
                                                     text: document['job_type'],
                                                     size: fontBody,
-                                                    color: darkBlue),
+                                                    color: light),
                                               )
                                             ],
                                           )
@@ -594,13 +616,13 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                         padding: pad8,
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                color: Colors.lightGreenAccent),
+                                                color: /* Colors.lightGreenAccent */ dark),
                                             borderRadius: bRadius20),
                                         child: PoppinsTextWidget(
                                           text:
                                               'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
                                           size: fontLabel,
-                                          color: light, //Colors.lightGreen,
+                                          color: dark, //Colors.lightGreen,
                                         ),
                                       )
                                     ],

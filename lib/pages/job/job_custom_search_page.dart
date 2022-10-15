@@ -159,7 +159,7 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                                 PoppinsTextWidget(
                                   text: document['company_name'],
                                   size: fontSubheader,
-                                  color: aqua,
+                                  color: midOrange,
                                 )
                               ],
                             ),
