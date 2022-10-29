@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hospal/constants/style.dart';
 
 import '../widgets/text_poppins_widget.dart';
@@ -18,10 +19,30 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Container(
-        padding: pad20,
-        child: SafeArea(
-            child: SizedBox(/* height: 250, */ child: buildJobListings())),
+      home: Scaffold(
+        bottomNavigationBar: Container(
+          color: midBlue,
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: GNav(
+                backgroundColor: midBlue,
+                color: light,
+                activeColor: light,
+                tabBackgroundColor: const Color.fromARGB(70, 255, 255, 255),
+                gap: 8,
+                onTabChange: (index) {
+                  setState(() {});
+                },
+                tabs: const [
+                  GButton(
+                    icon: Icons.home,
+                    text: "Home",
+                  ),
+                  GButton(icon: Icons.badge, text: "Jobs"),
+                  GButton(icon: Icons.person, text: "Profile"),
+                ],
+              )),
+        ),
       ),
     );
   }

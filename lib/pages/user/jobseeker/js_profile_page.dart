@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:intl/intl.dart';
 
-import '../../constants/style.dart';
-import '../../widgets/text_poppins_widget.dart';
+import '../../../constants/style.dart';
+import '../../../widgets/text_poppins_widget.dart';
 
 class JobseekerProfilePage extends StatefulWidget {
   final String? profileId;
@@ -50,45 +50,7 @@ class _UserProfilePageState extends State<JobseekerProfilePage>
   @override
   Widget build(BuildContext context) {
     _dateController.text = getDate();
-    return Scaffold(
-        appBar: AppBar(
-          title: InkWell(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: PoppinsTextWidget(
-              text: 'hospal',
-              color: light,
-              size: fontTitle,
-              isBold: true,
-            ),
-          ),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: dark,
-          leading: Padding(
-              padding: EdgeInsets.only(
-                  left: space18, top: space12, right: space12, bottom: space12),
-              child: InkWell(
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () {},
-                  child: Icon(Icons.menu_rounded, color: light, size: 28))),
-          actions: [
-            InkWell(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Icon(Icons.home, color: light, size: 28)),
-            x10,
-            x8,
-          ],
-        ),
-        body: buildInfo());
+    return buildInfo();
   }
 
   Widget buildInfo() {

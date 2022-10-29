@@ -42,6 +42,10 @@ dependencies:
   fluentui_system_icons: ^1.1.166
   country: ^2.0.0 
 
+  #Navigation Bar
+  google_nav_bar: ^5.0.6
+  line_icons: ^2.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

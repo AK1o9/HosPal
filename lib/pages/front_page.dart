@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hospal/constants/style.dart';
+import 'package:hospal/pages/user/employer/emp_home_page.dart';
+import 'package:hospal/pages/user/employer/emp_nav_bar.dart';
+import 'package:hospal/pages/user/jobseeker/js_home_page.dart';
+import 'package:hospal/pages/user/jobseeker/js_nav_bar.dart';
 import 'package:hospal/widgets/button_widget.dart';
 import 'package:hospal/widgets/text_nunito_widget.dart';
 
 import '../widgets/custom_button_widget.dart';
 import '../widgets/text_poppins_widget.dart';
-import 'employer/emp_home_page.dart';
-import 'jobseeker/js_home_page.dart';
 
 class FrontPage extends StatefulWidget {
   const FrontPage({Key? key}) : super(key: key);
@@ -89,7 +91,7 @@ class _FrontPageState extends State<FrontPage> {
                       color: midBlue,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const JobseekerHomePage()));
+                            builder: (context) => const JobseekerNavBar()));
                       }),
                   y10,
                   NunitoTextWidget(text: "Or", size: fontHeader, color: dark),
@@ -100,7 +102,7 @@ class _FrontPageState extends State<FrontPage> {
                       color: midOrange,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const EmployerHomePage()));
+                            builder: (context) => const EmployerNavBar()));
                       }),
                 ],
               ),

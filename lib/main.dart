@@ -3,6 +3,7 @@ import 'package:hospal/constants/style.dart';
 import 'package:hospal/pages/front_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hospal/pages/test_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
