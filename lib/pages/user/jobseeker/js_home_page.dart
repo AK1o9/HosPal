@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:hospal/api/search_service.dart';
-import 'package:hospal/pages/job/job_page.dart';
+import 'package:hospal/pages/job/job_details_page.dart';
 import 'package:hospal/widgets/button_widget.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +130,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                         ),
                       ),
 
-                      // //Filter button (for search results) //TODO: Remove or replace in the search delegate.
+                      //Filter button (for search results) //TODO: Remove or replace in the search delegate.
                       // Expanded(
                       //   child: InkWell(
                       //     hoverColor: Colors.transparent,

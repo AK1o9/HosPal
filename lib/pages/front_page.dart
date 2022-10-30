@@ -20,9 +20,9 @@ class FrontPage extends StatefulWidget {
 class _FrontPageState extends State<FrontPage> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Colors.blue[300],
-        child:
+    return Scaffold(
+        backgroundColor: Colors.blue[300],
+        body:
             // Container(
             //   padding: pad20,
             //   child: Row(children: [

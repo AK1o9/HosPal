@@ -7,7 +7,7 @@ import '../../../constants/style.dart';
 import '../../../widgets/text_poppins_widget.dart';
 import '../../job/job_custom_search_page.dart';
 import 'emp_home_page.dart';
-import 'emp_post_history_page.dart';
+import 'emp_my_posts_page.dart';
 import 'emp_profile_page.dart';
 
 class EmployerNavBar extends StatefulWidget {
@@ -73,7 +73,7 @@ class _EmployerNavBarState extends State<EmployerNavBar> {
                   text: 'Home',
                 ),
                 GButton(
-                  icon: LineIcons.plusCircle,
+                  icon: LineIcons.plus,
                   text: 'New Post',
                 ),
                 GButton(

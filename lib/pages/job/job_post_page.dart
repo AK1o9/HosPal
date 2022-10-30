@@ -117,22 +117,18 @@ class _JobPostPageState extends State<JobPostPage> {
     jobId = 'J-${getRandomString(20)}';
     return Material(
       child: Container(
-        padding: pad20,
+        margin: EdgeInsets.only(left: space18),
         child: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // const BackButton(),
-            // y20,
-            y10,
+            y20,
             PoppinsTextWidget(
-              text: 'Post a Job Vacancy',
-              size: fontTitle,
-              color: dark,
-              isBold: false,
+                text: "New Job Post", size: 64, isBold: true, color: midOrange),
+            Divider(
+              height: space40,
             ),
             y20,
-            y20,
-
             PoppinsTextWidget(
                 text: 'NOTE:\nAsterisk (*)  =>  Required',
                 size: fontLabel,

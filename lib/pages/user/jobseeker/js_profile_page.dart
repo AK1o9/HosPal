@@ -74,11 +74,10 @@ class _UserProfilePageState extends State<JobseekerProfilePage>
                       Padding(
                           padding: const EdgeInsets.only(top: 15, left: 200),
                           child: PoppinsTextWidget(
-                            text: 'My profile',
-                            size: fontHeader,
-                            color: dark,
-                            isBold: true,
-                          )),
+                              text: "Profile",
+                              size: 64,
+                              isBold: true,
+                              color: midBlue)),
                     ],
                   ),
                   y10,

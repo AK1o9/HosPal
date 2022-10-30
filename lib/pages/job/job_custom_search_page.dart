@@ -44,6 +44,12 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
         padding: pad20,
         color: silver,
         child: Column(children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: PoppinsTextWidget(
+                text: "Search", size: 64, isBold: true, color: midBlue),
+          ),
+          const Divider(height: 40),
           TextField(
             controller: searchController,
             onChanged: ((value) {

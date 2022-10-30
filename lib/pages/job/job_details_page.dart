@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hospal/pages/job/job_application_page.dart';
 
 import '../../constants/style.dart';
 import '../../widgets/text_poppins_widget.dart';
@@ -559,7 +560,20 @@ class _JobPageState extends State<JobPage> {
                                   child: SizedBox(
                                     height: 40,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    JobApplicationPage(
+                                                        jobId: widget.docId
+                                                        /* buildData(
+                                                                'job_id',
+                                                                fontBody,
+                                                                dar.k,
+                                                                false)
+                                                            .toString() */
+                                                        )));
+                                      },
                                       style: ElevatedButton.styleFrom(
                                           primary: dark,
                                           shape: RoundedRectangleBorder(

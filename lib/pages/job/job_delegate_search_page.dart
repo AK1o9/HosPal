@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hospal/pages/job/job_page.dart';
+import 'package:hospal/pages/job/job_details_page.dart';
 
 import '../../constants/style.dart';
 
