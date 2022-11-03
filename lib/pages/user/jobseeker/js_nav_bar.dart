@@ -40,14 +40,14 @@ class _JobseekerNavBarState extends State<JobseekerNavBar> {
           isBold: true,
         ),
         centerTitle: true,
-        backgroundColor: midBlue,
+        backgroundColor: darkBlue,
       ),
       body: Center(
         child: _pageOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: midBlue,
+          color: darkBlue,
           boxShadow: [
             BoxShadow(
               blurRadius: 20,

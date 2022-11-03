@@ -40,8 +40,8 @@ class _JobPostPageState extends State<JobPostPage> {
   List<String>? jobSkills =
       []; //User can set(add) multiple required skills in a list.
   String? jobRequirements; // -> Multiline String
-  int jobSalary = 0; //TODO: Remove?
-  int jobDuration = 0; //TODO: Remove?
+  int? jobSalary; // = 0; //TODO: Remove?
+  int? jobDuration; // = 0; //TODO: Remove?
   String? jobDurationInterval = 'Month(s)'; //Intervals: Days, Months, Years
 
   final jobTitleController = TextEditingController();
@@ -116,299 +116,306 @@ class _JobPostPageState extends State<JobPostPage> {
     docId = getRandomString(22);
     jobId = 'J-${getRandomString(20)}';
     return Material(
-      child: Container(
-        margin: EdgeInsets.only(left: space18),
-        child: SingleChildScrollView(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // const BackButton(),
-            y20,
-            PoppinsTextWidget(
-                text: "New Job Post", size: 64, isBold: true, color: midOrange),
-            Divider(
-              height: space40,
-            ),
-            y20,
-            PoppinsTextWidget(
-                text: 'NOTE:\nAsterisk (*)  =>  Required',
-                size: fontLabel,
-                color: dark),
-            y20,
-            //Job Info
-            PoppinsTextWidget(text: 'Job', size: fontSubtitle, color: dark),
-            y20,
-            TextfieldWidget(
-              labelText: 'Job Title *',
-              controller: jobTitleController,
-            ),
-            y20,
-            TextfieldWidget(
-                labelText: 'Job Description *',
-                controller: jobDescriptionController),
-            y20,
-            PoppinsTextWidget(
-                text: 'Pay Range (RM) *', size: fontSubheader, color: dark),
-            y10,
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: TextfieldWidget(
-                    labelText: 'From',
-                    controller: jobPayFromController,
-                    textInputType: TextInputType.number,
-                    icon: const Icon(Icons.monetization_on),
-                  ),
-                ),
-                x10,
-                Expanded(
-                  flex: 2,
-                  child: TextfieldWidget(
-                    labelText: 'To',
-                    controller: jobPayTillController,
-                    textInputType: TextInputType.number,
-                    icon: const Icon(Icons.monetization_on),
-                  ),
-                )
-              ],
-            ),
-            y20,
-            Row(
-              children: [
-                Expanded(
-                  flex: 15,
-                  child: TextfieldWidget(
-                      labelText: 'Duration *',
-                      controller: jobDurationController,
+      child: Scaffold(
+        //TODO: If page's fixed, remove scaffold.
+        body: Container(
+          margin: EdgeInsets.only(left: space18),
+          child: SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              // const BackButton(),
+              y20,
+              PoppinsTextWidget(
+                  text: "New Job Post",
+                  size: 64,
+                  isBold: true,
+                  color: midOrange),
+              Divider(
+                height: space40,
+              ),
+              y20,
+              PoppinsTextWidget(
+                  text: 'NOTE:\nAsterisk (*)  =>  Required',
+                  size: fontLabel,
+                  color: dark),
+              y20,
+              //Job Info
+              PoppinsTextWidget(text: 'Job', size: fontSubtitle, color: dark),
+              y20,
+              TextfieldWidget(
+                labelText: 'Job Title *',
+                controller: jobTitleController,
+              ),
+              y20,
+              TextfieldWidget(
+                  labelText: 'Job Description *',
+                  controller: jobDescriptionController),
+              y20,
+              PoppinsTextWidget(
+                  text: 'Pay Range (RM) *', size: fontSubheader, color: dark),
+              y10,
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: TextfieldWidget(
+                      labelText: 'From',
+                      controller: jobPayFromController,
                       textInputType: TextInputType.number,
-                      icon: const Icon(Icons.calendar_month)),
-                ),
-                x10,
-                x8,
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      DropdownButton<String>(
-                          value: jobDurationInterval,
-                          elevation: 10,
-                          style: TextStyle(color: dark),
-                          underline: Container(
-                            height: 2,
-                            color: grey,
-                          ),
-                          items: <String>[
-                            'Day(s)',
-                            'Month(s)',
-                            'Year(s)',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              jobDurationInterval = newValue!;
-                            });
-                            if (kDebugMode) {
-                              print(
-                                  'Job duration interval set to: $jobDurationInterval.');
-                            }
-                          }),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            y20,
-            Row(
-              children: [
-                PoppinsTextWidget(
-                    text: 'Job Type * : ', size: fontSubheader, color: dark),
-                x20,
-                DropdownButton<String>(
-                    value: jobType,
-                    elevation: 10,
-                    style: TextStyle(color: dark),
-                    underline: Container(
-                      height: 2,
-                      color: grey,
+                      icon: const Icon(Icons.monetization_on),
                     ),
-                    items: <String>['Full Time', 'Part Time', 'Internship']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        jobType = newValue!;
-                      });
-                      if (kDebugMode) {
-                        print('Job type set to: $jobType.');
-                      }
-                    }),
-              ],
-            ),
-            Row(
-              children: [
-                PoppinsTextWidget(
-                    text: 'Job Level * : ', size: fontSubheader, color: dark),
-                x20,
-                DropdownButton<String>(
-                    value: jobLevel,
-                    elevation: 10,
-                    style: TextStyle(color: dark),
-                    underline: Container(
-                      height: 2,
-                      color: grey,
-                    ),
-                    items: <String>[
-                      'Expert',
-                      'Proffessional',
-                      'Amateur',
-                      'Student',
-                      'Intermediate'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        jobLevel = newValue!;
-                      });
-                      if (kDebugMode) {
-                        print('Job level set to: $jobLevel.');
-                      }
-                    }),
-              ],
-            ),
-            y20,
-            TextfieldWidget(
-              labelText: 'Job Requirements',
-              controller: jobRequirementsController,
-              textInputType: TextInputType.multiline,
-            ),
-            y20,
-            Row(
-              children: [
-                Expanded(
-                  flex: 12,
-                  child: TextfieldWidget(
-                    labelText: 'Skills Required',
-                    controller: jobSkillsController,
                   ),
-                ),
-                Expanded(
-                    child: Padding(
-                  padding: EdgeInsets.only(left: space10),
-                  child: ButtonWidget(
-                      label: 'Add',
-                      icon: Icons.add,
-                      onTap: () {
+                  x10,
+                  Expanded(
+                    flex: 2,
+                    child: TextfieldWidget(
+                      labelText: 'To',
+                      controller: jobPayTillController,
+                      textInputType: TextInputType.number,
+                      icon: const Icon(Icons.monetization_on),
+                    ),
+                  )
+                ],
+              ),
+              y20,
+              Row(
+                children: [
+                  Expanded(
+                    flex: 15,
+                    child: TextfieldWidget(
+                        labelText: 'Duration *',
+                        controller: jobDurationController,
+                        textInputType: TextInputType.number,
+                        icon: const Icon(Icons.calendar_month)),
+                  ),
+                  x10,
+                  x8,
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        DropdownButton<String>(
+                            value: jobDurationInterval,
+                            elevation: 10,
+                            style: TextStyle(color: dark),
+                            underline: Container(
+                              height: 2,
+                              color: grey,
+                            ),
+                            items: <String>[
+                              'Day(s)',
+                              'Month(s)',
+                              'Year(s)',
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                jobDurationInterval = newValue!;
+                              });
+                              if (kDebugMode) {
+                                print(
+                                    'Job duration interval set to: $jobDurationInterval.');
+                              }
+                            }),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              y20,
+              Row(
+                children: [
+                  PoppinsTextWidget(
+                      text: 'Job Type * : ', size: fontSubheader, color: dark),
+                  x20,
+                  DropdownButton<String>(
+                      value: jobType,
+                      elevation: 10,
+                      style: TextStyle(color: dark),
+                      underline: Container(
+                        height: 2,
+                        color: grey,
+                      ),
+                      items: <String>['Full Time', 'Part Time', 'Internship']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
                         setState(() {
-                          jobSkills!.add(jobSkillsController.text);
-                          jobSkillsController.clear();
+                          jobType = newValue!;
                         });
                         if (kDebugMode) {
-                          print('Job skills: $jobSkills');
+                          print('Job type set to: $jobType.');
                         }
                       }),
-                ))
-              ],
-            ),
-            jobSkills!.isNotEmpty
-                ? Container(
-                    margin: EdgeInsets.only(top: space10),
-                    child: SafeArea(
-                        child: SizedBox(height: 64, child: buildJobSkills())),
-                  )
-                : Container(width: 0),
-            Divider(height: space40),
-
-            //Company Info
-            PoppinsTextWidget(text: 'Company', size: fontSubtitle, color: dark),
-            y20,
-
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: TextfieldWidget(
-                              labelText: 'Company Name *',
-                              controller: companyNameController,
-                              icon: const Icon(Icons.business),
-                            ),
-                          ),
-                          x10,
-                          Expanded(
-                            flex: 2,
-                            child: TextfieldWidget(
-                              labelText: 'Company Address',
-                              controller: companyAddressController,
-                              icon: const Icon(Icons.location_on),
-                              textInputType: TextInputType.streetAddress,
-                            ),
-                          ),
-                        ],
-                      ),
-                      y20,
-                      TextfieldWidget(
-                          labelText: 'Company Description & Information',
-                          controller: companyDescriptionController,
-                          textInputType: TextInputType.multiline),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            y20,
-
-            //Drop Zone / File Picker
-            PoppinsTextWidget(
-                text: 'Company Logo', size: fontHeader, color: dark),
-            y10,
-            droppedFile != null
-                ? SizedBox(
-                    height: 200,
-                    // width: 300,
-                    child: DroppedFileWidget(file: droppedFile!))
-                : Container(
-                    width: 0,
-                  ),
-            kIsWeb
-                ? SizedBox(
-                    height: 400,
-                    // width: 300,
-                    child: DropzoneWidget(
-                        onDroppedFile: (file) =>
-                            setState(() => droppedFile = file)))
-                : pickFile(),
-
-            y30, y20,
-            Center(
-              child: SizedBox(
-                width: 200,
-                child: SafeArea(
-                  child: ButtonWidget(
-                      label: 'Post Job Opening',
-                      onTap: () {
-                        validateData();
-                      }),
-                ),
+                ],
               ),
-            )
-          ]),
+              Row(
+                children: [
+                  PoppinsTextWidget(
+                      text: 'Job Level * : ', size: fontSubheader, color: dark),
+                  x20,
+                  DropdownButton<String>(
+                      value: jobLevel,
+                      elevation: 10,
+                      style: TextStyle(color: dark),
+                      underline: Container(
+                        height: 2,
+                        color: grey,
+                      ),
+                      items: <String>[
+                        'Expert',
+                        'Proffessional',
+                        'Amateur',
+                        'Student',
+                        'Intermediate'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          jobLevel = newValue!;
+                        });
+                        if (kDebugMode) {
+                          print('Job level set to: $jobLevel.');
+                        }
+                      }),
+                ],
+              ),
+              y20,
+              TextfieldWidget(
+                labelText: 'Job Requirements',
+                controller: jobRequirementsController,
+                textInputType: TextInputType.multiline,
+              ),
+              y20,
+              Row(
+                children: [
+                  Expanded(
+                    flex: 12,
+                    child: TextfieldWidget(
+                      labelText: 'Skills Required',
+                      controller: jobSkillsController,
+                    ),
+                  ),
+                  Expanded(
+                      child: Padding(
+                    padding: EdgeInsets.only(left: space10),
+                    child: ButtonWidget(
+                        label: 'Add',
+                        icon: Icons.add,
+                        onTap: () {
+                          setState(() {
+                            jobSkills!.add(jobSkillsController.text);
+                            jobSkillsController.clear();
+                          });
+                          if (kDebugMode) {
+                            print('Job skills: $jobSkills');
+                          }
+                        }),
+                  ))
+                ],
+              ),
+              jobSkills!.isNotEmpty
+                  ? Container(
+                      margin: EdgeInsets.only(top: space10),
+                      child: SafeArea(
+                          child: SizedBox(height: 64, child: buildJobSkills())),
+                    )
+                  : Container(width: 0),
+              Divider(height: space40),
+
+              //Company Info
+              PoppinsTextWidget(
+                  text: 'Company', size: fontSubtitle, color: dark),
+              y20,
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: TextfieldWidget(
+                                labelText: 'Company Name *',
+                                controller: companyNameController,
+                                icon: const Icon(Icons.business),
+                              ),
+                            ),
+                            x10,
+                            Expanded(
+                              flex: 2,
+                              child: TextfieldWidget(
+                                labelText: 'Company Address',
+                                controller: companyAddressController,
+                                icon: const Icon(Icons.location_on),
+                                textInputType: TextInputType.streetAddress,
+                              ),
+                            ),
+                          ],
+                        ),
+                        y20,
+                        TextfieldWidget(
+                            labelText: 'Company Description & Information',
+                            controller: companyDescriptionController,
+                            textInputType: TextInputType.multiline),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              y20,
+
+              //Drop Zone / File Picker
+              PoppinsTextWidget(
+                  text: 'Company Logo', size: fontHeader, color: dark),
+              y10,
+              droppedFile != null
+                  ? SizedBox(
+                      height: 200,
+                      // width: 300,
+                      child: DroppedFileWidget(file: droppedFile!))
+                  : Container(
+                      width: 0,
+                    ),
+              kIsWeb
+                  ? SizedBox(
+                      height: 400,
+                      // width: 300,
+                      child: DropzoneWidget(
+                          onDroppedFile: (file) =>
+                              setState(() => droppedFile = file)))
+                  : pickFile(),
+
+              y30, y20,
+              Center(
+                child: SizedBox(
+                  width: 200,
+                  child: SafeArea(
+                    child: ButtonWidget(
+                        label: 'Post Job Opening',
+                        onTap: () {
+                          validateData();
+                        }),
+                  ),
+                ),
+              )
+            ]),
+          ),
         ),
       ),
     );
