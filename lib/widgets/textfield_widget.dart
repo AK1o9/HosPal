@@ -4,12 +4,13 @@ import 'package:flutter/services.dart';
 import '../constants/style.dart';
 
 class TextfieldWidget extends StatelessWidget {
+  //Required
   final String labelText;
   final TextEditingController controller;
 
   //Optional
   final MaterialColor? colorTheme;
-  final String hintText;
+  final String? hintText;
   final Icon? icon;
   final TextInputType textInputType;
 
@@ -18,7 +19,7 @@ class TextfieldWidget extends StatelessWidget {
       required this.labelText,
       required this.controller,
       this.colorTheme,
-      this.hintText = '',
+      this.hintText,
       this.icon,
       this.textInputType = TextInputType.none})
       : super(key: key);

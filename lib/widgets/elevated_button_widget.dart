@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {
   final String label;
-  final Function()? onTap;
+  final Function() onTap;
   final bool
       isInverted; //If TRUE => Button is colored white : FALSE => Button is colored black.
   const ElevatedButtonWidget(

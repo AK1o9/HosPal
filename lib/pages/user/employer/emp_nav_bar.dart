@@ -39,14 +39,14 @@ class _EmployerNavBarState extends State<EmployerNavBar> {
           isBold: true,
         ),
         centerTitle: true,
-        backgroundColor: midOrange,
+        backgroundColor: darkOrange,
       ),
       body: Center(
         child: _pageOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: midOrange,
+          color: darkOrange,
           boxShadow: [
             BoxShadow(
               blurRadius: 20,

@@ -43,86 +43,88 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
       child: Container(
         padding: pad20,
         color: silver,
-        child: Column(children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: PoppinsTextWidget(
-                text: "Search", size: 64, isBold: true, color: midBlue),
-          ),
-          const Divider(height: 40),
-          TextField(
-            controller: searchController,
-            onChanged: ((value) {
-              setState(() {});
-            }),
-            decoration: InputDecoration(
-                prefixIcon: IconButton(
-                  color: dark,
-                  icon: Icon(
-                    Icons.arrow_back,
+        child: SingleChildScrollView(
+          child: Column(children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: PoppinsTextWidget(
+                  text: "Search", size: 64, isBold: true, color: midBlue),
+            ),
+            const Divider(height: 40),
+            TextField(
+              controller: searchController,
+              onChanged: ((value) {
+                setState(() {});
+              }),
+              decoration: InputDecoration(
+                  prefixIcon: IconButton(
+                    color: dark,
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: grey,
+                    ),
+                    iconSize: 20,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  suffixIcon: searchController.text.isEmpty
+                      ? null
+                      : IconButton(
+                          onPressed: () {
+                            clearAll();
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: grey,
+                          )),
+                  contentPadding: EdgeInsets.only(left: space20),
+                  hintText: 'Search by job title.',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4))),
+            ),
+            y20,
+            Container(
+              padding: pad20,
+              decoration: BoxDecoration(borderRadius: bRadius20, color: light),
+              child: IntrinsicHeight(
+                child: Row(children: [
+                  Expanded(
+                      child:
+                          // PoppinsTextWidget(
+                          //     text: 'Results', size: fontTitle, color: dark)),
+                          SafeArea(
+                              child: SizedBox(
+                                  height: /* 300 */ 600,
+                                  child: buildJobResults()))),
+
+                  VerticalDivider(
+                    thickness: 0.5,
+                    width: space20,
                     color: grey,
                   ),
-                  iconSize: 20,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                suffixIcon: searchController.text.isEmpty
-                    ? null
-                    : IconButton(
-                        onPressed: () {
-                          clearAll();
-                          setState(() {});
-                        },
-                        icon: Icon(
-                          Icons.close,
-                          color: grey,
-                        )),
-                contentPadding: EdgeInsets.only(left: space20),
-                hintText: 'Search by job title.',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(4))),
-          ),
-          y20,
-          Container(
-            padding: pad20,
-            decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-            child: IntrinsicHeight(
-              child: Row(children: [
-                Expanded(
-                    child:
-                        // PoppinsTextWidget(
-                        //     text: 'Results', size: fontTitle, color: dark)),
-                        SafeArea(
-                            child: SizedBox(
-                                height: /* 300 */ 600,
-                                child: buildJobResults()))),
 
-                VerticalDivider(
-                  thickness: 0.5,
-                  width: space20,
-                  color: grey,
-                ),
-
-                //Side Preview
-                Expanded(
-                    child: resultDocId == null
-                        ? PoppinsTextWidget(
-                            text: '',
-                            size: fontTitle,
-                            color: dark,
-                            isCenter: true,
-                          )
-                        : SingleChildScrollView(
-                            child: Column(
-                            children: [
-                              buildJobView(),
-                            ],
-                          )))
-              ]),
+                  //Side Preview
+                  Expanded(
+                      child: resultDocId == null
+                          ? PoppinsTextWidget(
+                              text: '',
+                              size: fontTitle,
+                              color: dark,
+                              isCenter: true,
+                            )
+                          : SingleChildScrollView(
+                              child: Column(
+                              children: [
+                                buildJobView(),
+                              ],
+                            )))
+                ]),
+              ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }

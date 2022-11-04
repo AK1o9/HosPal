@@ -19,6 +19,7 @@ import '../../constants/style.dart';
 
 import 'package:path/path.dart' as _path;
 
+import '../../widgets/custom_button_widget.dart';
 import '../../widgets/dropped_file_widget.dart';
 import '../../widgets/dropzone_widget.dart';
 
@@ -40,8 +41,8 @@ class _JobPostPageState extends State<JobPostPage> {
   List<String>? jobSkills =
       []; //User can set(add) multiple required skills in a list.
   String? jobRequirements; // -> Multiline String
-  int? jobSalary; // = 0; //TODO: Remove?
-  int? jobDuration; // = 0; //TODO: Remove?
+  int jobSalary = 0; //TODO: Remove?
+  int jobDuration = 0; //TODO: Remove?
   String? jobDurationInterval = 'Month(s)'; //Intervals: Days, Months, Years
 
   final jobTitleController = TextEditingController();
@@ -145,11 +146,14 @@ class _JobPostPageState extends State<JobPostPage> {
               TextfieldWidget(
                 labelText: 'Job Title *',
                 controller: jobTitleController,
+                colorTheme: orangeTheme,
               ),
               y20,
               TextfieldWidget(
-                  labelText: 'Job Description *',
-                  controller: jobDescriptionController),
+                labelText: 'Job Description *',
+                controller: jobDescriptionController,
+                colorTheme: orangeTheme,
+              ),
               y20,
               PoppinsTextWidget(
                   text: 'Pay Range (RM) *', size: fontSubheader, color: dark),
@@ -159,6 +163,7 @@ class _JobPostPageState extends State<JobPostPage> {
                   Expanded(
                     flex: 2,
                     child: TextfieldWidget(
+                      colorTheme: orangeTheme,
                       labelText: 'From',
                       controller: jobPayFromController,
                       textInputType: TextInputType.number,
@@ -171,6 +176,7 @@ class _JobPostPageState extends State<JobPostPage> {
                     child: TextfieldWidget(
                       labelText: 'To',
                       controller: jobPayTillController,
+                      colorTheme: orangeTheme,
                       textInputType: TextInputType.number,
                       icon: const Icon(Icons.monetization_on),
                     ),
@@ -185,6 +191,7 @@ class _JobPostPageState extends State<JobPostPage> {
                     child: TextfieldWidget(
                         labelText: 'Duration *',
                         controller: jobDurationController,
+                        colorTheme: orangeTheme,
                         textInputType: TextInputType.number,
                         icon: const Icon(Icons.calendar_month)),
                   ),
@@ -295,6 +302,7 @@ class _JobPostPageState extends State<JobPostPage> {
               y20,
               TextfieldWidget(
                 labelText: 'Job Requirements',
+                colorTheme: orangeTheme,
                 controller: jobRequirementsController,
                 textInputType: TextInputType.multiline,
               ),
@@ -306,12 +314,14 @@ class _JobPostPageState extends State<JobPostPage> {
                     child: TextfieldWidget(
                       labelText: 'Skills Required',
                       controller: jobSkillsController,
+                      colorTheme: orangeTheme,
                     ),
                   ),
                   Expanded(
                       child: Padding(
                     padding: EdgeInsets.only(left: space10),
-                    child: ButtonWidget(
+                    child: CustomButtonWidget(
+                        color: darkOrange,
                         label: 'Add',
                         icon: Icons.add,
                         onTap: () {
@@ -354,6 +364,7 @@ class _JobPostPageState extends State<JobPostPage> {
                                 labelText: 'Company Name *',
                                 controller: companyNameController,
                                 icon: const Icon(Icons.business),
+                                colorTheme: orangeTheme,
                               ),
                             ),
                             x10,
@@ -361,6 +372,7 @@ class _JobPostPageState extends State<JobPostPage> {
                               flex: 2,
                               child: TextfieldWidget(
                                 labelText: 'Company Address',
+                                colorTheme: orangeTheme,
                                 controller: companyAddressController,
                                 icon: const Icon(Icons.location_on),
                                 textInputType: TextInputType.streetAddress,
@@ -370,6 +382,7 @@ class _JobPostPageState extends State<JobPostPage> {
                         ),
                         y20,
                         TextfieldWidget(
+                            colorTheme: orangeTheme,
                             labelText: 'Company Description & Information',
                             controller: companyDescriptionController,
                             textInputType: TextInputType.multiline),
@@ -406,7 +419,8 @@ class _JobPostPageState extends State<JobPostPage> {
                 child: SizedBox(
                   width: 200,
                   child: SafeArea(
-                    child: ButtonWidget(
+                    child: CustomButtonWidget(
+                        color: darkOrange,
                         label: 'Post Job Opening',
                         onTap: () {
                           validateData();

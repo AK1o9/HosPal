@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class CustomButtonWidget extends StatelessWidget {
   final String label;
-  final Function()? onTap;
+  final Function() onTap;
   final double? fontSize;
   final IconData? icon;
   final Color? color;

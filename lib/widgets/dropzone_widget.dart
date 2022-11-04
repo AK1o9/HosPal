@@ -24,9 +24,9 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final dropzoneColor = isDropzoneHighlighted ? Colors.black54 : dark;
+    final dropzoneColor = isDropzoneHighlighted ? midOrange : darkOrange;
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: pad10,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: Container(
@@ -36,7 +36,7 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
               padding: const EdgeInsets.all(15),
               child: DottedBorder(
                 borderType: BorderType.RRect,
-                color: Colors.white,
+                color: light,
                 strokeWidth: 3,
                 dashPattern: const [8, 4],
                 radius: const Radius.circular(10),
@@ -54,20 +54,20 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                         child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.cloud_upload,
-                          color: Colors.white,
+                          color: light,
                           size: 60,
                         ),
-                        const Text(
+                        Text(
                           'Drag & Drop your files here',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: TextStyle(color: light, fontSize: 16),
                         ),
                         const SizedBox(height: 12),
-                        const Text(
+                        Text(
                           'OR:',
                           style: TextStyle(
-                              color: Colors.white,
+                              color: light,
                               fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
@@ -83,9 +83,9 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                             size: 28,
                             color: dark,
                           ),
-                          label: const Text('Attach Files',
+                          label: Text('Attach Files',
                               style:
-                                  TextStyle(color: Colors.black, fontSize: 20)),
+                                  TextStyle(color: darkOrange, fontSize: 20)),
                           onPressed: () async {
                             final events =
                                 await dropzoneController!.pickFiles();
@@ -96,9 +96,9 @@ class _DropzoneWidgetState extends State<DropzoneWidget> {
                         const SizedBox(
                           height: 12,
                         ),
-                        const Text(
+                        Text(
                           'Maximum file size: 1 GB.',
-                          style: TextStyle(color: Colors.white, fontSize: 14),
+                          style: TextStyle(color: light, fontSize: 14),
                         ),
                       ],
                     )),

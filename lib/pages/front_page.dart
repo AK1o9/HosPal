@@ -21,7 +21,7 @@ class _FrontPageState extends State<FrontPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue[300],
+        backgroundColor: softBlue,
         body:
             // Container(
             //   padding: pad20,

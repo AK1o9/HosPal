@@ -24,8 +24,8 @@ class DroppedFileWidget extends StatelessWidget {
                     height: 120,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        border: Border.all(width: 5, color: Colors.black12)),
+                        color: light,
+                        border: Border.all(width: 5, color: midOrange)),
                     child: buildImage()),
                 // ignore: unnecessary_null_comparison
                 if (file != null) buildFileDetails(file),
@@ -35,15 +35,15 @@ class DroppedFileWidget extends StatelessWidget {
         : Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Icon(
                   Icons.no_sim,
-                  color: Colors.white,
+                  color: light,
                   size: 42,
                 ),
                 Text(
                   'No files selected.',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: TextStyle(color: light, fontSize: 18),
                 ),
               ],
             ),
@@ -54,7 +54,7 @@ class DroppedFileWidget extends StatelessWidget {
             height: 200,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20), color: dark),
+                borderRadius: BorderRadius.circular(20), color: darkOrange),
             child: preview));
   }
 
@@ -69,20 +69,19 @@ class DroppedFileWidget extends StatelessWidget {
           Text(
               /* 'OneStop Firm Fee Statement 18-2-19', */
               file.name,
-              style: style.copyWith(
-                  fontWeight: FontWeight.bold, color: Colors.white)),
-          const SizedBox(height: 10),
+              style: style.copyWith(fontWeight: FontWeight.bold, color: light)),
+          y10,
           Text(
               /* 'PDF Document', */
               file.mime,
               style: style.copyWith(
-                  /* fontWeight: FontWeight.bold,*/ color: Colors.white)),
-          const SizedBox(height: 10),
+                  /* fontWeight: FontWeight.bold,*/ color: light)),
+          y10,
           Text(
               /* '45.07 MB', */
               file.formattedSize,
               style: style.copyWith(
-                  /* fontWeight: FontWeight.bold, */ color: Colors.white)),
+                  /* fontWeight: FontWeight.bold, */ color: light)),
         ],
       ),
     );
@@ -107,7 +106,7 @@ class DroppedFileWidget extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.blue, fontSize: 16),
+        style: TextStyle(color: midOrange, fontSize: 16),
       ),
     );
   }

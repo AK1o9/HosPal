@@ -6,11 +6,12 @@ Color light = Colors.white;
 Color silver = const Color.fromARGB(255, 230, 230, 230);
 Color grey = Colors.black38; //Color.fromARGB(255, 139, 139, 139);
 Color aqua = Colors.blue;
+Color softBlue = Colors.blue.shade300;
 Color midBlue = const Color.fromARGB(255, 77, 85, 200);
 Color darkBlue = const Color.fromARGB(255, 59, 75, 163);
-Color lightOrange = const Color.fromARGB(255, 255, 191, 27);
+Color softOrange = const Color.fromARGB(255, 255, 191, 27);
 Color midOrange = const Color.fromARGB(255, 223, 147, 33);
-Color darkOrange = const Color.fromARGB(255, 172, 83, 0);
+Color darkOrange = const Color.fromARGB(255, 215, 128, 0);
 
 Map<int, Color> darkColors = {
   50: dark,
