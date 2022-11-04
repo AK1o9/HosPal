@@ -6,4 +6,4 @@ Developed using Dart + Flutter.
 
 For **Teczo Sdn Bhd**.
 
-hospal_logo.png
+![HosPal Logo](https://user-images.githubusercontent.com/96708800/199993708-65eff58c-fdff-4a29-96ec-2960ca0edf85.png)
