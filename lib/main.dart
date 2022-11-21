@@ -3,14 +3,12 @@ import 'package:hospal/constants/style.dart';
 import 'package:hospal/pages/front_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hospal/pages/job/job_post_page.dart';
-import 'package:hospal/pages/test_page.dart';
 import 'package:hospal/pages/user/jobseeker/js_login_page.dart';
+import 'package:hospal/pages/user/jobseeker/js_main.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // ignore: await_only_futures
-  await Firebase.initializeApp;
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -30,6 +28,6 @@ class MyApp extends StatelessWidget {
         title: 'HosPal',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: dark, primarySwatch: darkTheme),
-        home: const FrontPage());
+        home: JobseekerLoginPage());
   }
 }

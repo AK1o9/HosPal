@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1036211868262",
+    "firebase_url": "https://hospal-234c3-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "hospal-234c3",
+    "storage_bucket": "hospal-234c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1036211868262:android:2aa26c56f21050252293a7",
+        "android_client_info": {
+          "package_name": "com.example.hospal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1036211868262-paaiuuapsjp2garll61dbc7r7rikof0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-n2GsoT7uvzT48Tng3P-QStu0MDWe7yY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1036211868262-paaiuuapsjp2garll61dbc7r7rikof0m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

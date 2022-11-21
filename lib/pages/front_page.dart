@@ -1,14 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hospal/constants/style.dart';
-import 'package:hospal/pages/user/employer/emp_home_page.dart';
-import 'package:hospal/pages/user/employer/emp_nav_bar.dart';
-import 'package:hospal/pages/user/jobseeker/js_home_page.dart';
+import 'package:hospal/pages/user/employer/emp_login_page.dart';
+import 'package:hospal/pages/user/employer/emp_main.dart';
+import 'package:hospal/pages/user/jobseeker/js_login_page.dart';
+import 'package:hospal/pages/user/jobseeker/js_main.dart';
 import 'package:hospal/pages/user/jobseeker/js_nav_bar.dart';
-import 'package:hospal/widgets/button_widget.dart';
 import 'package:hospal/widgets/text_nunito_widget.dart';
 
 import '../widgets/custom_button_widget.dart';
-import '../widgets/text_poppins_widget.dart';
 
 class FrontPage extends StatefulWidget {
   const FrontPage({Key? key}) : super(key: key);
@@ -22,32 +22,7 @@ class _FrontPageState extends State<FrontPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: softBlue,
-        body:
-            // Container(
-            //   padding: pad20,
-            //   child: Row(children: [
-            //     Expanded(
-            //       child: ButtonWidget(
-            //           label: 'Jobseeker',
-            //           fontSize: 72,
-            //           onTap: () {
-            //             Navigator.of(context).push(MaterialPageRoute(
-            //                 builder: (context) => const JobseekerHomePage()));
-            //           }),
-            //     ),
-            //     x20,
-            //     Expanded(
-            //       child: ButtonWidget(
-            //           label: 'Employer',
-            //           fontSize: 72,
-            //           onTap: () {
-            //             Navigator.of(context).push(MaterialPageRoute(
-            //                 builder: (context) => const EmployerHomePage()));
-            //           }),
-            //     )
-            //   ]),
-            // ),
-            Center(
+        body: Center(
           child: Padding(
             padding: EdgeInsets.all(space40),
             child: Container(
@@ -60,18 +35,23 @@ class _FrontPageState extends State<FrontPage> {
                 children: [
                   y20,
                   y20,
-                  // // HosPal Logo
+
+                  // HosPal Logo
                   // PoppinsTextWidget(
                   //   text: 'HosPal',
                   //   color: darkBlue,
                   //   size: 64,
                   //   isBold: true,
                   // ),
-                  Center(
-                    child: Image.asset('hospal_logo.png'),
-                  ),
+                  // Center(
+                  //   child: Image.asset(
+                  //     'hospal_logo.png',
+                  //     scale: 0.2,
+                  //   ),
+                  // ),
                   y20,
                   y20,
+
                   // Welcome Message
                   NunitoTextWidget(
                       text: "Welcome, let's get started!",
@@ -81,6 +61,7 @@ class _FrontPageState extends State<FrontPage> {
                   SizedBox(
                     height: space40,
                   ),
+
                   // Login as
                   NunitoTextWidget(
                       text: "Login as a:", size: fontSubtitle, color: dark),
@@ -91,7 +72,7 @@ class _FrontPageState extends State<FrontPage> {
                       color: midBlue,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const JobseekerNavBar()));
+                            builder: (context) => const JobseekerMain()));
                       }),
                   y10,
                   NunitoTextWidget(text: "Or", size: fontHeader, color: dark),
@@ -102,7 +83,7 @@ class _FrontPageState extends State<FrontPage> {
                       color: midOrange,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const EmployerNavBar()));
+                            builder: (context) => const EmployerMain()));
                       }),
                 ],
               ),

@@ -12,6 +12,7 @@ class TextfieldWidget extends StatelessWidget {
   final MaterialColor? colorTheme;
   final String? hintText;
   final Icon? icon;
+  final bool? hideText;
   final TextInputType textInputType;
 
   const TextfieldWidget(
@@ -21,6 +22,7 @@ class TextfieldWidget extends StatelessWidget {
       this.colorTheme,
       this.hintText,
       this.icon,
+      this.hideText = false,
       this.textInputType = TextInputType.none})
       : super(key: key);
 
@@ -34,6 +36,12 @@ class TextfieldWidget extends StatelessWidget {
         ),
         child: TextField(
           controller: controller,
+
+          //Hide text (i.e. for passwords)
+          obscureText: hideText == true ? true : false,
+          enableSuggestions: hideText == true ? false : true,
+          autocorrect: hideText == true ? false : true,
+
           decoration: InputDecoration(
             filled: false,
             fillColor: light,
@@ -41,6 +49,8 @@ class TextfieldWidget extends StatelessWidget {
             prefixIcon: icon,
             suffixIcon: controller.text.isEmpty
                 ? Container(width: 0)
+
+                //Clear textfield button ('X')
                 : IconButton(
                     hoverColor: Colors.transparent,
                     splashColor: Colors.transparent,

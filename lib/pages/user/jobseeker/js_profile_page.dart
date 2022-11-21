@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:csc_picker/csc_picker.dart';
+import 'package:hospal/widgets/custom_button_widget.dart';
 import 'package:intl/intl.dart';
 
+import '../../../api/user_auth.dart';
 import '../../../constants/style.dart';
 import '../../../widgets/text_poppins_widget.dart';
 
@@ -50,7 +52,20 @@ class _UserProfilePageState extends State<JobseekerProfilePage>
   @override
   Widget build(BuildContext context) {
     _dateController.text = getDate();
-    return buildInfo();
+    return Column(children: [_signOut()]);
+  }
+
+  Future<void> signOut() async {
+    await UserAuth().signOut();
+  }
+
+  Widget _signOut() {
+    return CustomButtonWidget(
+      label: 'Log out',
+      onTap: signOut,
+      color: midBlue,
+      icon: Icons.logout_rounded,
+    );
   }
 
   Widget buildInfo() {
