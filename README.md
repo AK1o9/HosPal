@@ -6,4 +6,4 @@ A Job-searching mobile application for people in the medical field.
 
 - For **Teczo Sdn Bhd**.
 
-![New HosPal 3 Cropped](https://user-images.githubusercontent.com/96708800/198893513-c4663fcd-a59a-404f-b7be-ede9e77d1fe8.png)
+![HosPal Logo](https://user-images.githubusercontent.com/96708800/199993708-65eff58c-fdff-4a29-96ec-2960ca0edf85.png)
