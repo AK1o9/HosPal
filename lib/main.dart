@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hospal/pages/user/employer/emp_home_page.dart';
 import 'package:hospal/pages/user/employer/emp_nav_bar.dart';
 import 'package:hospal/pages/user/jobseeker/js_login_page.dart';
-import 'package:hospal/pages/user/jobseeker/js_main.dart';
+import 'package:hospal/pages/user/jobseeker/js_auth.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +30,6 @@ class MyApp extends StatelessWidget {
         title: 'HosPal',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: dark, primarySwatch: darkTheme),
-        home: EmployerHomePage() /* FrontPage() */);
+        home: const FrontPage());
   }
 }

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hospal/pages/user/jobseeker/js_main.dart';
+import 'package:hospal/pages/user/jobseeker/js_auth.dart';
 import 'package:hospal/pages/user/jobseeker/js_nav_bar.dart';
 import 'package:path/path.dart';
 import 'package:universal_html/html.dart';

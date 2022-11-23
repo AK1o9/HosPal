@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hospal/constants/style.dart';
 import 'package:hospal/pages/user/employer/emp_login_page.dart';
-import 'package:hospal/pages/user/employer/emp_main.dart';
+import 'package:hospal/pages/user/employer/emp_auth.dart';
 import 'package:hospal/pages/user/jobseeker/js_login_page.dart';
-import 'package:hospal/pages/user/jobseeker/js_main.dart';
+import 'package:hospal/pages/user/jobseeker/js_auth.dart';
 import 'package:hospal/pages/user/jobseeker/js_nav_bar.dart';
 import 'package:hospal/widgets/text_nunito_widget.dart';
 
@@ -72,7 +72,7 @@ class _FrontPageState extends State<FrontPage> {
                       color: midBlue,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const JobseekerMain()));
+                            builder: (context) => const JobseekerAuth()));
                       }),
                   y10,
                   NunitoTextWidget(text: "Or", size: fontHeader, color: dark),
@@ -83,7 +83,7 @@ class _FrontPageState extends State<FrontPage> {
                       color: midOrange,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const EmployerMain()));
+                            builder: (context) => const EmployerAuth()));
                       }),
                 ],
               ),

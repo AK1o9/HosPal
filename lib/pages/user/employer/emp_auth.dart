@@ -4,8 +4,8 @@ import 'package:hospal/api/user_auth.dart';
 import 'package:hospal/pages/user/employer/emp_login_page.dart';
 import 'emp_nav_bar.dart';
 
-class EmployerMain extends StatelessWidget {
-  const EmployerMain({Key? key}) : super(key: key);
+class EmployerAuth extends StatelessWidget {
+  const EmployerAuth({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -31,8 +31,8 @@ import 'package:hospal/api/user_auth.dart';
 import 'package:hospal/pages/user/jobseeker/js_login_page.dart';
 import 'package:hospal/pages/user/jobseeker/js_nav_bar.dart';
 
-class JobseekerMain extends StatelessWidget {
-  const JobseekerMain({Key? key}) : super(key: key);
+class JobseekerAuth extends StatelessWidget {
+  const JobseekerAuth({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
