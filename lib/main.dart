@@ -3,6 +3,8 @@ import 'package:hospal/constants/style.dart';
 import 'package:hospal/pages/front_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hospal/pages/user/employer/emp_home_page.dart';
+import 'package:hospal/pages/user/employer/emp_nav_bar.dart';
 import 'package:hospal/pages/user/jobseeker/js_login_page.dart';
 import 'package:hospal/pages/user/jobseeker/js_main.dart';
 
@@ -28,6 +30,6 @@ class MyApp extends StatelessWidget {
         title: 'HosPal',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: dark, primarySwatch: darkTheme),
-        home: JobseekerLoginPage());
+        home: EmployerHomePage() /* FrontPage() */);
   }
 }

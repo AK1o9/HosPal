@@ -9,8 +9,6 @@ import 'package:hospal/widgets/textfield_widget.dart';
 import '../../../constants/style.dart';
 import '../../../widgets/custom_button_widget.dart';
 import '../../../widgets/text_nunito_widget.dart';
-import '../../job/job_post_page.dart';
-import 'emp_profile_page.dart';
 
 class EmployerHomePage extends StatefulWidget {
   const EmployerHomePage({Key? key}) : super(key: key);
@@ -145,13 +143,14 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                   isBold: true,
                 ),
                 y20,
-                SafeArea(
-                  child: SizedBox(
-                      height: 420,
-                      child: Center(
-                        child: Image.asset('empty_folder.jpg'),
-                      ) /* buildApplicants() */),
-                ),
+                //TODO: Fix
+                // SafeArea(
+                //   child: SizedBox(
+                //       height: 420,
+                //       child: Center(
+                //         child: Image.asset('empty_folder.jpg'),
+                //       ) /* buildApplicants() */),
+                // ),
                 Padding(
                   padding: EdgeInsets.only(bottom: space50 * 2),
                   child: Center(

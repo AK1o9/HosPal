@@ -1,23 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:hospal/api/user_auth.dart';
 import 'package:hospal/constants/style.dart';
-import 'package:hospal/widgets/button_widget.dart';
+import 'package:hospal/pages/user/jobseeker/js_nav_bar.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:hospal/widgets/textfield_widget.dart';
 
 import '../../../widgets/custom_button_widget.dart';
-import '../register_page.dart';
+import 'js_register_page.dart';
 
 class JobseekerLoginPage extends StatefulWidget {
+  const JobseekerLoginPage({Key? key}) : super(key: key);
+
   @override
   State<JobseekerLoginPage> createState() => _JobseekerLoginPageState();
 }
+
+//khalifa.teczo@gmail.com AK1o9@teczo (Jobseeker)
+//ahmed1o9@hotmail.com AK1o9@teczo (Jobseeker)
+//ziowswaket@gmail.com AK1o9@teczo (Employer)
+//theyven@teczo.co theyven@teczo.co (Employer)
 
 class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
   String? errorMessage = '';
@@ -28,9 +31,8 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
 
   Future signInWithEmailAndPassword() async {
     try {
-      await UserAuth().signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+      validateUserDetails(_emailController.text.trim(),
+          _passwordController.text.trim(), 'Jobseeker');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -38,15 +40,55 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
     }
   }
 
-  Future createUserWithEmailAndPassword() async {
+  void validateUserDetails(String email, String password, String role) async {
     try {
-      await UserAuth().createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message;
-      });
+      final fa = FirebaseAuth.instance;
+
+      final newUser =
+          await fa.signInWithEmailAndPassword(email: email, password: password);
+
+      // ignore: unnecessary_null_comparison
+      if (newUser != null) {
+        if (kDebugMode) {
+          print("Successful Login!");
+        }
+        final User? user = fa.currentUser;
+        final userID = user!.uid;
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userID)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists) {
+            if (documentSnapshot.get('role') == role && role == 'Jobseeker') {
+              // print(UserAuth().userRoleAsString);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      const JobseekerNavBar())); //TODO: Maybe remove 'const'?
+            } else if (documentSnapshot.get('role') == role &&
+                role == 'Employer') {
+              if (kDebugMode) {
+                print(
+                    "Error: Wrong account type! Please login as an Employer instead");
+              }
+            }
+            // else {}
+          } else {
+            if (kDebugMode) {
+              print('User does not exist within the database');
+            }
+          }
+        });
+      } else {
+        if (kDebugMode) {
+          print("Failed Login.");
+        }
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -109,7 +151,8 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
                     child: InkWell(
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => const RegisterPage())),
+                                builder: (context) =>
+                                    const JobseekerRegisterPage())),
                         child: PoppinsTextWidget(
                           text: "Don't have an account? Click here to register",
                           size: fontBody,
