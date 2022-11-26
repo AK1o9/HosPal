@@ -7,6 +7,7 @@ import 'package:hospal/pages/user/jobseeker/js_login_page.dart';
 import 'package:hospal/pages/user/jobseeker/js_auth.dart';
 import 'package:hospal/pages/user/jobseeker/js_nav_bar.dart';
 import 'package:hospal/widgets/text_nunito_widget.dart';
+import 'package:hospal/widgets/text_poppins_widget.dart';
 
 import '../widgets/custom_button_widget.dart';
 
@@ -37,27 +38,31 @@ class _FrontPageState extends State<FrontPage> {
                   y20,
 
                   // HosPal Logo
-                  // PoppinsTextWidget(
-                  //   text: 'HosPal',
-                  //   color: darkBlue,
-                  //   size: 64,
-                  //   isBold: true,
-                  // ),
+                  //TODO: Fix
                   // Center(
                   //   child: Image.asset(
                   //     'hospal_logo.png',
-                  //     scale: 0.2,
+                  //     width: 450,
                   //   ),
                   // ),
+                  PoppinsTextWidget(
+                    text: 'HosPal',
+                    color: light,
+                    size: 64,
+                    isBold: true,
+                  ),
                   y20,
                   y20,
 
                   // Welcome Message
-                  NunitoTextWidget(
-                      text: "Welcome, let's get started!",
-                      size: fontTitle,
-                      isBold: true,
-                      color: dark),
+                  Align(
+                    alignment: Alignment.center,
+                    child: NunitoTextWidget(
+                        text: "\t\t\t\t\tWelcome,\nlet's get started!",
+                        size: fontTitle,
+                        isBold: true,
+                        color: dark),
+                  ),
                   SizedBox(
                     height: space40,
                   ),

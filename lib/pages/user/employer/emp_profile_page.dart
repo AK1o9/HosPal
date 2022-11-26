@@ -17,6 +17,7 @@ class EmployerProfilePage extends StatefulWidget {
 class _EmployerProfileState extends State<EmployerProfilePage> {
   Future<void> signOut() async {
     await UserAuth().signOut();
+    Navigator.of(context).pop();
   }
 
   Widget _signOut() {
@@ -30,32 +31,29 @@ class _EmployerProfileState extends State<EmployerProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // margin: EdgeInsets.only(left: space18),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        y20,
+        Padding(
+          padding: EdgeInsets.only(left: space18),
+          child: PoppinsTextWidget(
+              text: "Profile", size: 64, isBold: true, color: midOrange),
+        ),
+        Divider(
+          height: space40,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: space20),
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          y20,
-          Padding(
-            padding: EdgeInsets.only(left: space18),
-            child: PoppinsTextWidget(
-                text: "Profile", size: 64, isBold: true, color: midOrange),
+            children: [
+              _signOut(),
+            ],
           ),
-          Divider(
-            height: space40,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: space20),
-            child: Column(
-              children: [
-                _signOut(),
-              ],
-            ),
-          ),
-        ],
-      )),
-    );
+        ),
+      ],
+    ));
   }
 }

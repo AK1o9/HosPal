@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hospal/api/screen_responsiveness/dimensions.dart';
 import 'package:hospal/constants/style.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,6 +18,12 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
   String? docId;
 
   String? resultDocId;
+
+  bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= mobileWidth;
+
+  bool isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < mobileWidth;
 
   @override
   void initState() {
@@ -99,27 +106,35 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                                   height: /* 300 */ 600,
                                   child: buildJobResults()))),
 
-                  VerticalDivider(
-                    thickness: 0.5,
-                    width: space20,
-                    color: grey,
-                  ),
+                  isDesktop(context)
+                      ? VerticalDivider(
+                          thickness: 0.5,
+                          width: space20,
+                          color: grey,
+                        )
+                      : Container(
+                          width: 0,
+                        ),
 
                   //Side Preview
-                  Expanded(
-                      child: resultDocId == null
-                          ? PoppinsTextWidget(
-                              text: '',
-                              size: fontTitle,
-                              color: dark,
-                              isCenter: true,
-                            )
-                          : SingleChildScrollView(
-                              child: Column(
-                              children: [
-                                buildJobView(),
-                              ],
-                            )))
+                  isDesktop(context)
+                      ? Expanded(
+                          child: resultDocId == null
+                              ? PoppinsTextWidget(
+                                  text: '',
+                                  size: fontTitle,
+                                  color: dark,
+                                  isCenter: true,
+                                )
+                              : SingleChildScrollView(
+                                  child: Column(
+                                  children: [
+                                    buildJobView(),
+                                  ],
+                                )))
+                      : Container(
+                          width: 0,
+                        )
                 ]),
               ),
             ),

@@ -63,6 +63,8 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
           if (documentSnapshot.exists) {
             if (documentSnapshot.get('role') == role && role == 'Jobseeker') {
               // print(UserAuth().userRoleAsString);
+              _emailController.clear();
+              _passwordController.clear();
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) =>
                       const JobseekerNavBar())); //TODO: Maybe remove 'const'?

@@ -2,18 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:hospal/api/screen_responsiveness/dimensions.dart';
-import 'package:hospal/api/screen_responsiveness/responsive_layout.dart';
-import 'package:hospal/api/search_service.dart';
 import 'package:hospal/pages/job/job_details_page.dart';
-import 'package:hospal/widgets/button_widget.dart';
-import 'package:hospal/widgets/text_nunito_widget.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:hospal/widgets/textfield_widget.dart';
 import '../../../constants/style.dart';
 import '../../../widgets/custom_button_widget.dart';
 import '../../job/job_custom_search_page.dart';
-import 'js_profile_page.dart';
 
 class JobseekerHomePage extends StatefulWidget {
   const JobseekerHomePage({Key? key}) : super(key: key);
@@ -493,6 +488,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
             return ListView(
               children: documents
                   .map((document) => Card(
+                        margin: EdgeInsets.symmetric(vertical: space10),
                         shape: RoundedRectangleBorder(borderRadius: bRadius20),
                         color: light,
                         child: InkWell(

@@ -3,7 +3,10 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
+import 'package:hospal/api/screen_responsiveness/dimensions.dart';
+import 'package:hospal/api/user_auth.dart';
 import 'package:hospal/widgets/button_widget.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:hospal/widgets/textfield_widget.dart';
@@ -58,6 +61,7 @@ class _JobPostPageState extends State<JobPostPage> {
 
   DropzoneViewController? dropzoneController;
   bool isDropzoneHighlighted = false;
+  bool uploadError = false;
 
   UploadTask? task;
   File? file;
@@ -68,6 +72,12 @@ class _JobPostPageState extends State<JobPostPage> {
   Uint8List? bytes;
   PlatformFile? byteFile;
   String? fileURL;
+
+  bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= mobileWidth;
+
+  bool isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < mobileWidth;
 
   @override
   void initState() {
@@ -120,7 +130,9 @@ class _JobPostPageState extends State<JobPostPage> {
       child: Scaffold(
         //TODO: If page's fixed, remove scaffold.
         body: Container(
-          margin: EdgeInsets.only(left: space18),
+          margin: EdgeInsets.only(
+              left: isMobile(context) ? space12 : space18,
+              right: isMobile(context) ? space12 : 0),
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -187,7 +199,7 @@ class _JobPostPageState extends State<JobPostPage> {
               Row(
                 children: [
                   Expanded(
-                    flex: 15,
+                    flex: isMobile(context) ? 2 : 15,
                     child: TextfieldWidget(
                         labelText: 'Duration *',
                         controller: jobDurationController,
@@ -310,7 +322,7 @@ class _JobPostPageState extends State<JobPostPage> {
               Row(
                 children: [
                   Expanded(
-                    flex: 12,
+                    flex: isMobile(context) ? 2 : 12,
                     child: TextfieldWidget(
                       labelText: 'Skills Required',
                       controller: jobSkillsController,
@@ -367,19 +379,44 @@ class _JobPostPageState extends State<JobPostPage> {
                                 colorTheme: orangeTheme,
                               ),
                             ),
-                            x10,
-                            Expanded(
-                              flex: 2,
-                              child: TextfieldWidget(
+                            isDesktop(context)
+                                ? x10
+                                : Container(
+                                    width: 0,
+                                  ),
+                            isDesktop(context)
+                                ? Expanded(
+                                    flex: 2,
+                                    child: TextfieldWidget(
+                                      labelText: 'Company Address',
+                                      colorTheme: orangeTheme,
+                                      controller: companyAddressController,
+                                      icon: const Icon(Icons.location_on),
+                                      textInputType:
+                                          TextInputType.streetAddress,
+                                    ),
+                                  )
+                                : Container(
+                                    width: 0,
+                                  ),
+                          ],
+                        ),
+                        isMobile(context)
+                            ? y20
+                            : Container(
+                                width: 0,
+                              ),
+                        isMobile(context)
+                            ? TextfieldWidget(
                                 labelText: 'Company Address',
                                 colorTheme: orangeTheme,
                                 controller: companyAddressController,
                                 icon: const Icon(Icons.location_on),
                                 textInputType: TextInputType.streetAddress,
+                              )
+                            : Container(
+                                width: 0,
                               ),
-                            ),
-                          ],
-                        ),
                         y20,
                         TextfieldWidget(
                             colorTheme: orangeTheme,
@@ -413,8 +450,19 @@ class _JobPostPageState extends State<JobPostPage> {
                           onDroppedFile: (file) =>
                               setState(() => droppedFile = file)))
                   : pickFile(),
-
-              y30, y20,
+              uploadError
+                  ? Padding(
+                      padding: EdgeInsets.symmetric(vertical: space12),
+                      child: PoppinsTextWidget(
+                          text: "Sorry! This feature is temporarily disabled.",
+                          size: fontLabel,
+                          color: Colors.red),
+                    )
+                  : Container(
+                      width: 0,
+                    ),
+              y30,
+              y20,
               Center(
                 child: SizedBox(
                   width: 200,
@@ -427,7 +475,8 @@ class _JobPostPageState extends State<JobPostPage> {
                         }),
                   ),
                 ),
-              )
+              ),
+              y20
             ]),
           ),
         ),
@@ -532,9 +581,13 @@ class _JobPostPageState extends State<JobPostPage> {
 
   void saveData() {
     var collection = FirebaseFirestore.instance.collection('jobs');
+    String userId = UserAuth().currentUser!.uid;
+    // var collection = FirebaseFirestore.instance.collection('users').doc(userId);
     try {
       collection.doc(docId).set({
+        // collection.collection('jobs').doc(docId).set({
         'job_id': jobId,
+        'user_id': userId,
         'job_level': jobLevel,
         'job_title': jobTitleController.text,
         'job_description': jobDescriptionController.text,
@@ -624,16 +677,20 @@ class _JobPostPageState extends State<JobPostPage> {
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            primary: Colors.blue,
+            backgroundColor: midOrange,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20))),
         icon: const Icon(Icons.attach_file_rounded, size: 32),
         label: const Text('Attach File(s)',
             style: TextStyle(color: Colors.white, fontSize: 20)),
         onPressed: () async {
-          final events = await dropzoneController!.pickFiles();
-          if (events.isEmpty) return;
-          acceptFile(events.first);
+          setState(() {
+            uploadError = true;
+          });
+          //TODO
+          // final events = await dropzoneController!.pickFiles();
+          // if (events.isEmpty) return;
+          // acceptFile(events.first);
         },
       ),
     );

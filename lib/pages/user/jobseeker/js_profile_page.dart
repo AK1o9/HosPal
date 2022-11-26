@@ -52,11 +52,35 @@ class _UserProfilePageState extends State<JobseekerProfilePage>
   @override
   Widget build(BuildContext context) {
     _dateController.text = getDate();
-    return Column(children: [_signOut()]);
+    return SingleChildScrollView(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        y20,
+        Padding(
+          padding: EdgeInsets.only(left: space18),
+          child: PoppinsTextWidget(
+              text: "Profile", size: 64, isBold: true, color: midBlue),
+        ),
+        Divider(
+          height: space40,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: space20),
+          child: Column(
+            children: [
+              _signOut(),
+            ],
+          ),
+        ),
+      ],
+    ));
   }
 
   Future<void> signOut() async {
     await UserAuth().signOut();
+    Navigator.of(context).pop();
   }
 
   Widget _signOut() {

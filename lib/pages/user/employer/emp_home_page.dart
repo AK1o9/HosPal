@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
+import 'package:hospal/api/screen_responsiveness/dimensions.dart';
 import 'package:hospal/pages/job/job_details_page.dart';
 import 'package:hospal/pages/job/job_custom_search_page.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
@@ -19,6 +20,12 @@ class EmployerHomePage extends StatefulWidget {
 
 class _EmployerHomePageState extends State<EmployerHomePage> {
   final searchController = TextEditingController();
+
+  bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= mobileWidth;
+
+  bool isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < mobileWidth;
 
   @override
   void initState() {
@@ -58,8 +65,9 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
             height: space40,
           ),
           Container(
-            margin: EdgeInsets.only(right: space20),
-            padding: pad20,
+            margin:
+                EdgeInsets.only(right: isMobile(context) ? space12 : space20),
+            padding: pad10,
             decoration: BoxDecoration(borderRadius: bRadius20, color: light),
             child: Column(
               children: [
@@ -69,7 +77,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                   child: Row(children: [
                     //Search bar
                     Expanded(
-                      flex: 10,
+                      flex: isMobile(context) ? 4 : 10,
                       child: /* InkWell(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
@@ -108,22 +116,28 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                     // ),
 
                     //Search button
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: space10),
-                        child: CustomButtonWidget(
-                            icon: Icons.search_rounded,
-                            color: midOrange,
-                            label: 'Search',
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => JobCustomSearchPage(
-                                        query: searchController.text,
-                                      )));
-                            }),
-                      ),
-                    ),
+                    if (isMobile(context) && searchController.text != '')
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: isMobile(context) ? space8 : space10),
+                          child: CustomButtonWidget(
+                              icon: Icons.search_rounded,
+                              label: 'Search',
+                              color: midOrange,
+                              onTap: () {
+                                // showSearch(
+                                //     context: context, delegate: MySearchDelegate());
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => JobCustomSearchPage(
+                                          query: searchController.text,
+                                        )));
+                              }),
+                        ),
+                      )
+                    else
+                      Container(width: 0),
                   ]),
                 ),
               ],
@@ -183,23 +197,27 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                       color: light,
                       isBold: true,
                     ),
-                    IconButton(
-                        padding: EdgeInsets.only(right: space10),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      super.widget));
-                        },
-                        icon: Icon(
-                          Icons.refresh,
-                          color: light,
-                          size: 28,
-                        ))
+                    isMobile(context)
+                        ? Container(
+                            width: 0,
+                          )
+                        : IconButton(
+                            padding: EdgeInsets.only(right: space10),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          super.widget));
+                            },
+                            icon: Icon(
+                              Icons.refresh,
+                              color: light,
+                              size: 28,
+                            ))
                   ],
                 ),
-                y20,
+                isMobile(context) ? y4 : y20,
                 SafeArea(
                   child: SizedBox(height: 512, child: buildJobListings()),
                 ),
@@ -396,6 +414,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
             return ListView(
               children: documents
                   .map((document) => Card(
+                        margin: EdgeInsets.symmetric(vertical: space10),
                         shape: RoundedRectangleBorder(borderRadius: bRadius20),
                         color: light,
                         child: InkWell(
@@ -405,16 +424,20 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                     JobPage(docId: document.id)));
                           },
                           child: Container(
-                            height: 120,
-                            padding: EdgeInsets.only(
-                                top: space10,
-                                bottom: space10,
-                                left: space20,
-                                right: space20),
+                            height: isMobile(context) ? 210 : 120,
+                            padding: isMobile(context)
+                                ? pad18
+                                : EdgeInsets.only(
+                                    top: space10,
+                                    bottom: space10,
+                                    left: space20,
+                                    right: space20),
                             decoration: BoxDecoration(
                                 borderRadius: bRadius20, color: light),
                             child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: isMobile(context)
+                                    ? MainAxisAlignment.start
+                                    : MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
@@ -443,212 +466,175 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                           x20,
                                           Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.center,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+                                              isMobile(context)
+                                                  ? y4
+                                                  : Container(
+                                                      width: 0,
+                                                    ),
                                               PoppinsTextWidget(
                                                 text: document['job_title'],
                                                 size: fontLabel,
                                                 color: dark,
                                                 isBold: true,
                                               ),
-                                              y4,
-                                              Row(
-                                                children: [
-                                                  PoppinsTextWidget(
-                                                    text: document[
-                                                        'company_name'],
-                                                    size: fontLabel,
-                                                    color: dark,
-                                                  ),
-                                                  x10,
-                                                  PoppinsTextWidget(
-                                                    text: '|',
-                                                    size: fontLabel,
-                                                    color: dark,
-                                                  ),
-                                                  x10,
-                                                  PoppinsTextWidget(
-                                                    text: document[
-                                                        'company_address'],
-                                                    size: fontLabel,
-                                                    color: dark,
-                                                  ),
-                                                ],
-                                              ),
+                                              isMobile(context) ? y8 : y4,
+                                              isMobile(context)
+                                                  ? Container(
+                                                      padding: pad8,
+                                                      decoration: BoxDecoration(
+                                                          /* borderRadius:
+                                                          bRadius20, */
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          8),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          8)),
+                                                          color: darkBlue),
+                                                      child: PoppinsTextWidget(
+                                                          text: document[
+                                                              'job_type'],
+                                                          size: fontBody,
+                                                          color: light),
+                                                    )
+                                                  : Row(
+                                                      children: [
+                                                        PoppinsTextWidget(
+                                                          text: document[
+                                                              'company_name'],
+                                                          size: fontLabel,
+                                                          color: dark,
+                                                        ),
+                                                        x10,
+                                                        PoppinsTextWidget(
+                                                          text: '|',
+                                                          size: fontLabel,
+                                                          color: dark,
+                                                        ),
+                                                        x10,
+                                                        SingleChildScrollView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          child:
+                                                              PoppinsTextWidget(
+                                                            text: document[
+                                                                'company_address'],
+                                                            size: fontLabel,
+                                                            color: dark,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                               y8,
-                                              Container(
-                                                padding: pad8,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: bRadius30,
-                                                    color: dark),
-                                                child: PoppinsTextWidget(
-                                                    text: document['job_type'],
-                                                    size: fontBody,
-                                                    color: light),
-                                              )
+                                              isMobile(context)
+                                                  ? Container(
+                                                      width: 0,
+                                                    )
+                                                  : Container(
+                                                      padding: pad8,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              bRadius20,
+                                                          color: dark),
+                                                      child: PoppinsTextWidget(
+                                                          text: document[
+                                                              'job_type'],
+                                                          size: fontLabel,
+                                                          color: light),
+                                                    )
                                             ],
-                                          )
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: pad8,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: /* Colors.lightGreenAccent */ dark),
-                                            borderRadius: bRadius20),
-                                        child: PoppinsTextWidget(
-                                          text:
-                                              'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
-                                          size: fontLabel,
-                                          color: dark, //Colors.lightGreen,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ]),
-                          ),
-                        ),
-                      ))
-                  .toList(),
-            );
-          } else if (snapshot.hasError) {
-            return PoppinsTextWidget(
-              text: 'Oops! Something went wrong...',
-              size: fontLabel,
-              color: dark,
-              isBold: true,
-              isCenter: true,
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
-  }
-
-  Widget buildApplicants() {
-    CollectionReference collection =
-        FirebaseFirestore.instance.collection('jobs');
-    return FutureBuilder<QuerySnapshot>(
-        future: collection.get(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            var documents = snapshot.data!.docs;
-            return ListView(
-              children: documents
-                  .map((document) => Card(
-                        shape: RoundedRectangleBorder(borderRadius: bRadius20),
-                        color: dark,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    JobPage(docId: document.id)));
-                          },
-                          child: Container(
-                            height: 120,
-                            padding: EdgeInsets.only(
-                                top: space10,
-                                bottom: space10,
-                                left: space20,
-                                right: space20),
-                            decoration: BoxDecoration(
-                                borderRadius: bRadius20, color: dark),
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(space10),
-                                            width: 72,
-                                            height: 72,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        space12),
-                                                color: light),
-                                            child: Icon(
-                                              Icons.photo_rounded,
-                                              color: grey,
-                                              size: 45,
-                                            ),
                                           ),
-                                          x20,
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              PoppinsTextWidget(
-                                                text: document['job_title'],
+                                        ],
+                                      ),
+                                      isMobile(context)
+                                          ? Container(
+                                              width: 0,
+                                            )
+                                          : Container(
+                                              padding: pad8,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: /* Colors.lightGreenAccent */ dark),
+                                                  borderRadius: bRadius20),
+                                              child: PoppinsTextWidget(
+                                                text:
+                                                    'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
                                                 size: fontLabel,
-                                                color: light,
-                                                isBold: true,
+                                                color:
+                                                    dark, //Colors.lightGreen,
                                               ),
-                                              y4,
-                                              Row(
+                                            )
+                                    ],
+                                  ),
+                                  isMobile(context)
+                                      ? y16
+                                      : Container(
+                                          width: 0,
+                                        ),
+                                  isMobile(context)
+                                      ? Column(
+                                          children: [
+                                            Row(
+                                                // mainAxisAlignment:
+                                                //     MainAxisAlignment.center,
                                                 children: [
-                                                  PoppinsTextWidget(
-                                                    text: document[
-                                                        'company_name'],
-                                                    size: fontLabel,
-                                                    color: light,
+                                                  Column(
+                                                    children: [
+                                                      PoppinsTextWidget(
+                                                        text: document[
+                                                            'company_name'],
+                                                        size: fontLabel,
+                                                        color: dark,
+                                                        isBold: true,
+                                                      ),
+                                                    ],
                                                   ),
                                                   x10,
                                                   PoppinsTextWidget(
                                                     text: '|',
                                                     size: fontLabel,
-                                                    color: light,
+                                                    color: dark,
                                                   ),
                                                   x10,
                                                   PoppinsTextWidget(
                                                     text: document[
                                                         'company_address'],
                                                     size: fontLabel,
-                                                    color: light,
+                                                    color: dark,
                                                   ),
-                                                ],
-                                              ),
-                                              y8,
-                                              Container(
+                                                ]),
+                                            y16,
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: Container(
                                                 padding: pad8,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: bRadius30,
-                                                    color: light),
+                                                    // border: Border.all(
+                                                    //     color: /* Colors.lightGreenAccent */ dark),
+                                                    color: Colors
+                                                        .greenAccent.shade200,
+                                                    borderRadius: bRadius20),
                                                 child: PoppinsTextWidget(
-                                                    text: document['job_type'],
-                                                    size: fontBody,
-                                                    color: dark),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: pad8,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: /* Colors.lightGreenAccent */ dark),
-                                            borderRadius: bRadius20),
-                                        child: PoppinsTextWidget(
-                                          text:
-                                              'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
-                                          size: fontLabel,
-                                          color: light, //Colors.lightGreen,
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                                  text:
+                                                      'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
+                                                  size: fontLabel,
+                                                  color: Colors.green
+                                                      .shade900, //Colors.lightGreen,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      : Container(
+                                          width: 0,
+                                        )
                                 ]),
                           ),
                         ),
@@ -668,6 +654,148 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
           }
         });
   }
+}
+
+Widget buildApplicants() {
+  CollectionReference collection =
+      FirebaseFirestore.instance.collection('jobs');
+  return FutureBuilder<QuerySnapshot>(
+      future: collection.get(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          var documents = snapshot.data!.docs;
+          return ListView(
+            children: documents
+                .map((document) => Card(
+                      shape: RoundedRectangleBorder(borderRadius: bRadius20),
+                      color: dark,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  JobPage(docId: document.id)));
+                        },
+                        child: Container(
+                          height: 120,
+                          padding: EdgeInsets.only(
+                              top: space10,
+                              bottom: space10,
+                              left: space20,
+                              right: space20),
+                          decoration: BoxDecoration(
+                              borderRadius: bRadius20, color: dark),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(space10),
+                                          width: 72,
+                                          height: 72,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      space12),
+                                              color: light),
+                                          child: Icon(
+                                            Icons.photo_rounded,
+                                            color: grey,
+                                            size: 45,
+                                          ),
+                                        ),
+                                        x20,
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            PoppinsTextWidget(
+                                              text: document['job_title'],
+                                              size: fontLabel,
+                                              color: light,
+                                              isBold: true,
+                                            ),
+                                            y4,
+                                            Row(
+                                              children: [
+                                                PoppinsTextWidget(
+                                                  text:
+                                                      document['company_name'],
+                                                  size: fontLabel,
+                                                  color: light,
+                                                ),
+                                                x10,
+                                                PoppinsTextWidget(
+                                                  text: '|',
+                                                  size: fontLabel,
+                                                  color: light,
+                                                ),
+                                                x10,
+                                                PoppinsTextWidget(
+                                                  text: document[
+                                                      'company_address'],
+                                                  size: fontLabel,
+                                                  color: light,
+                                                ),
+                                              ],
+                                            ),
+                                            y8,
+                                            Container(
+                                              padding: pad8,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: bRadius30,
+                                                  color: light),
+                                              child: PoppinsTextWidget(
+                                                  text: document['job_type'],
+                                                  size: fontBody,
+                                                  color: dark),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Container(
+                                      padding: pad8,
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: /* Colors.lightGreenAccent */ dark),
+                                          borderRadius: bRadius20),
+                                      child: PoppinsTextWidget(
+                                        text:
+                                            'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
+                                        size: fontLabel,
+                                        color: light, //Colors.lightGreen,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ]),
+                        ),
+                      ),
+                    ))
+                .toList(),
+          );
+        } else if (snapshot.hasError) {
+          return PoppinsTextWidget(
+            text: 'Oops! Something went wrong...',
+            size: fontLabel,
+            color: light,
+            isBold: true,
+            isCenter: true,
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      });
 }
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {

@@ -99,6 +99,8 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
               }
             } else if (documentSnapshot.get('role') == role &&
                 role == 'Employer') {
+              _emailController.clear();
+              _passwordController.clear();
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) =>
                       const EmployerNavBar())); //TODO: Maybe remove const
