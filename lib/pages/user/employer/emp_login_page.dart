@@ -101,9 +101,11 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
                 role == 'Employer') {
               _emailController.clear();
               _passwordController.clear();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      const EmployerNavBar())); //TODO: Maybe remove const
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const EmployerNavBar())); //TODO: Maybe remove const
             }
             // else {}
           } else {
@@ -192,16 +194,28 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
                     onTap: (signInWithEmailAndPassword)),
                 Padding(
                     padding: pad12,
-                    child: InkWell(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const EmployerRegisterPage())),
-                        child: PoppinsTextWidget(
-                          text: "Don't have an account? Click here to register",
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PoppinsTextWidget(
+                          text: "Don't have an account?",
                           size: fontBody,
-                          color: darkOrange,
-                        )))
+                          color: dark,
+                        ),
+                        x4,
+                        InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const EmployerRegisterPage())),
+                          child: PoppinsTextWidget(
+                            text: "Tap here to register",
+                            size: fontBody,
+                            color: Colors.blue.shade600,
+                          ),
+                        )
+                      ],
+                    ))
               ],
             ),
           ),

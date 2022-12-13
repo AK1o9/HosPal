@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:hospal/widgets/textfield_widget.dart';
+import 'package:path/path.dart';
 
 import '../../constants/style.dart';
 
@@ -20,6 +21,8 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
 
   DateTime? startDate;
   double? desiredSalary;
+
+  int currentStep = 0;
 
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -63,6 +66,99 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
     desiredSalaryController.clear();
   }
 
+  List<Step> getSteps() => [
+        Step(
+            isActive: currentStep >= 0,
+            title: PoppinsTextWidget(
+              text: 'Details',
+              size: fontLabel,
+              color: dark,
+            ),
+            content: Column(
+              children: [
+                TextfieldWidget(
+                    labelText: 'Full Name', controller: fullNameController),
+                y10,
+                TextfieldWidget(
+                    labelText: 'E-mail address', controller: emailController),
+                y10,
+                TextfieldWidget(
+                    labelText: 'Contact Number', controller: phoneController),
+                y10,
+                TextfieldWidget(
+                    labelText: 'Desired Start Date',
+                    controller: startDateController),
+                y10,
+                TextfieldWidget(
+                    labelText: 'Desired Salary or Pay',
+                    controller: desiredSalaryController),
+              ],
+            )),
+        Step(
+            isActive: currentStep >= 1,
+            title: PoppinsTextWidget(
+              text: 'Files',
+              size: fontLabel,
+              color: dark,
+            ),
+            content: Column(
+              children: [
+                PoppinsTextWidget(
+                    text:
+                        'You may either UPLOAD your files here or IMPORT them from your file storage:\nSuch files may include: CVs, Cover Letters and Internship Letters.',
+                    size: fontLabel,
+                    color: dark),
+                y10,
+                Container(),
+              ],
+            )),
+        Step(
+            isActive: currentStep >= 2,
+            title: PoppinsTextWidget(
+              text: 'Additional Info',
+              size: fontLabel,
+              color: dark,
+            ),
+            content: Column(
+              children: [
+                TextfieldWidget(
+                  labelText: 'Additional Information (Optional)',
+                  controller: additionalInfoController,
+                  textInputType: TextInputType.multiline,
+                ),
+              ],
+            )),
+      ];
+
+  Widget buildStepper() {
+    return Stepper(
+      type: StepperType.horizontal,
+      steps: getSteps(),
+      currentStep: currentStep,
+      onStepCancel: currentStep == 0
+          ? null
+          : () {
+              setState(() {
+                currentStep -= 1;
+              });
+            },
+      onStepContinue: () {
+        final isLastStep = currentStep == getSteps().length - 1;
+        if (isLastStep) {
+          //Job Application Completed
+          //...
+          if (kDebugMode) {
+            print('Job Application submitted successfully!');
+          }
+        } else {
+          setState(() {
+            currentStep += 1;
+          });
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
@@ -82,23 +178,7 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
               color: dark,
             ),
             y20,
-            TextfieldWidget(
-                labelText: 'Full Name', controller: fullNameController),
-            y10,
-            TextfieldWidget(
-                labelText: 'E-mail address', controller: emailController),
-            y10,
-            TextfieldWidget(
-                labelText: 'Contact Number', controller: phoneController),
-            y10,
-            TextfieldWidget(
-                labelText: 'Desired Start Date',
-                controller: startDateController),
-            y10,
-            TextfieldWidget(
-                labelText: 'Desired Salary or Pay',
-                controller: desiredSalaryController),
-            y10,
+            buildStepper(),
           ]),
         ),
       ),

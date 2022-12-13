@@ -89,7 +89,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
         //     x8,
         //   ],
         // ),
-        backgroundColor: light,
+        backgroundColor: softGrey,
         body: Container(
           margin: EdgeInsets.only(left: isMobile(context) ? space12 : space18),
           child: SingleChildScrollView(
@@ -116,7 +116,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                     right: isMobile(context) ? space12 : space20),
                 padding: pad10,
                 decoration:
-                    BoxDecoration(borderRadius: bRadius20, color: light),
+                    BoxDecoration(borderRadius: bRadius20, color: softGrey),
                 child: Column(children: [
                   Container(
                     width: double.infinity,
@@ -184,7 +184,8 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
               ),
               Container(
                 margin: EdgeInsets.only(top: space20, right: space20),
-                padding: pad20,
+                padding: const EdgeInsets.only(
+                    left: 20, top: 20, bottom: 20, right: 0),
                 decoration:
                     BoxDecoration(borderRadius: bRadius20, color: midBlue),
                 child: Column(
@@ -217,7 +218,8 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
               ),
               Container(
                 margin: EdgeInsets.only(top: space20, right: space20),
-                padding: pad20,
+                padding: const EdgeInsets.only(
+                    left: 20, top: 20, bottom: 20, right: 0),
                 decoration:
                     BoxDecoration(borderRadius: bRadius20, color: midBlue),
                 child: Column(

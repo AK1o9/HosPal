@@ -24,7 +24,7 @@ class _EmployerProfileState extends State<EmployerProfilePage> {
     return CustomButtonWidget(
       label: 'Log out',
       onTap: signOut,
-      color: midOrange,
+      color: darkOrange,
       icon: Icons.logout_rounded,
     );
   }

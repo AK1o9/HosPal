@@ -4,8 +4,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hospal/api/user_auth.dart';
-import 'package:hospal/pages/front_page.dart';
 import 'package:hospal/pages/user/employer/emp_nav_bar.dart';
+import 'package:hospal/widgets/welcome_screen.dart';
 
 import 'jobseeker/js_nav_bar.dart';
 
@@ -22,7 +22,7 @@ class Auth extends StatelessWidget {
         } else if (snapshot.hasData && UserAuth().userRole == 'Employer') {
           return const EmployerNavBar();
         } else {
-          return const FrontPage();
+          return const WelcomeScreenWidget(); //Used to be WelcomePage (Stateful)
         }
       },
     );

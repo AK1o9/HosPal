@@ -65,9 +65,10 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
               // print(UserAuth().userRoleAsString);
               _emailController.clear();
               _passwordController.clear();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      const JobseekerNavBar())); //TODO: Maybe remove 'const'?
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const JobseekerNavBar()));
             } else if (documentSnapshot.get('role') == role &&
                 role == 'Employer') {
               if (kDebugMode) {
@@ -150,16 +151,28 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
                     onTap: (signInWithEmailAndPassword)),
                 Padding(
                     padding: pad12,
-                    child: InkWell(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const JobseekerRegisterPage())),
-                        child: PoppinsTextWidget(
-                          text: "Don't have an account? Click here to register",
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PoppinsTextWidget(
+                          text: "Don't have an account?",
                           size: fontBody,
-                          color: darkBlue,
-                        )))
+                          color: dark,
+                        ),
+                        x4,
+                        InkWell(
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const JobseekerRegisterPage())),
+                          child: PoppinsTextWidget(
+                            text: "Tap here to register",
+                            size: fontBody,
+                            color: Colors.blue.shade600,
+                          ),
+                        )
+                      ],
+                    ))
               ],
             ),
           ),

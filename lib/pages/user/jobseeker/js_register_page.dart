@@ -40,7 +40,7 @@ class _JobseekerRegisterPageState extends State<JobseekerRegisterPage> {
     return PoppinsTextWidget(
         text: errorMessage == '' ? '' : 'Error: $errorMessage',
         size: fontBody,
-        color: Colors.red);
+        color: Colors.red.shade900);
   }
 
   Widget _successMessage() {
@@ -164,10 +164,10 @@ class _JobseekerRegisterPageState extends State<JobseekerRegisterPage> {
               colorTheme: blueTheme,
               hideText: true,
             ),
-            y20,
+            y16,
             // accountCreated ? _successMessage() : _errorMessage(),
             buildMessage(),
-            y20,
+            y16,
             CustomButtonWidget(
                 label: "Sign Up",
                 color: darkBlue,

@@ -35,7 +35,7 @@ class _EmployerRegisterPageState extends State<EmployerRegisterPage> {
     return PoppinsTextWidget(
         text: errorMessage == '' ? '' : 'Error: $errorMessage',
         size: fontBody,
-        color: Colors.red);
+        color: Colors.red.shade900);
   }
 
   Widget _successMessage() {
@@ -159,10 +159,22 @@ class _EmployerRegisterPageState extends State<EmployerRegisterPage> {
               colorTheme: orangeTheme,
               hideText: true,
             ),
-            y20,
+            // Expanded(
+            //   child: Divider(
+            //     color: dark,
+            //     thickness: 0.5,
+            //     // height: space30,
+            //   ),
+            // ),
+            // TextfieldWidget(
+            //   labelText: "Contact Number",
+            //   controller: _confirmPasswordController,
+            //   colorTheme: orangeTheme,
+            // ),
+            y16,
             // accountCreated ? _successMessage() : _errorMessage(),
             buildMessage(),
-            y20,
+            y16,
             CustomButtonWidget(
                 label: "Sign Up",
                 color: darkOrange,

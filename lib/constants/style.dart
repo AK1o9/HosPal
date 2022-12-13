@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 Color dark = Colors.black;
 Color light = Colors.white;
 Color silver = const Color.fromARGB(255, 230, 230, 230);
+Color softGrey = Colors.grey.shade300;
 Color grey = Colors.black38; //Color.fromARGB(255, 139, 139, 139);
 Color aqua = Colors.blue;
 Color softBlue = Colors.blue.shade300;

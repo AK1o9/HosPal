@@ -46,185 +46,182 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: space18),
-      child: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // y30,
-          // PoppinsTextWidget(
-          //   text: "Welcome back, Ahmed.\nLet's find you some employees!",
-          //   size: fontSubtitle,
-          //   color: dark,
-          // ),
-          y20,
-          PoppinsTextWidget(
-              text: "Home", size: 64, isBold: true, color: midOrange),
-          Divider(
-            height: space40,
-          ),
-          Container(
-            margin:
-                EdgeInsets.only(right: isMobile(context) ? space12 : space20),
-            padding: pad10,
-            decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(right: space18),
-                  child: Row(children: [
-                    //Search bar
-                    Expanded(
-                      flex: isMobile(context) ? 4 : 10,
-                      child: /* InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const JobSearchPage2()));
-                            },
-                            child: */
-                          TextfieldWidget(
-                        colorTheme: orangeTheme,
-                        labelText: 'Job title, company name or keyword',
-                        controller: searchController,
-                        icon: Icon(Icons.search_outlined,
-                            color: midOrange //or aqua,
-                            ),
-                      ),
-                      // ),
-                    ),
-
-                    //Filter button (for search results) //TODO: Remove or replace in the search delegate.
-                    // Expanded(
-                    //   child: InkWell(
-                    //     hoverColor: Colors.transparent,
-                    //     splashColor: Colors.transparent,
-                    //     highlightColor: Colors.transparent,
-                    //     onTap: () {
-                    //       //Filter
-                    //     },
-                    //     child: Container(
-                    //         height: space50,
-                    //         width: space50,
-                    //         margin: EdgeInsets.only(left: space12),
-                    //         decoration: BoxDecoration(
-                    //             color: dark, borderRadius: bRadius12),
-                    //         child: Icon(Icons.filter_alt_rounded,
-                    //             color: light, size: 24)),
-                    //   ),
-                    // ),
-
-                    //Search button
-                    if (isMobile(context) && searchController.text != '')
+    return Scaffold(
+      backgroundColor: light,
+      body: SingleChildScrollView(
+          child: Padding(
+        padding: EdgeInsets.only(left: space18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            y20,
+            PoppinsTextWidget(
+                text: "Home", size: 64, isBold: true, color: midOrange),
+            Divider(
+              height: space40,
+            ),
+            Container(
+              margin:
+                  EdgeInsets.only(right: isMobile(context) ? space12 : space20),
+              padding: pad10,
+              decoration: BoxDecoration(borderRadius: bRadius20, color: light),
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.only(right: space18),
+                    child: Row(children: [
+                      //Search bar
                       Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: isMobile(context) ? space8 : space10),
-                          child: CustomButtonWidget(
-                              icon: Icons.search_rounded,
-                              label: 'Search',
-                              color: midOrange,
+                        flex: isMobile(context) ? 4 : 10,
+                        child: /* InkWell(
                               onTap: () {
-                                // showSearch(
-                                //     context: context, delegate: MySearchDelegate());
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => JobCustomSearchPage(
-                                          query: searchController.text,
-                                        )));
-                              }),
+                                    builder: (context) => const JobSearchPage2()));
+                              },
+                              child: */
+                            TextfieldWidget(
+                          colorTheme: orangeTheme,
+                          labelText: 'Job title, company name or keyword',
+                          controller: searchController,
+                          icon: Icon(Icons.search_outlined,
+                              color: midOrange //or aqua,
+                              ),
                         ),
-                      )
-                    else
-                      Container(width: 0),
-                  ]),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: space20, right: space20),
-            padding: pad20,
-            decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PoppinsTextWidget(
-                  text: 'RECENT APPLICANTS',
-                  size: fontTitle,
-                  color: midOrange,
-                  isBold: true,
-                ),
-                y20,
-                //TODO: Fix
-                // SafeArea(
-                //   child: SizedBox(
-                //       height: 420,
-                //       child: Center(
-                //         child: Image.asset('empty_folder.jpg'),
-                //       ) /* buildApplicants() */),
-                // ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: space50 * 2),
-                  child: Center(
-                    child: NunitoTextWidget(
-                      text: "Oops! Looks like it's empty in here.",
-                      size: 32,
-                      color: midOrange,
-                      isBold: true,
-                    ),
+                        // ),
+                      ),
+
+                      //Filter button (for search results) //TODO: Remove or replace in the search delegate.
+                      // Expanded(
+                      //   child: InkWell(
+                      //     hoverColor: Colors.transparent,
+                      //     splashColor: Colors.transparent,
+                      //     highlightColor: Colors.transparent,
+                      //     onTap: () {
+                      //       //Filter
+                      //     },
+                      //     child: Container(
+                      //         height: space50,
+                      //         width: space50,
+                      //         margin: EdgeInsets.only(left: space12),
+                      //         decoration: BoxDecoration(
+                      //             color: dark, borderRadius: bRadius12),
+                      //         child: Icon(Icons.filter_alt_rounded,
+                      //             color: light, size: 24)),
+                      //   ),
+                      // ),
+
+                      //Search button
+                      if (isMobile(context) && searchController.text != '')
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: isMobile(context) ? space8 : space10),
+                            child: CustomButtonWidget(
+                                icon: Icons.search_rounded,
+                                label: 'Search',
+                                color: midOrange,
+                                onTap: () {
+                                  // showSearch(
+                                  //     context: context, delegate: MySearchDelegate());
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => JobCustomSearchPage(
+                                            query: searchController.text,
+                                          )));
+                                }),
+                          ),
+                        )
+                      else
+                        Container(width: 0),
+                    ]),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
-          ),
-          Container(
-            margin:
-                EdgeInsets.only(top: space20, right: space20, bottom: space20),
-            padding: pad20,
-            decoration:
-                BoxDecoration(borderRadius: bRadius20, color: midOrange),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    PoppinsTextWidget(
-                      text: 'MY POSTS',
-                      size: fontTitle,
-                      color: light,
-                      isBold: true,
+            Container(
+              margin: EdgeInsets.only(top: space20, right: space20),
+              padding: pad20,
+              decoration: BoxDecoration(borderRadius: bRadius20, color: light),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PoppinsTextWidget(
+                    text: 'RECENT APPLICANTS',
+                    size: fontTitle,
+                    color: midOrange,
+                    isBold: true,
+                  ),
+                  y20,
+                  //TODO: Fix
+                  // SafeArea(
+                  //   child: SizedBox(
+                  //       height: 420,
+                  //       child: Center(
+                  //         child: Image.asset('empty_folder.jpg'),
+                  //       ) /* buildApplicants() */),
+                  // ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: space50 * 2),
+                    child: Center(
+                      child: NunitoTextWidget(
+                        text: "Oops! Looks like it's empty in here.",
+                        size: 32,
+                        color: midOrange,
+                        isBold: true,
+                      ),
                     ),
-                    isMobile(context)
-                        ? Container(
-                            width: 0,
-                          )
-                        : IconButton(
-                            padding: EdgeInsets.only(right: space10),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          super.widget));
-                            },
-                            icon: Icon(
-                              Icons.refresh,
-                              color: light,
-                              size: 28,
-                            ))
-                  ],
-                ),
-                isMobile(context) ? y4 : y20,
-                SafeArea(
-                  child: SizedBox(height: 512, child: buildJobListings()),
-                ),
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+            Container(
+              margin: EdgeInsets.only(
+                  top: space20, right: space20, bottom: space20),
+              padding: pad20,
+              decoration:
+                  BoxDecoration(borderRadius: bRadius20, color: midOrange),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PoppinsTextWidget(
+                        text: 'MY POSTS',
+                        size: fontTitle,
+                        color: light,
+                        isBold: true,
+                      ),
+                      isMobile(context)
+                          ? Container(
+                              width: 0,
+                            )
+                          : IconButton(
+                              padding: EdgeInsets.only(right: space10),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            super.widget));
+                              },
+                              icon: Icon(
+                                Icons.refresh,
+                                color: light,
+                                size: 28,
+                              ))
+                    ],
+                  ),
+                  isMobile(context) ? y4 : y20,
+                  SafeArea(
+                    child: SizedBox(height: 512, child: buildJobListings()),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       )),
     );
   }
