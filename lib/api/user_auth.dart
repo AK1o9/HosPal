@@ -17,7 +17,7 @@ class UserAuth {
     String? role;
     try {
       if (currentUser != null) {
-        var s = FirebaseFirestore.instance
+        var tmp = FirebaseFirestore.instance
             .collection('users')
             .doc(currentUser!.uid)
             .get()

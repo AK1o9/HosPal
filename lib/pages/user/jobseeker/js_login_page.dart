@@ -109,8 +109,18 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
     super.dispose();
   }
 
+  //Sample data login
+  void setSampleLoginData() {
+    setState(() {
+      _emailController.text = 'khalifa.teczo@gmail.com';
+      _passwordController.text = 'AK1o9@teczo';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _emailController.text = 'khalifa.teczo@gmail.com';
+    _passwordController.text = 'AK1o9@teczo';
     return Scaffold(
       backgroundColor: midBlue,
       body: Center(

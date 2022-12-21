@@ -154,6 +154,8 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _emailController.text = 'ziowswaket@gmail.com';
+    _passwordController.text = 'AK1o9@teczo';
     return Scaffold(
       backgroundColor: midOrange,
       body: Center(
