@@ -157,7 +157,7 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
                 y20,
                 CustomButtonWidget(
                     label: "Sign In",
-                    color: darkBlue,
+                    backgroundColor: darkBlue,
                     onTap: (signInWithEmailAndPassword)),
                 Padding(
                     padding: pad12,

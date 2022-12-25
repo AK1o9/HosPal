@@ -527,7 +527,7 @@ class _JobseekerFileStoragePageState extends State<JobseekerFileStoragePage> {
                 listFilesFromStorage().toString(); //TODO remove
               },
               icon: Icons.add_to_drive_outlined,
-              color: darkBlue,
+              backgroundColor: darkBlue,
             ),
             isStorageEnough
                 ? Container(

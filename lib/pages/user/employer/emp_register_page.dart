@@ -177,7 +177,7 @@ class _EmployerRegisterPageState extends State<EmployerRegisterPage> {
             y16,
             CustomButtonWidget(
                 label: "Sign Up",
-                color: darkOrange,
+                backgroundColor: darkOrange,
                 onTap: () {
                   if (_emailController.text.isEmpty ||
                       _passwordController.text.isEmpty ||

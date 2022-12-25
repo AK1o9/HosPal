@@ -8,15 +8,19 @@ class CustomButtonWidget extends StatelessWidget {
   final Function() onTap;
   final double? fontSize;
   final IconData? icon;
-  final Color? color;
-  const CustomButtonWidget(
-      {Key? key,
-      required this.label,
-      required this.onTap,
-      this.color,
-      this.fontSize,
-      this.icon})
-      : super(key: key);
+  final Color? backgroundColor;
+  final Color? fontColor;
+  final bool isFontBold;
+  const CustomButtonWidget({
+    Key? key,
+    required this.label,
+    required this.onTap,
+    this.backgroundColor,
+    this.fontColor,
+    this.fontSize,
+    this.icon,
+    this.isFontBold = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class CustomButtonWidget extends StatelessWidget {
         child: Container(
           padding: pad18,
           decoration: BoxDecoration(
-              borderRadius: bRadius30, color: color, border: null),
+              borderRadius: bRadius30, color: backgroundColor, border: null),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -38,9 +42,11 @@ class CustomButtonWidget extends StatelessWidget {
                   : Container(width: 0),
               icon != null ? x4 : Container(width: 0),
               NunitoTextWidget(
-                  text: label,
-                  size: fontSize != null ? fontSize! : fontLabel,
-                  color: light),
+                text: label,
+                size: fontSize != null ? fontSize! : fontLabel,
+                color: fontColor != null ? fontColor! : light,
+                isBold: isFontBold ? true : false,
+              ),
             ],
           ),
         ),

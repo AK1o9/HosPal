@@ -165,7 +165,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                             child: CustomButtonWidget(
                                 icon: Icons.search_rounded,
                                 label: 'Search',
-                                color: midBlue,
+                                backgroundColor: midBlue,
                                 onTap: () {
                                   // showSearch(
                                   //     context: context, delegate: MySearchDelegate());

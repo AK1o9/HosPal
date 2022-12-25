@@ -19,11 +19,11 @@ class Auth extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData && UserAuth().userRole == 'Jobseeker') {
           return const JobseekerNavBar(); //Note: If any issues, use JobseekerAuth()
-        } else if (snapshot.hasData && UserAuth().userRole == 'Employer') {
-          return const EmployerNavBar();
-        } else {
-          return const WelcomeScreenWidget(); //Used to be WelcomePage (Stateful)
         }
+        if (snapshot.hasData && UserAuth().userRole == 'Employer') {
+          return const EmployerNavBar();
+        }
+        return const WelcomeScreenWidget(); //Used to be WelcomePage (Stateful)
       },
     );
   }

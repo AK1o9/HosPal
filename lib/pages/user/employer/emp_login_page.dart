@@ -192,7 +192,7 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
                 y20,
                 CustomButtonWidget(
                     label: "Sign In",
-                    color: darkOrange,
+                    backgroundColor: darkOrange,
                     onTap: (signInWithEmailAndPassword)),
                 Padding(
                     padding: pad12,

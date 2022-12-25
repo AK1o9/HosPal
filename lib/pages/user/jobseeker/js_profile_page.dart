@@ -91,7 +91,7 @@ class _UserProfilePageState extends State<JobseekerProfilePage>
     return CustomButtonWidget(
       label: 'Log out',
       onTap: signOut,
-      color: darkBlue,
+      backgroundColor: darkBlue,
       icon: Icons.logout_rounded,
     );
   }

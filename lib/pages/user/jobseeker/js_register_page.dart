@@ -170,7 +170,7 @@ class _JobseekerRegisterPageState extends State<JobseekerRegisterPage> {
             y16,
             CustomButtonWidget(
                 label: "Sign Up",
-                color: darkBlue,
+                backgroundColor: darkBlue,
                 onTap: () {
                   if (_emailController.text.isEmpty ||
                       _passwordController.text.isEmpty ||

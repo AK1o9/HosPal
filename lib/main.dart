@@ -29,6 +29,6 @@ class MyApp extends StatelessWidget {
         title: 'HosPal',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: dark, primarySwatch: darkTheme),
-        home: const /* Auth */ /* WelcomePage */ WelcomeScreenWidget());
+        home: const /* Auth() */ WelcomeScreenWidget());
   }
 }

@@ -23,7 +23,7 @@ class TextfieldWidget extends StatelessWidget {
       this.hintText,
       this.icon,
       this.hideText = false,
-      this.textInputType = TextInputType.none})
+      this.textInputType = TextInputType.text})
       : super(key: key);
 
   @override

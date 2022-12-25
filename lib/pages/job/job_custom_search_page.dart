@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hospal/api/screen_responsiveness/dimensions.dart';
 import 'package:hospal/constants/style.dart';
+import 'package:hospal/pages/job/job_details_page.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -167,6 +168,10 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                             setState(() {
                               resultDocId = document.id;
                             });
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Scaffold(
+                                    appBar: AppBar(backgroundColor: darkBlue),
+                                    body: JobPage(docId: resultDocId))));
                           },
                           child: ListTile(
                             contentPadding: pad12,

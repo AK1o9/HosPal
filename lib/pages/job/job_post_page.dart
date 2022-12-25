@@ -333,7 +333,7 @@ class _JobPostPageState extends State<JobPostPage> {
                       child: Padding(
                     padding: EdgeInsets.only(left: space10),
                     child: CustomButtonWidget(
-                        color: darkOrange,
+                        backgroundColor: darkOrange,
                         label: 'Add',
                         icon: Icons.add,
                         onTap: () {
@@ -468,7 +468,7 @@ class _JobPostPageState extends State<JobPostPage> {
                   width: 200,
                   child: SafeArea(
                     child: CustomButtonWidget(
-                        color: darkOrange,
+                        backgroundColor: darkOrange,
                         label: 'Post Job Opening',
                         onTap: () {
                           validateData();

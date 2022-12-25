@@ -33,6 +33,7 @@ class _JobseekerNavBarState extends State<JobseekerNavBar> {
       backgroundColor: light,
       appBar: AppBar(
         elevation: 20,
+        automaticallyImplyLeading: false,
         title: PoppinsTextWidget(
           text: 'HosPal',
           color: light,

@@ -31,6 +31,7 @@ class _EmployerNavBarState extends State<EmployerNavBar> {
     return Scaffold(
       backgroundColor: light,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 20,
         title: PoppinsTextWidget(
           text: 'HosPal',

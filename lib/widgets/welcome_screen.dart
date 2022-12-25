@@ -52,10 +52,11 @@ class WelcomeScreenWidget extends StatelessWidget {
                   CustomButtonWidget(
                       label: 'Jobseeker',
                       fontSize: fontLabel,
-                      color: darkBlue,
+                      backgroundColor: darkBlue,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const JobseekerAuth()));
+                            builder: (context) =>
+                                const JobseekerAuth())); //TODO do replace instead?
                       }),
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -85,7 +86,7 @@ class WelcomeScreenWidget extends StatelessWidget {
                   CustomButtonWidget(
                       label: 'Employer',
                       fontSize: fontLabel,
-                      color: darkOrange,
+                      backgroundColor: darkOrange,
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const EmployerAuth()));
