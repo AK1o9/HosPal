@@ -24,7 +24,7 @@ class EmployerLoginPage extends StatefulWidget {
 //theyven@teczo.co theyven@teczo.co (Employer)
 
 class _EmployerLoginPageState extends State<EmployerLoginPage> {
-  String? errorMessage = '';
+  String? errorMessage;
   bool isLogin = true;
 
   final _emailController = TextEditingController();
@@ -93,6 +93,10 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
             .then((DocumentSnapshot documentSnapshot) {
           if (documentSnapshot.exists) {
             if (documentSnapshot.get('role') == role && role == 'Jobseeker') {
+              setState(() {
+                errorMessage =
+                    "Error: Wrong account type! Please login as an Employer instead";
+              });
               if (kDebugMode) {
                 print(
                     "Error: Wrong account type! Please login as an Employer instead");
@@ -119,30 +123,23 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
           print("Failed Login.");
         }
       }
-    } on Exception catch (e) {
+    } on FirebaseAuthException catch (ex) {
+      setState(() {
+        errorMessage = ex.message!;
+      });
       if (kDebugMode) {
-        print(e);
+        print(ex.message);
       }
     }
   }
 
-  Future createUserWithEmailAndPassword() async {
-    try {
-      await UserAuth().createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        errorMessage = e.message;
-      });
-    }
-  }
-
   Widget _errorMessage() {
-    return PoppinsTextWidget(
-        text: errorMessage == '' ? '' : 'Error: $errorMessage',
-        size: fontBody,
-        color: Colors.red);
+    return errorMessage == null
+        ? Container(
+            width: 0,
+          )
+        : PoppinsTextWidget(
+            text: 'Error: $errorMessage', size: fontBody, color: Colors.red);
   }
 
   @override
@@ -168,12 +165,19 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Image.asset('hospal_logo.png'),
-                PoppinsTextWidget(
-                    text: "Employer Login",
-                    size: fontHeader,
-                    color: darkOrange,
-                    isBold: true),
+                Row(
+                  children: [
+                    BackButton(
+                      color: darkOrange,
+                    ),
+                    // Image.asset('hospal_logo.png'),
+                    PoppinsTextWidget(
+                        text: "Employer Login",
+                        size: fontHeader,
+                        color: darkOrange,
+                        isBold: true),
+                  ],
+                ),
                 y20,
                 TextfieldWidget(
                   labelText: "E-mail Address",
@@ -193,7 +197,20 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
                 CustomButtonWidget(
                     label: "Sign In",
                     backgroundColor: darkOrange,
-                    onTap: (signInWithEmailAndPassword)),
+                    onTap: () async {
+                      if ((_emailController.text.isEmpty ||
+                              _emailController.text == '') ||
+                          (_passwordController.text.isEmpty ||
+                              _passwordController.text == '')) {
+                        setState(() {
+                          errorMessage =
+                              'Please fill in all of the form fields.';
+                        });
+                      } else {
+                        await signInWithEmailAndPassword();
+                        setState(() {});
+                      }
+                    }),
                 Padding(
                     padding: pad12,
                     child: Row(

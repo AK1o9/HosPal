@@ -255,7 +255,7 @@ class _JobseekerFileStoragePageState extends State<JobseekerFileStoragePage> {
                 ),
               ),
               SizedBox(
-                height: 136,
+                height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: data.size,

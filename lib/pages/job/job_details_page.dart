@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hospal/pages/job/job_application_page.dart';
+import 'package:hospal/pages/user/jobseeker/js_profile_page.dart';
 import 'package:hospal/widgets/button_widget.dart';
 import 'package:hospal/widgets/custom_button_widget.dart';
 import 'package:hospal/widgets/text_nunito_widget.dart';
@@ -13,14 +14,17 @@ import 'package:hospal/widgets/text_nunito_widget.dart';
 import '../../api/screen_responsiveness/dimensions.dart';
 import '../../constants/style.dart';
 import '../../widgets/text_poppins_widget.dart';
+import '../user/employer/emp_profile_page.dart';
 
 class JobPage extends StatefulWidget {
   final String?
       docId; //This is also jobId //TODO: Could be replaced in the future
+  final String? employerId; //User Id of the employer who created the job post.
   final bool
       isEmployerView; //This alters the page to match the employers' UI. (Only 'true' if employer opens their own job post.)
 
-  const JobPage({Key? key, this.docId, this.isEmployerView = false})
+  const JobPage(
+      {Key? key, this.docId, this.employerId, this.isEmployerView = false})
       : super(key: key);
 
   @override
@@ -49,6 +53,9 @@ class _JobPageState extends State<JobPage> {
   DateTime? publicationDate;
   DateTime? publicationTime;
 
+  // String? employerId; //Also employer/user doc id
+  String employerName = 'Employer Name';
+
   CollectionReference collection =
       FirebaseFirestore.instance.collection('jobs');
 
@@ -65,6 +72,28 @@ class _JobPageState extends State<JobPage> {
     //   var name = data['job_title'];
     // }
     return await collection.get();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    getEmployerData();
+    super.initState();
+  }
+
+  Future getEmployerData() async {
+    // var jobDoc = await collection.doc(widget.docId).get();
+
+    // String employerId = jobDoc['user_id'];
+    var employer =
+        FirebaseFirestore.instance.collection('users').doc(widget.employerId);
+    await employer.get().then((value) {
+      setState(() {
+        // widget.employerId = value.id;
+        employerName = value['username'];
+      });
+    });
   }
 
   Widget buildData(String field /* from Firestore */, double fontSize,
@@ -199,12 +228,35 @@ class _JobPageState extends State<JobPage> {
                       color: dark,
                       isBold: true,
                     ),
-                    // buildData('employer_id', fontLabel, dark, false),
-                    PoppinsTextWidget(
-                      text: 'Employer',
-                      size: fontLabel,
-                      color: dark,
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => EmployerProfilePage(
+                                    userId: widget.employerId,
+                                    canBack: true,
+                                  )));
+                        },
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: PoppinsTextWidget(
+                            text: employerName,
+                            isBold: true,
+                            size: fontLabel,
+                            color: darkOrange,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
                     ),
+                    // PoppinsTextWidget(
+                    //   text: getEmployerData().id,
+                    //   size: fontLabel,
+                    //   color: dark,
+                    // ),
+                    // buildData('employer_id', fontLabel, dark, false),
+                    // buildData('user_id', fontBody, darkOrange, true),
                     // y10,
                     Divider(
                       height: space30,
@@ -348,20 +400,25 @@ class _JobPageState extends State<JobPage> {
                   ]),
             ),
             y30,
-            CustomButtonWidget(
-              label: 'Apply',
-              isFontBold: true,
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => JobApplicationPage(
-                          jobId: widget
-                              .docId, //TODO Pass job id (if working, remove this)
-                        )));
-              },
+            widget.isEmployerView
+                ? Container(
+                    width: 0,
+                  )
+                : CustomButtonWidget(
+                    label: 'Apply',
+                    isFontBold: true,
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => JobApplicationPage(
+                                docId: widget.docId,
+                                employerId: widget
+                                    .employerId, //TODO Pass job id (if working, remove this)
+                              )));
+                    },
 
-              // icon: Icons.arrow_right_rounded,
-              backgroundColor: darkBlue,
-            ),
+                    // icon: Icons.arrow_right_rounded,
+                    backgroundColor: darkBlue,
+                  ),
             Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: space20),
@@ -370,7 +427,7 @@ class _JobPageState extends State<JobPage> {
                     Navigator.of(context).pop();
                   },
                   child: NunitoTextWidget(
-                      text: 'Cancel',
+                      text: widget.isEmployerView ? 'Back' : 'Cancel',
                       size: fontLabel,
                       isBold: true,
                       color: darkBlue),
@@ -386,6 +443,8 @@ class _JobPageState extends State<JobPage> {
   @override
   Widget build(BuildContext context) {
     // jobTitle = collection.doc(widget.docId).get();
+
+    // getEmployerData();
     return Material(
       child: SingleChildScrollView(
         child: isMobile(context)
@@ -866,7 +925,7 @@ class _JobPageState extends State<JobPage> {
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             JobApplicationPage(
-                                                                jobId:
+                                                                docId:
                                                                     widget.docId
                                                                 /* buildData(
                                                                   'job_id',

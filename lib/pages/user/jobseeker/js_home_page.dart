@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:hospal/api/screen_responsiveness/dimensions.dart';
+import 'package:hospal/api/user_auth.dart';
+import 'package:hospal/pages/job/job_application_details_page.dart';
 import 'package:hospal/pages/job/job_details_page.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
   @override
   void initState() {
     super.initState();
+    setState(() {});
     searchController.addListener(() => setState(() {}));
   }
 
@@ -119,7 +122,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                     BoxDecoration(borderRadius: bRadius20, color: softGrey),
                 child: Column(children: [
                   Container(
-                    width: double.infinity,
+                    width: double.maxFinite,
                     margin: EdgeInsets.only(right: space18),
                     child: Row(children: [
                       //Search bar
@@ -182,6 +185,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                   ),
                 ]),
               ),
+              buildJobApplications(),
               Container(
                 margin: EdgeInsets.only(top: space20, right: space20),
                 padding: const EdgeInsets.only(
@@ -198,57 +202,43 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                       isBold: true,
                     ),
                     isMobile(context) ? y4 : y20,
-                    SafeArea(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(children: [
-                          buildSampleJobTile(),
-                          buildSampleJobTile(),
-                          buildSampleJobTile(),
-                          buildSampleJobTile(),
-                          buildSampleJobTile(),
-                          buildSampleJobTile(),
-                          buildSampleJobTile(),
-                          buildSampleJobTile(),
-                        ]),
-                      ),
-                    )
+                    SafeArea(child: buildFeaturedJobsLV())
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: space20, right: space20),
-                padding: const EdgeInsets.only(
-                    left: 20, top: 20, bottom: 20, right: 0),
-                decoration:
-                    BoxDecoration(borderRadius: bRadius20, color: midBlue),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    PoppinsTextWidget(
-                      text: 'NEAR YOU',
-                      size: fontTitle,
-                      color: light,
-                      isBold: true,
-                    ),
-                    isMobile(context) ? y4 : y20,
-                    SafeArea(
-                        child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(children: [
-                        buildSampleJobTile(),
-                        buildSampleJobTile(),
-                        buildSampleJobTile(),
-                        buildSampleJobTile(),
-                        buildSampleJobTile(),
-                        buildSampleJobTile(),
-                        buildSampleJobTile(),
-                        buildSampleJobTile(),
-                      ]),
-                    ))
-                  ],
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.only(top: space20, right: space20),
+              //   padding: const EdgeInsets.only(
+              //       left: 20, top: 20, bottom: 20, right: 0),
+              //   decoration:
+              //       BoxDecoration(borderRadius: bRadius20, color: midBlue),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       PoppinsTextWidget(
+              //         text: 'NEAR YOU',
+              //         size: fontTitle,
+              //         color: light,
+              //         isBold: true,
+              //       ),
+              //       isMobile(context) ? y4 : y20,
+              //       SafeArea(
+              //           child: SingleChildScrollView(
+              //         scrollDirection: Axis.horizontal,
+              //         child: Row(children: [
+              //           buildSampleJobTile(),
+              //           buildSampleJobTile(),
+              //           buildSampleJobTile(),
+              //           buildSampleJobTile(),
+              //           buildSampleJobTile(),
+              //           buildSampleJobTile(),
+              //           buildSampleJobTile(),
+              //           buildSampleJobTile(),
+              //         ]),
+              //       ))
+              //     ],
+              //   ),
+              // ),
               Container(
                 margin: EdgeInsets.only(
                     top: isMobile(context) ? space12 : space20,
@@ -299,6 +289,147 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
             ],
           )),
         ),
+      ),
+    );
+  }
+
+  Widget buildJobApplications() {
+    return Container(
+      margin: EdgeInsets.only(top: space20, right: space20),
+      padding: pad20,
+      decoration: BoxDecoration(borderRadius: bRadius20, color: light),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              PoppinsTextWidget(
+                text: 'JOB APPLICATIONS',
+                size: fontTitle,
+                color: midBlue,
+                isBold: true,
+              ),
+              IconButton(
+                  onPressed: () => setState(() {}),
+                  icon: Icon(
+                    Icons.refresh_rounded,
+                    color: midBlue,
+                    size: fontTitle,
+                  ))
+            ],
+          ),
+          isMobile(context) ? y4 : y20,
+          SafeArea(child: buildJobApplicationsLV())
+        ],
+      ),
+    );
+  }
+
+  Widget buildFeaturedJobsLV() {
+    var ref = FirebaseFirestore.instance.collection('jobs');
+    return FutureBuilder<QuerySnapshot>(
+        future: ref
+            .where('company_address',
+                isEqualTo:
+                    'Selangor, Malaysia') //TODO: Can edt featured jobs here.
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var documents = snapshot.data!.docs;
+            return SizedBox(
+                height: 200,
+                child: ListView.builder(
+                    itemCount: documents.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return buildFeaturedCard(context, documents[index]);
+                    }));
+          } else if (snapshot.hasError) {
+            return Center(
+              child: PoppinsTextWidget(
+                  text: 'Oops, something went wrong!\nTry refreshing the page.',
+                  isCenter: true,
+                  size: fontLabel,
+                  color: grey),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(color: midBlue),
+            );
+          }
+        });
+  }
+
+  Widget buildFeaturedCard(BuildContext context, QueryDocumentSnapshot doc) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => JobPage(
+                  docId: doc.id,
+                )));
+      },
+      child: Container(
+        height: 200,
+        width: 260,
+        margin: EdgeInsets.only(right: space30),
+        padding: pad20,
+        decoration: BoxDecoration(borderRadius: bRadius20, color: light),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 72,
+                height: 72,
+                decoration:
+                    BoxDecoration(borderRadius: bRadius12, color: silver),
+                child: Icon(
+                  Icons.photo_rounded,
+                  color: grey,
+                  size: 45,
+                ),
+              ),
+              Container(
+                padding: pad8,
+                decoration: BoxDecoration(
+                    color: Colors.greenAccent.shade200,
+                    borderRadius: bRadius20),
+                child: PoppinsTextWidget(
+                  text: 'RM ${doc['job_pay_from']} - ${doc['job_pay_till']}',
+                  overflow: TextOverflow.ellipsis,
+                  size: fontLabel,
+                  color: dark, //Colors.lightGreen,
+                ),
+              )
+            ],
+          ),
+          y20,
+          SizedBox(
+            width: 210,
+            child: PoppinsTextWidget(
+              text: doc['job_title'],
+              size: fontLabel,
+              color: dark,
+              isBold: true,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          PoppinsTextWidget(
+            overflow: TextOverflow.ellipsis,
+            text: doc['company_name'],
+            size: fontLabel,
+            color: dark,
+          ),
+          Flexible(
+            child: PoppinsTextWidget(
+              overflow: TextOverflow.ellipsis,
+              text: doc['company_address'],
+              size: fontLabel,
+              color: dark,
+            ),
+          )
+        ]),
       ),
     );
   }
@@ -490,14 +621,16 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
             return ListView(
               children: documents
                   .map((document) => Card(
-                        margin: EdgeInsets.symmetric(vertical: space10),
+                        margin: EdgeInsets.only(bottom: space20),
                         shape: RoundedRectangleBorder(borderRadius: bRadius20),
                         color: light,
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    JobPage(docId: document.id)));
+                                builder: (context) => JobPage(
+                                      docId: document.id,
+                                      employerId: document['employer_id'],
+                                    )));
                           },
                           child: Container(
                             height: isMobile(context) ? 210 : 120,
@@ -551,11 +684,16 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                   : Container(
                                                       width: 0,
                                                     ),
-                                              PoppinsTextWidget(
-                                                text: document['job_title'],
-                                                size: fontLabel,
-                                                color: dark,
-                                                isBold: true,
+                                              SizedBox(
+                                                width: 150,
+                                                child: PoppinsTextWidget(
+                                                  text: document['job_title'],
+                                                  size: fontLabel,
+                                                  color: dark,
+                                                  isBold: true,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ),
                                               isMobile(context) ? y8 : y4,
                                               isMobile(context)
@@ -595,11 +733,18 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                           color: dark,
                                                         ),
                                                         x10,
-                                                        PoppinsTextWidget(
-                                                          text: document[
-                                                              'company_address'],
-                                                          size: fontLabel,
-                                                          color: dark,
+                                                        SizedBox(
+                                                          width: 100,
+                                                          child:
+                                                              PoppinsTextWidget(
+                                                            text: document[
+                                                                'company_address'],
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            size: fontLabel,
+                                                            color: dark,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -638,8 +783,9 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                 text:
                                                     'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
                                                 size: fontLabel,
-                                                color:
-                                                    dark, //Colors.lightGreen,
+                                                color: dark,
+                                                overflow: TextOverflow
+                                                    .ellipsis, //Colors.lightGreen,
                                               ),
                                             )
                                     ],
@@ -656,16 +802,17 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                 // mainAxisAlignment:
                                                 //     MainAxisAlignment.center,
                                                 children: [
-                                                  Column(
-                                                    children: [
-                                                      PoppinsTextWidget(
-                                                        text: document[
-                                                            'company_name'],
-                                                        size: fontLabel,
-                                                        color: dark,
-                                                        isBold: true,
-                                                      ),
-                                                    ],
+                                                  SizedBox(
+                                                    width: 80,
+                                                    child: PoppinsTextWidget(
+                                                      text: document[
+                                                          'company_name'],
+                                                      size: fontLabel,
+                                                      color: dark,
+                                                      isBold: true,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                   x10,
                                                   PoppinsTextWidget(
@@ -674,11 +821,15 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                     color: dark,
                                                   ),
                                                   x10,
-                                                  PoppinsTextWidget(
-                                                    text: document[
-                                                        'company_address'],
-                                                    size: fontLabel,
-                                                    color: dark,
+                                                  Flexible(
+                                                    child: PoppinsTextWidget(
+                                                      text: document[
+                                                          'company_address'],
+                                                      size: fontLabel,
+                                                      color: dark,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   ),
                                                 ]),
                                             y16,
@@ -696,8 +847,11 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                                                   text:
                                                       'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
                                                   size: fontLabel,
-                                                  color: Colors.green
-                                                      .shade900, //Colors.lightGreen,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: /* Colors.green
+                                                      .shade900 */
+                                                      dark, //Colors.lightGreen,
                                                 ),
                                               ),
                                             )
@@ -725,6 +879,137 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
           }
         });
   }
+
+//ListView.builder (LV) widget for Job Applications
+  Widget buildJobApplicationsLV() {
+    var ref = FirebaseFirestore.instance.collection('applications');
+    return FutureBuilder<QuerySnapshot>(
+        future: ref
+            .where('jobseeker_id', isEqualTo: UserAuth().currentUser!.uid)
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var documents = snapshot.data!.docs;
+            return SizedBox(
+                height: 200,
+                child: ListView.builder(
+                    itemCount: documents.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return buildApplicationCard(context, documents[index]);
+                    }));
+          } else if (snapshot.hasError) {
+            return Center(
+              child: PoppinsTextWidget(
+                  text: 'Oops, something went wrong!\nTry refreshing the page.',
+                  isCenter: true,
+                  size: fontLabel,
+                  color: grey),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(color: midBlue),
+            );
+          }
+        });
+  }
+}
+
+Widget buildApplicationCard(BuildContext context, QueryDocumentSnapshot doc) {
+  // String companyName = getJobCompanyName(doc['job_id']).toString();
+  // String companyAddress = eleme;
+  return SizedBox(
+    height: 200,
+    width: 260,
+    child: InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                JobApplicationDetailsPage(docId: doc.id.toString())));
+      },
+      child: Card(
+          shape: RoundedRectangleBorder(borderRadius: bRadius20),
+          color: midBlue,
+          margin: EdgeInsets.only(right: space30),
+          child: Padding(
+            padding: pad20,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 220,
+                  child: PoppinsTextWidget(
+                    text: doc['job_title'],
+                    size: fontHeader,
+                    overflow: TextOverflow.ellipsis,
+                    color: light,
+                    isBold: true,
+                  ),
+                ),
+                SizedBox(
+                  width: 220,
+                  child: PoppinsTextWidget(
+                    text: doc['company_name'],
+                    size: fontSubheader,
+                    overflow: TextOverflow.ellipsis,
+                    color: light,
+                    // isBold: true,
+                  ),
+                ),
+                SizedBox(
+                  width: 220,
+                  child: PoppinsTextWidget(
+                    overflow: TextOverflow.ellipsis,
+                    text: doc['company_address'],
+                    size: fontLabel,
+                    color: light,
+                    // isBold: true,
+                  ),
+                ),
+                y10,
+                Container(
+                    padding: pad10,
+                    decoration: BoxDecoration(
+                        borderRadius: bRadius20,
+                        color: doc['status'] == 'Pending'
+                            ? darkBlue
+                            : doc['status'] == 'Approved'
+                                ? Colors.green.shade600
+                                : Colors.red.shade600),
+                    child: Column(children: [
+                      PoppinsTextWidget(
+                          text: 'Status', size: fontLabel, color: light),
+                      Divider(
+                        height: space10,
+                        color: light,
+                      ),
+                      PoppinsTextWidget(
+                        text: doc['status'],
+                        size: fontLabel,
+                        color: light,
+                        isBold: true,
+                      ),
+                    ])),
+              ],
+            ),
+          )),
+    ),
+  );
+}
+
+Future getJobCompanyaddress(String jobId) async {
+  var jobRef = FirebaseFirestore.instance.collection('jobs');
+  await jobRef.where('job_id', isEqualTo: jobId).get().then((value) {
+    return value.docs.first['company_address'];
+  });
+}
+
+Future getJobCompanyName(String jobId) async {
+  var jobRef = FirebaseFirestore.instance.collection('jobs');
+  await jobRef.where('job_id').get().then((value) {
+    return value.docs.first['company_name'] /* .toString() */;
+  });
 }
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {

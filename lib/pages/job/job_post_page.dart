@@ -431,25 +431,25 @@ class _JobPostPageState extends State<JobPostPage> {
               y20,
 
               //Drop Zone / File Picker
-              PoppinsTextWidget(
-                  text: 'Company Logo', size: fontHeader, color: dark),
-              y10,
-              droppedFile != null
-                  ? SizedBox(
-                      height: 200,
-                      // width: 300,
-                      child: DroppedFileWidget(file: droppedFile!))
-                  : Container(
-                      width: 0,
-                    ),
-              kIsWeb
-                  ? SizedBox(
-                      height: 400,
-                      // width: 300,
-                      child: DropzoneWidget(
-                          onDroppedFile: (file) =>
-                              setState(() => droppedFile = file)))
-                  : pickFile(),
+              // PoppinsTextWidget(
+              //     text: 'Company Logo', size: fontHeader, color: dark),
+              // y10,
+              // droppedFile != null
+              //     ? SizedBox(
+              //         height: 200,
+              //         // width: 300,
+              //         child: DroppedFileWidget(file: droppedFile!))
+              //     : Container(
+              //         width: 0,
+              //       ),
+              // kIsWeb
+              //     ? SizedBox(
+              //         height: 400,
+              //         // width: 300,
+              //         child: DropzoneWidget(
+              //             onDroppedFile: (file) =>
+              //                 setState(() => droppedFile = file)))
+              //     : pickFile(),
               uploadError
                   ? Padding(
                       padding: EdgeInsets.symmetric(vertical: space12),
@@ -587,7 +587,7 @@ class _JobPostPageState extends State<JobPostPage> {
       collection.doc(docId).set({
         // collection.collection('jobs').doc(docId).set({
         'job_id': jobId,
-        'user_id': userId,
+        'employer_id': userId,
         'job_level': jobLevel,
         'job_title': jobTitleController.text,
         'job_description': jobDescriptionController.text,

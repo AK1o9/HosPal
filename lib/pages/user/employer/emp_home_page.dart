@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:hospal/api/screen_responsiveness/dimensions.dart';
+import 'package:hospal/api/user_auth.dart';
 import 'package:hospal/pages/job/job_details_page.dart';
 import 'package:hospal/pages/job/job_custom_search_page.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
@@ -10,6 +11,7 @@ import 'package:hospal/widgets/textfield_widget.dart';
 import '../../../constants/style.dart';
 import '../../../widgets/custom_button_widget.dart';
 import '../../../widgets/text_nunito_widget.dart';
+import '../../job/job_application_details_page.dart';
 
 class EmployerHomePage extends StatefulWidget {
   const EmployerHomePage({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class EmployerHomePage extends StatefulWidget {
 
 class _EmployerHomePageState extends State<EmployerHomePage> {
   final searchController = TextEditingController();
+  List<String> applicationIds = [];
 
   bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width >= mobileWidth;
@@ -31,6 +34,21 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
   void initState() {
     super.initState();
     searchController.addListener(() => setState(() {}));
+    getApplicationIds();
+  }
+
+  getApplicationIds() async {
+    await FirebaseFirestore.instance
+        .collection('applications')
+        .where('employer_id', isEqualTo: UserAuth().currentUser!.uid)
+        .get()
+        .then((value) {
+      for (var doc in value.docs) {
+        setState(() {
+          applicationIds.add(doc.id);
+        });
+      }
+    });
   }
 
   @override
@@ -139,42 +157,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: space20, right: space20),
-              padding: pad20,
-              decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  PoppinsTextWidget(
-                    text: 'RECENT APPLICANTS',
-                    size: fontTitle,
-                    color: midOrange,
-                    isBold: true,
-                  ),
-                  y20,
-                  //TODO: Fix
-                  // SafeArea(
-                  //   child: SizedBox(
-                  //       height: 420,
-                  //       child: Center(
-                  //         child: Image.asset('empty_folder.jpg'),
-                  //       ) /* buildApplicants() */),
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: space50 * 2),
-                    child: Center(
-                      child: NunitoTextWidget(
-                        text: "Oops! Looks like it's empty in here.",
-                        size: 32,
-                        color: midOrange,
-                        isBold: true,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            buildJobApplications(),
             Container(
               margin: EdgeInsets.only(
                   top: space20, right: space20, bottom: space20),
@@ -247,155 +230,136 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
         });
   }
 
-  Widget buildJobTiles() {
-    return FutureBuilder<QuerySnapshot>(
-        future: FirebaseFirestore.instance.collection('jobs').get(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
-            return ListView(
-              scrollDirection: Axis.horizontal,
-              children: snapshot.data!.docs.map((document) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => JobPage(
-                              docId: document.id,
-                            )));
-                  },
-                  child: Container(
-                    height: 200,
-                    width: 260,
-                    margin: EdgeInsets.only(right: space30),
-                    padding: pad20,
-                    decoration:
-                        BoxDecoration(borderRadius: bRadius20, color: dark),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                  padding: pad10,
-                                  width: 72,
-                                  height: 72,
-                                  decoration: BoxDecoration(
-                                      borderRadius: bRadius12, color: light),
-                                  //TODO: Replace w/ logo
-                                  child: SafeArea(
-                                    child: buildLogo('J-LLP1X68Fp6minnZ28rcg',
-                                        'Glitch WP.jpg' /* , document['logo'] */),
-                                  )
-                                  /* Icon(
-                                  Icons.photo_rounded,
-                                  color: grey,
-                                  size: 45,
-                                ), */
-                                  ),
-                              Container(
-                                padding: pad8,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.lightGreenAccent),
-                                    borderRadius: bRadius20),
-                                child: PoppinsTextWidget(
-                                  text:
-                                      'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
-                                  size: fontLabel,
-                                  color: light, //Colors.lightGreen,
-                                ),
-                              )
-                            ],
-                          ),
-                          y20,
-                          PoppinsTextWidget(
-                            text: document['job_title'],
-                            size: fontLabel,
-                            color: light,
-                            isBold: true,
-                          ),
-                          PoppinsTextWidget(
-                            text: document['company_name'],
-                            size: fontLabel,
-                            color: light,
-                          ),
-                          PoppinsTextWidget(
-                            text: document['company_address'],
-                            size: fontLabel,
-                            color: light,
-                          )
-                        ]),
-                  ),
-                );
-              }).toList(),
-            );
-          }
-
-          return const Center(child: CircularProgressIndicator());
-        });
-  }
-
-//Sample Data
-  Widget buildSampleJobTile() {
-    return InkWell(
-      onTap: () {
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (context) => const JobPage()));
-      },
-      child: Container(
-        height: 200,
-        width: 260,
-        margin: EdgeInsets.only(right: space30),
-        padding: pad20,
-        decoration: BoxDecoration(borderRadius: bRadius20, color: dark),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: pad10,
-                width: 72,
-                height: 72,
-                decoration:
-                    BoxDecoration(borderRadius: bRadius12, color: light),
-                child: Icon(
-                  Icons.photo_rounded,
-                  color: grey,
-                  size: 45,
-                ),
-              ),
-              Container(
-                padding: pad8,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.lightGreenAccent),
-                    borderRadius: bRadius20),
-                child: PoppinsTextWidget(
-                  text: 'RM 1250 - 2500',
-                  size: fontLabel,
-                  color: light, //Colors.lightGreen,
-                ),
-              )
-            ],
-          ),
-          y20,
+  Widget buildJobApplications() {
+    return Container(
+      margin: EdgeInsets.only(top: space20, right: space20),
+      padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20, right: 0),
+      decoration: BoxDecoration(borderRadius: bRadius20, color: darkOrange),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           PoppinsTextWidget(
-            text: 'IT Intern',
-            size: fontLabel,
+            text: 'APPLICANTS',
+            size: fontTitle,
             color: light,
             isBold: true,
           ),
-          PoppinsTextWidget(
-            text: 'Teczo Sdn. Bhd.',
-            size: fontLabel,
+          y20,
+          SafeArea(child: buildJobApplicationsLV())
+        ],
+      ),
+    );
+  }
+
+  Widget buildJobApplicationsLV() {
+    var ref = FirebaseFirestore.instance.collection('applications');
+    return FutureBuilder<QuerySnapshot>(
+        future: ref
+            .where('employer_id', isEqualTo: UserAuth().currentUser!.uid)
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            var documents = snapshot.data!.docs;
+            return SizedBox(
+                height: 200,
+                child: ListView.builder(
+                    itemCount: documents.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return buildApplicationCard(context, documents[index]);
+                    }));
+          } else if (snapshot.hasError) {
+            return Center(
+              child: PoppinsTextWidget(
+                  text: 'Oops, something went wrong!\nTry refreshing the page.',
+                  size: fontLabel,
+                  color: grey),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(color: midBlue),
+            );
+          }
+        });
+  }
+
+  Widget buildApplicationCard(BuildContext context, QueryDocumentSnapshot doc) {
+    // String companyName = getJobCompanyName(doc['job_id']).toString();
+    // String companyAddress = eleme;
+    return SizedBox(
+      height: 200,
+      width: 260,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => JobApplicationDetailsPage(
+                    docId: doc.id,
+                    isEmployerView: true,
+                  )));
+        },
+        child: Card(
+            shape: RoundedRectangleBorder(borderRadius: bRadius20),
             color: light,
-          ),
-          PoppinsTextWidget(
-            text: 'Kuala Lumpur, Malaysia',
-            size: fontLabel,
-            color: light,
-          )
-        ]),
+            margin: EdgeInsets.only(right: space30),
+            child: Padding(
+              padding: pad20,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      padding: pad10,
+                      decoration: BoxDecoration(
+                          borderRadius: bRadius20, color: darkOrange),
+                      child: Center(
+                        child: PoppinsTextWidget(
+                            text: doc['full_name'],
+                            size: fontLabel,
+                            isBold: true,
+                            isCenter: true,
+                            overflow: TextOverflow.ellipsis,
+                            color: light),
+                      )),
+                  // y30,
+                  Divider(
+                    height: space30,
+                    color: darkOrange,
+                  ),
+                  SizedBox(
+                    width: 220,
+                    child: PoppinsTextWidget(
+                      text: doc['job_title'],
+                      size: fontHeader,
+                      overflow: TextOverflow.ellipsis,
+                      color: dark,
+                      isBold: true,
+                    ),
+                  ),
+                  y4,
+                  SizedBox(
+                    width: 220,
+                    child: PoppinsTextWidget(
+                      text: doc['company_name'],
+                      size: fontSubheader,
+                      overflow: TextOverflow.ellipsis,
+                      color: dark,
+                      // isBold: true,
+                    ),
+                  ),
+                  y4,
+                  SizedBox(
+                    width: 220,
+                    child: PoppinsTextWidget(
+                      overflow: TextOverflow.ellipsis,
+                      text: doc['company_address'],
+                      size: fontLabel,
+                      color: dark,
+                      // isBold: true,
+                    ),
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }
@@ -404,7 +368,9 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
     CollectionReference collection =
         FirebaseFirestore.instance.collection('jobs');
     return FutureBuilder<QuerySnapshot>(
-        future: collection.get(),
+        future: collection
+            .where('employer_id', isEqualTo: UserAuth().currentUser!.uid)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             var documents = snapshot.data!.docs;
@@ -417,8 +383,9 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                         child: InkWell(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    JobPage(docId: document.id)));
+                                builder: (context) => JobPage(
+                                    docId: document.id,
+                                    employerId: document['employer_id'])));
                           },
                           child: Container(
                             height: isMobile(context) ? 210 : 120,
@@ -472,11 +439,16 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                                   : Container(
                                                       width: 0,
                                                     ),
-                                              PoppinsTextWidget(
-                                                text: document['job_title'],
-                                                size: fontLabel,
-                                                color: dark,
-                                                isBold: true,
+                                              SizedBox(
+                                                width: 150,
+                                                child: PoppinsTextWidget(
+                                                  text: document['job_title'],
+                                                  size: fontLabel,
+                                                  color: dark,
+                                                  isBold: true,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ),
                                               isMobile(context) ? y8 : y4,
                                               isMobile(context)
@@ -508,6 +480,8 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                                               'company_name'],
                                                           size: fontLabel,
                                                           color: dark,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                         ),
                                                         x10,
                                                         PoppinsTextWidget(
@@ -566,6 +540,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                                 size: fontLabel,
                                                 color:
                                                     dark, //Colors.lightGreen,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                             )
                                     ],
@@ -584,12 +559,18 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                                 children: [
                                                   Column(
                                                     children: [
-                                                      PoppinsTextWidget(
-                                                        text: document[
-                                                            'company_name'],
-                                                        size: fontLabel,
-                                                        color: dark,
-                                                        isBold: true,
+                                                      SizedBox(
+                                                        width: 80,
+                                                        child:
+                                                            PoppinsTextWidget(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          text: document[
+                                                              'company_name'],
+                                                          size: fontLabel,
+                                                          color: dark,
+                                                          isBold: true,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -600,11 +581,15 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                                     color: dark,
                                                   ),
                                                   x10,
-                                                  PoppinsTextWidget(
-                                                    text: document[
-                                                        'company_address'],
-                                                    size: fontLabel,
-                                                    color: dark,
+                                                  Flexible(
+                                                    child: PoppinsTextWidget(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      text: document[
+                                                          'company_address'],
+                                                      size: fontLabel,
+                                                      color: dark,
+                                                    ),
                                                   ),
                                                 ]),
                                             y16,
@@ -622,6 +607,8 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                                                   text:
                                                       'RM ${document['job_pay_from']} - ${document['job_pay_till']}',
                                                   size: fontLabel,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   color: Colors.green
                                                       .shade900, //Colors.lightGreen,
                                                 ),
@@ -669,8 +656,10 @@ Widget buildApplicants() {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  JobPage(docId: document.id)));
+                              builder: (context) => JobPage(
+                                    docId: document.id,
+                                    employerId: document['employer_id'],
+                                  )));
                         },
                         child: Container(
                           height: 120,

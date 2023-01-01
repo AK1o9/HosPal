@@ -10,13 +10,16 @@ class NunitoTextWidget extends StatelessWidget {
   final bool isBold;
   final bool isCenter;
 
+  final TextOverflow? overflow;
+
   const NunitoTextWidget(
       {Key? key,
       required this.text,
       required this.size,
       required this.color,
       this.isBold = false,
-      this.isCenter = false})
+      this.isCenter = false,
+      this.overflow})
       : super(key: key);
 
   @override
@@ -28,7 +31,8 @@ class NunitoTextWidget extends StatelessWidget {
           textStyle: TextStyle(
               color: color,
               fontSize: size,
-              fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              overflow: overflow)),
     );
   }
 }

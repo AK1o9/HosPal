@@ -19,6 +19,7 @@ class WelcomeScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+      padding: EdgeInsets.only(bottom: 0),
       color: darkBlue,
       child: Stack(
         children: [
@@ -54,6 +55,10 @@ class WelcomeScreenWidget extends StatelessWidget {
                       fontSize: fontLabel,
                       backgroundColor: darkBlue,
                       onTap: () {
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const JobseekerAuth()));
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) =>
                                 const JobseekerAuth())); //TODO do replace instead?
@@ -88,6 +93,10 @@ class WelcomeScreenWidget extends StatelessWidget {
                       fontSize: fontLabel,
                       backgroundColor: darkOrange,
                       onTap: () {
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const EmployerAuth()));
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const EmployerAuth()));
                       }),
@@ -109,7 +118,7 @@ class WelcomeScreenWidget extends StatelessWidget {
                             color: Colors.lightBlue.shade200),
                       )
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

@@ -171,7 +171,10 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => Scaffold(
                                     appBar: AppBar(backgroundColor: darkBlue),
-                                    body: JobPage(docId: resultDocId))));
+                                    body: JobPage(
+                                      docId: resultDocId,
+                                      employerId: document['employer_id'],
+                                    ))));
                           },
                           child: ListTile(
                             contentPadding: pad12,
@@ -187,7 +190,7 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                                 PoppinsTextWidget(
                                   text: document['company_name'],
                                   size: fontSubheader,
-                                  color: midOrange,
+                                  color: darkBlue,
                                 )
                               ],
                             ),

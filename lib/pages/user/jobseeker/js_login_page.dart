@@ -23,7 +23,7 @@ class JobseekerLoginPage extends StatefulWidget {
 //theyven@teczo.co theyven@teczo.co (Employer)
 
 class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
-  String? errorMessage = '';
+  String? errorMessage;
   bool isLogin = true;
 
   final _emailController = TextEditingController();
@@ -96,10 +96,12 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
   }
 
   Widget _errorMessage() {
-    return PoppinsTextWidget(
-        text: errorMessage == '' ? '' : 'Error: $errorMessage',
-        size: fontBody,
-        color: Colors.red);
+    return errorMessage == null
+        ? Container(
+            width: 0,
+          )
+        : PoppinsTextWidget(
+            text: 'Error: $errorMessage', size: fontBody, color: Colors.red);
   }
 
   @override
@@ -133,12 +135,19 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Image.asset('hospal_logo.png'),
-                PoppinsTextWidget(
-                    text: "Jobseeker Login",
-                    size: fontHeader,
-                    color: darkBlue,
-                    isBold: true),
+                Row(
+                  children: [
+                    BackButton(
+                      color: darkBlue,
+                    ),
+                    // Image.asset('hospal_logo.png'),
+                    PoppinsTextWidget(
+                        text: "Jobseeker Login",
+                        size: fontHeader,
+                        color: darkBlue,
+                        isBold: true),
+                  ],
+                ),
                 y20,
                 TextfieldWidget(
                   labelText: "E-mail Address",
@@ -158,7 +167,20 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
                 CustomButtonWidget(
                     label: "Sign In",
                     backgroundColor: darkBlue,
-                    onTap: (signInWithEmailAndPassword)),
+                    onTap: () async {
+                      if ((_emailController.text.isEmpty ||
+                              _emailController.text == '') ||
+                          (_passwordController.text.isEmpty ||
+                              _passwordController.text == '')) {
+                        setState(() {
+                          errorMessage =
+                              'Please fill in all of the form fields.';
+                        });
+                      } else {
+                        await signInWithEmailAndPassword();
+                        setState(() {});
+                      }
+                    }),
                 Padding(
                     padding: pad12,
                     child: Row(
@@ -182,7 +204,7 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
                           ),
                         )
                       ],
-                    ))
+                    )),
               ],
             ),
           ),
