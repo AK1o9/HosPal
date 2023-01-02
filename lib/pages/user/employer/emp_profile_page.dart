@@ -210,7 +210,7 @@ class _EmployerProfileState extends State<EmployerProfilePage> {
                         ),
                   editingMode
                       ? TextfieldWidget(
-                          labelText: 'Username',
+                          labelText: 'Full name',
                           colorTheme: orangeTheme,
                           controller: usernameController)
                       : PoppinsTextWidget(

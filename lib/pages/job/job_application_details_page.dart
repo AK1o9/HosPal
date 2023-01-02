@@ -121,7 +121,7 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
     return Material(
         child: SingleChildScrollView(
       child: Container(
-        color: silver,
+        color: light,
         child: Padding(
           padding: pad20,
           child: Expanded(

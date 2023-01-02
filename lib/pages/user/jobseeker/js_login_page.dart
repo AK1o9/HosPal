@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hospal/constants/style.dart';
 import 'package:hospal/pages/user/jobseeker/js_nav_bar.dart';
+import 'package:hospal/widgets/text_nunito_widget.dart';
 import 'package:hospal/widgets/text_poppins_widget.dart';
 import 'package:hospal/widgets/textfield_widget.dart';
 
@@ -124,92 +125,222 @@ class _JobseekerLoginPageState extends State<JobseekerLoginPage> {
     _emailController.text = 'khalifa.teczo@gmail.com';
     _passwordController.text = 'AK1o9@teczo';
     return Scaffold(
-      backgroundColor: midBlue,
-      body: Center(
-        child: Container(
-          width: 500,
-          // height: 300,
-          padding: pad20,
-          decoration: BoxDecoration(color: light, borderRadius: bRadius20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    BackButton(
-                      color: darkBlue,
+        backgroundColor: midBlue,
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Positioned.fill(
+                  child: Opacity(
+                      opacity: 0.2,
+                      child: Image.asset(
+                        'assets/images/hospital_bed.jpg',
+                        fit: BoxFit.cover,
+                      ))),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: pad20,
+                      child: BackButton(
+                        color: light,
+                      ),
                     ),
-                    // Image.asset('hospal_logo.png'),
-                    PoppinsTextWidget(
-                        text: "Jobseeker Login",
-                        size: fontHeader,
-                        color: darkBlue,
-                        isBold: true),
-                  ],
-                ),
-                y20,
-                TextfieldWidget(
-                  labelText: "E-mail Address",
-                  controller: _emailController,
-                  colorTheme: blueTheme,
-                ),
-                y20,
-                TextfieldWidget(
-                  labelText: "Password",
-                  controller: _passwordController,
-                  colorTheme: blueTheme,
-                  hideText: true,
-                ),
-                y20,
-                _errorMessage(),
-                y20,
-                CustomButtonWidget(
-                    label: "Sign In",
-                    backgroundColor: darkBlue,
-                    onTap: () async {
-                      if ((_emailController.text.isEmpty ||
-                              _emailController.text == '') ||
-                          (_passwordController.text.isEmpty ||
-                              _passwordController.text == '')) {
-                        setState(() {
-                          errorMessage =
-                              'Please fill in all of the form fields.';
-                        });
-                      } else {
-                        await signInWithEmailAndPassword();
-                        setState(() {});
-                      }
-                    }),
-                Padding(
-                    padding: pad12,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PoppinsTextWidget(
-                          text: "Don't have an account?",
-                          size: fontBody,
-                          color: dark,
+                  ),
+                  PoppinsTextWidget(
+                    text: 'LOGIN',
+                    size: 64,
+                    color: light,
+                    isBold: true,
+                  ),
+                  y10,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PoppinsTextWidget(
+                        text: 'as a',
+                        size: fontSubheader,
+                        color: light,
+                        // isBold: true,
+                      ),
+                      x8,
+                      Container(
+                        padding: pad10,
+                        color: light,
+                        child: PoppinsTextWidget(
+                          text: 'Jobseeker',
+                          color: midBlue,
+                          size: fontSubheader,
+                          isBold: true,
                         ),
-                        x4,
-                        InkWell(
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const JobseekerRegisterPage())),
-                          child: PoppinsTextWidget(
-                            text: "Tap here to register",
-                            size: fontBody,
-                            color: Colors.blue.shade600,
+                      )
+                    ],
+                  ),
+                  y30,
+                  y20,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: space20),
+                    child: Container(
+                      padding: pad20,
+                      decoration:
+                          BoxDecoration(borderRadius: bRadius20, color: light),
+                      child: Column(
+                        children: [
+                          TextfieldWidget(
+                            labelText: "E-mail Address",
+                            controller: _emailController,
+                            colorTheme: blueTheme,
                           ),
-                        )
-                      ],
-                    )),
-              ],
-            ),
+                          y20,
+                          TextfieldWidget(
+                            labelText: "Password",
+                            controller: _passwordController,
+                            colorTheme: blueTheme,
+                            hideText: true,
+                          ),
+                          y20,
+                          _errorMessage(),
+                          y20,
+                          CustomButtonWidget(
+                              label: "Sign In",
+                              backgroundColor: darkBlue,
+                              onTap: () async {
+                                if ((_emailController.text.isEmpty ||
+                                        _emailController.text == '') ||
+                                    (_passwordController.text.isEmpty ||
+                                        _passwordController.text == '')) {
+                                  setState(() {
+                                    errorMessage =
+                                        'Please fill in all of the form fields.';
+                                  });
+                                } else {
+                                  await signInWithEmailAndPassword();
+                                  setState(() {});
+                                }
+                              }),
+                          Padding(
+                              padding: pad12,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  PoppinsTextWidget(
+                                    text: "Don't have an account?",
+                                    size: fontBody,
+                                    color: dark,
+                                  ),
+                                  x4,
+                                  InkWell(
+                                    onTap: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const JobseekerRegisterPage())),
+                                    child: PoppinsTextWidget(
+                                      text: "Tap here to register",
+                                      size: fontBody,
+                                      color: Colors.blue.shade600,
+                                    ),
+                                  )
+                                ],
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 200,
+                  )
+                ],
+              ),
+            ],
           ),
-        ),
-      ),
-    );
+        )
+        // Center(
+        //   child: Container(
+        //     width: 500,
+        //     // height: 300,
+        //     padding: pad20,
+        //     decoration: BoxDecoration(color: light, borderRadius: bRadius20),
+        //     child: SingleChildScrollView(
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           Row(
+        //             children: [
+        //               BackButton(
+        //                 color: darkBlue,
+        //               ),
+        //               // Image.asset('hospal_logo.png'),
+        //               PoppinsTextWidget(
+        //                   text: "Jobseeker Login",
+        //                   size: fontHeader,
+        //                   color: darkBlue,
+        //                   isBold: true),
+        //             ],
+        //           ),
+        //           y20,
+        //           TextfieldWidget(
+        //             labelText: "E-mail Address",
+        //             controller: _emailController,
+        //             colorTheme: blueTheme,
+        //           ),
+        //           y20,
+        //           TextfieldWidget(
+        //             labelText: "Password",
+        //             controller: _passwordController,
+        //             colorTheme: blueTheme,
+        //             hideText: true,
+        //           ),
+        //           y20,
+        //           _errorMessage(),
+        //           y20,
+        //           CustomButtonWidget(
+        //               label: "Sign In",
+        //               backgroundColor: darkBlue,
+        //               onTap: () async {
+        //                 if ((_emailController.text.isEmpty ||
+        //                         _emailController.text == '') ||
+        //                     (_passwordController.text.isEmpty ||
+        //                         _passwordController.text == '')) {
+        //                   setState(() {
+        //                     errorMessage =
+        //                         'Please fill in all of the form fields.';
+        //                   });
+        //                 } else {
+        //                   await signInWithEmailAndPassword();
+        //                   setState(() {});
+        //                 }
+        //               }),
+        //           Padding(
+        //               padding: pad12,
+        //               child: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.center,
+        //                 children: [
+        //                   PoppinsTextWidget(
+        //                     text: "Don't have an account?",
+        //                     size: fontBody,
+        //                     color: dark,
+        //                   ),
+        //                   x4,
+        //                   InkWell(
+        //                     onTap: () => Navigator.of(context).push(
+        //                         MaterialPageRoute(
+        //                             builder: (context) =>
+        //                                 const JobseekerRegisterPage())),
+        //                     child: PoppinsTextWidget(
+        //                       text: "Tap here to register",
+        //                       size: fontBody,
+        //                       color: Colors.blue.shade600,
+        //                     ),
+        //                   )
+        //                 ],
+        //               )),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        );
   }
 }

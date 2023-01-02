@@ -555,7 +555,7 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
                   alignment: Alignment.topLeft,
                   child: NunitoTextWidget(
                     text:
-                        'Character limit: ${(300 - RegExp(r"\w+(\'\w+)?").allMatches(additionalInfoController.text).length)}',
+                        'Word limit: ${(300 - RegExp(r"\w+(\'\w+)?").allMatches(additionalInfoController.text).length)}',
                     size: fontLabel,
                     color: grey,
                     isBold: true,

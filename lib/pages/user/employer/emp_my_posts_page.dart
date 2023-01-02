@@ -24,7 +24,7 @@ class _EmployerPostHistoryPageState extends State<EmployerPostHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: silver,
+        color: light,
         padding: EdgeInsets.symmetric(horizontal: space20),
         child: SingleChildScrollView(
           child: Column(
@@ -81,7 +81,8 @@ class _EmployerPostHistoryPageState extends State<EmployerPostHistoryPage> {
                                     left: space20,
                                     right: space20),
                             decoration: BoxDecoration(
-                                borderRadius: bRadius20, color: light),
+                                borderRadius: bRadius20,
+                                border: Border.all(color: silver)),
                             child: Column(
                                 mainAxisAlignment: isMobile(context)
                                     ? MainAxisAlignment.start

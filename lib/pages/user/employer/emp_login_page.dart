@@ -155,89 +155,134 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
     _passwordController.text = 'AK1o9@teczo';
     return Scaffold(
       backgroundColor: midOrange,
-      body: Center(
-        child: Container(
-          width: 500,
-          // height: 300,
-          padding: pad20,
-          decoration: BoxDecoration(color: light, borderRadius: bRadius20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Positioned.fill(
+                child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset(
+                      'assets/images/hospital_bed.jpg',
+                      fit: BoxFit.cover,
+                    ))),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    BackButton(
-                      color: darkOrange,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: pad20,
+                    child: BackButton(
+                      color: light,
                     ),
-                    // Image.asset('hospal_logo.png'),
+                  ),
+                ),
+                PoppinsTextWidget(
+                  text: 'LOGIN',
+                  size: 64,
+                  color: light,
+                  isBold: true,
+                ),
+                y10,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     PoppinsTextWidget(
-                        text: "Employer Login",
-                        size: fontHeader,
-                        color: darkOrange,
-                        isBold: true),
+                      text: 'as a',
+                      size: fontSubheader,
+                      color: light,
+                      // isBold: true,
+                    ),
+                    x8,
+                    Container(
+                      padding: pad10,
+                      color: light,
+                      child: PoppinsTextWidget(
+                        text: 'Employer',
+                        color: midOrange,
+                        size: fontSubheader,
+                        isBold: true,
+                      ),
+                    )
                   ],
                 ),
+                y30,
                 y20,
-                TextfieldWidget(
-                  labelText: "E-mail Address",
-                  controller: _emailController,
-                  colorTheme: orangeTheme,
-                ),
-                y20,
-                TextfieldWidget(
-                  labelText: "Password",
-                  controller: _passwordController,
-                  colorTheme: orangeTheme,
-                  hideText: true,
-                ),
-                y20,
-                _errorMessage(),
-                y20,
-                CustomButtonWidget(
-                    label: "Sign In",
-                    backgroundColor: darkOrange,
-                    onTap: () async {
-                      if ((_emailController.text.isEmpty ||
-                              _emailController.text == '') ||
-                          (_passwordController.text.isEmpty ||
-                              _passwordController.text == '')) {
-                        setState(() {
-                          errorMessage =
-                              'Please fill in all of the form fields.';
-                        });
-                      } else {
-                        await signInWithEmailAndPassword();
-                        setState(() {});
-                      }
-                    }),
                 Padding(
-                    padding: pad12,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: space20),
+                  child: Container(
+                    padding: pad20,
+                    decoration:
+                        BoxDecoration(borderRadius: bRadius20, color: light),
+                    child: Column(
                       children: [
-                        PoppinsTextWidget(
-                          text: "Don't have an account?",
-                          size: fontBody,
-                          color: dark,
+                        TextfieldWidget(
+                          labelText: "E-mail Address",
+                          controller: _emailController,
+                          colorTheme: blueTheme,
                         ),
-                        x4,
-                        InkWell(
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const EmployerRegisterPage())),
-                          child: PoppinsTextWidget(
-                            text: "Tap here to register",
-                            size: fontBody,
-                            color: Colors.blue.shade600,
-                          ),
-                        )
+                        y20,
+                        TextfieldWidget(
+                          labelText: "Password",
+                          controller: _passwordController,
+                          colorTheme: blueTheme,
+                          hideText: true,
+                        ),
+                        y20,
+                        _errorMessage(),
+                        y20,
+                        CustomButtonWidget(
+                            label: "Sign In",
+                            backgroundColor: darkOrange,
+                            onTap: () async {
+                              if ((_emailController.text.isEmpty ||
+                                      _emailController.text == '') ||
+                                  (_passwordController.text.isEmpty ||
+                                      _passwordController.text == '')) {
+                                setState(() {
+                                  errorMessage =
+                                      'Please fill in all of the form fields.';
+                                });
+                              } else {
+                                await signInWithEmailAndPassword();
+                                setState(() {});
+                              }
+                            }),
+                        Padding(
+                            padding: pad12,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                PoppinsTextWidget(
+                                  text: "Don't have an account?",
+                                  size: fontBody,
+                                  color: dark,
+                                ),
+                                x4,
+                                InkWell(
+                                  onTap: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EmployerRegisterPage())),
+                                  child: PoppinsTextWidget(
+                                    text: "Tap here to register",
+                                    size: fontBody,
+                                    color: Colors.blue.shade600,
+                                  ),
+                                )
+                              ],
+                            )),
                       ],
-                    ))
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 200,
+                )
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

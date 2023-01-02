@@ -78,92 +78,13 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
             Divider(
               height: space40,
             ),
-            Container(
-              margin:
-                  EdgeInsets.only(right: isMobile(context) ? space12 : space20),
-              padding: pad10,
-              decoration: BoxDecoration(borderRadius: bRadius20, color: light),
-              child: Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.only(right: space18),
-                    child: Row(children: [
-                      //Search bar
-                      Expanded(
-                        flex: isMobile(context) ? 4 : 10,
-                        child: /* InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const JobSearchPage2()));
-                              },
-                              child: */
-                            TextfieldWidget(
-                          colorTheme: orangeTheme,
-                          labelText: 'Job title, company name or keyword',
-                          controller: searchController,
-                          icon: Icon(Icons.search_outlined,
-                              color: midOrange //or aqua,
-                              ),
-                        ),
-                        // ),
-                      ),
-
-                      //Filter button (for search results) //TODO: Remove or replace in the search delegate.
-                      // Expanded(
-                      //   child: InkWell(
-                      //     hoverColor: Colors.transparent,
-                      //     splashColor: Colors.transparent,
-                      //     highlightColor: Colors.transparent,
-                      //     onTap: () {
-                      //       //Filter
-                      //     },
-                      //     child: Container(
-                      //         height: space50,
-                      //         width: space50,
-                      //         margin: EdgeInsets.only(left: space12),
-                      //         decoration: BoxDecoration(
-                      //             color: dark, borderRadius: bRadius12),
-                      //         child: Icon(Icons.filter_alt_rounded,
-                      //             color: light, size: 24)),
-                      //   ),
-                      // ),
-
-                      //Search button
-                      if (isMobile(context) && searchController.text != '')
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: isMobile(context) ? space8 : space10),
-                            child: CustomButtonWidget(
-                                icon: Icons.search_rounded,
-                                label: 'Search',
-                                backgroundColor: midOrange,
-                                onTap: () {
-                                  // showSearch(
-                                  //     context: context, delegate: MySearchDelegate());
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => JobCustomSearchPage(
-                                            query: searchController.text,
-                                          )));
-                                }),
-                          ),
-                        )
-                      else
-                        Container(width: 0),
-                    ]),
-                  ),
-                ],
-              ),
-            ),
             buildJobApplications(),
             Container(
               margin: EdgeInsets.only(
                   top: space20, right: space20, bottom: space20),
               padding: pad20,
               decoration:
-                  BoxDecoration(borderRadius: bRadius20, color: midOrange),
+                  BoxDecoration(borderRadius: bRadius20, color: darkOrange),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

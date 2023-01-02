@@ -233,7 +233,7 @@ class _UserProfilePageState extends State<JobseekerProfilePage>
                         ),
                   editingMode
                       ? TextfieldWidget(
-                          labelText: 'Username',
+                          labelText: 'Full name',
                           colorTheme: blueTheme,
                           controller: usernameController)
                       : PoppinsTextWidget(
@@ -337,7 +337,7 @@ class _UserProfilePageState extends State<JobseekerProfilePage>
                 ? CustomButtonWidget(
                     label: "Back",
                     isFontBold: true,
-                    backgroundColor: darkBlue,
+                    backgroundColor: widget.canBack ? darkOrange : darkBlue,
                     onTap: () => Navigator.of(context).pop())
                 : _signOut(),
           ),
