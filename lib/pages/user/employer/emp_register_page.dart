@@ -116,21 +116,11 @@ class _EmployerRegisterPageState extends State<EmployerRegisterPage> {
       //TODO: Fix same email crash.
       // await
       await UserAuth()
-              .createUserWithEmailAndPassword(
-                  email: _emailController.text.trim(),
-                  password: _passwordController.text.trim())
-              .then((_) async {
-        await postDetailsToFirestore(_emailController.text.trim(), 'Employer')
-            /* .catchError((e) {
-          setState(() {
-            errorMessage = e;
-          });
-          if (kDebugMode) {
-            print(e);
-          }
-          // throw Exception(e);
-        }) */
-            ;
+          .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim())
+          .then((_) async {
+        await postDetailsToFirestore(_emailController.text.trim(), 'Employer');
         setState(() {
           accountCreated = true;
           successMessage = 'You may now go back and log in.';
@@ -139,14 +129,7 @@ class _EmployerRegisterPageState extends State<EmployerRegisterPage> {
         if (kDebugMode) {
           print("Account successfully created!");
         }
-      }) /* .catchError((e) {
-        // print('[Error] Account not created: $e');
-        setState(() {
-          accountCreated = false;
-          errorMessage = e;
-        });
-      }) */
-          ;
+      });
     } on FirebaseAuthException catch (ex) {
       setState(() {
         accountCreated = false;

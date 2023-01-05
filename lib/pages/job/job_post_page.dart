@@ -508,19 +508,6 @@ class _JobPostPageState extends State<JobPostPage> {
                 size: fontSubtitle,
                 color: light,
               ),
-              // actions: [
-              //   TextButton(
-              //     onPressed: () {
-              //       Navigator.of(context).pop;
-              //     },
-              //     child: PoppinsTextWidget(
-              //       text: "OK",
-              //       size: fontSubtitle,
-              //       color: light,
-              //       isBold: true,
-              //     ),
-              //   ),
-              // ],
             );
           });
     } else if (jobType == '' || jobType == null) {

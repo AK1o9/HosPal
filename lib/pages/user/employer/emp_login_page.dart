@@ -18,11 +18,6 @@ class EmployerLoginPage extends StatefulWidget {
   State<EmployerLoginPage> createState() => _EmployerLoginPageState();
 }
 
-//khalifa.teczo@gmail.com AK1o9@teczo (Jobseeker)
-//ahmed1o9@hotmail.com AK1o9@teczo (Jobseeker)
-//ziowswaket@gmail.com AK1o9@teczo (Employer)
-//theyven@teczo.co theyven@teczo.co (Employer)
-
 class _EmployerLoginPageState extends State<EmployerLoginPage> {
   String? errorMessage;
   bool isLogin = true;
@@ -32,18 +27,8 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
 
   Future signInWithEmailAndPassword() async {
     try {
-      // await UserAuth()
-      //     .signInWithEmailAndPassword(
-      //   email: _emailController.text.trim(),
-      //   password: _passwordController.text.trim(),
-      // )
-      //     .then((_) {
       validateUserDetails(_emailController.text.trim(),
           _passwordController.text.trim(), 'Employer');
-      // });
-
-      //   UserAuth().validateUserDetails(_emailController.text.trim(),
-      //       _passwordController.text.trim(), 'Jobseeker');
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -52,26 +37,6 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
   }
 
   void validateUserDetails(String email, String password, String role) async {
-    // User? user = currentUser;
-    //     String result = '';
-    // await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc(user!.uid)
-    //     .get()
-    //     .then((DocumentSnapshot documentSnapshot) {
-    //   if (documentSnapshot.exists) {
-    //     if (documentSnapshot.get('role') == 'Jobseeker') {
-    //       result = 'Jobseeker';
-    //     } else if (documentSnapshot.get('role') == 'Employer') {
-    //       result = 'Employer';
-    //     }
-    //     // else {}
-    //   } else {
-    //     print('Document does not exist within the database');
-    //   }
-    // });
-    // return result;
-
     try {
       final fa = FirebaseAuth.instance;
 
@@ -189,7 +154,7 @@ class _EmployerLoginPageState extends State<EmployerLoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     PoppinsTextWidget(
-                      text: 'as a',
+                      text: 'as an',
                       size: fontSubheader,
                       color: light,
                       // isBold: true,

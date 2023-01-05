@@ -8,7 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class JobCustomSearchPage extends StatefulWidget {
   final String? query;
-  const JobCustomSearchPage({Key? key, this.query}) : super(key: key);
+  final bool canBack;
+  const JobCustomSearchPage({Key? key, this.query, this.canBack = true})
+      : super(key: key);
 
   @override
   State<JobCustomSearchPage> createState() => _JobSearchPageState();
@@ -65,17 +67,19 @@ class _JobSearchPageState extends State<JobCustomSearchPage> {
                 setState(() {});
               }),
               decoration: InputDecoration(
-                  prefixIcon: IconButton(
-                    color: dark,
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: grey,
-                    ),
-                    iconSize: 20,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
+                  prefixIcon: widget.canBack
+                      ? IconButton(
+                          color: dark,
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: grey,
+                          ),
+                          iconSize: 20,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      : null,
                   suffixIcon: searchController.text.isEmpty
                       ? null
                       : IconButton(

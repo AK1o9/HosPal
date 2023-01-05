@@ -206,6 +206,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
                   ],
                 ),
               ),
+              // y20,
               // Container(
               //   margin: EdgeInsets.only(top: space20, right: space20),
               //   padding: const EdgeInsets.only(
@@ -296,7 +297,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
   Widget buildJobApplications() {
     return Container(
       margin: EdgeInsets.only(top: space20, right: space20),
-      padding: pad20,
+      padding: EdgeInsets.fromLTRB(space20, space20, 0, space20),
       decoration: BoxDecoration(borderRadius: bRadius20, color: light),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -367,6 +368,7 @@ class _JobseekerHomePageState extends State<JobseekerHomePage> {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => JobPage(
                   docId: doc.id,
+                  employerId: doc['employer_id'],
                 )));
       },
       child: Container(

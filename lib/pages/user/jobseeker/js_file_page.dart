@@ -114,12 +114,13 @@ class _JobseekerFileStoragePageState extends State<JobseekerFileStoragePage> {
           .collection('users')
           .doc(UserAuth().currentUser!.uid);
       final storageRef = FirebaseStorage.instance.ref().child(path);
+
       //Upload file to storage
-      // await storageRef.putFile(file);
       uploadTask = storageRef.putFile(file);
       final snapshot = await uploadTask!.whenComplete(() {});
       final urlDownload = await snapshot.ref.getDownloadURL();
       if (kDebugMode) print('Download URL: $urlDownload');
+
       //Upload file details to firestore
       firestoreRef.collection('files').doc().set({
         'file_id': selectedFileToUpload!.hashCode,
@@ -132,7 +133,6 @@ class _JobseekerFileStoragePageState extends State<JobseekerFileStoragePage> {
       if (kDebugMode) print('File uploaded successfully!');
     } on Exception catch (e) {
       if (kDebugMode) print(e);
-      // return;
     }
   }
 
@@ -409,15 +409,25 @@ class _JobseekerFileStoragePageState extends State<JobseekerFileStoragePage> {
                 ),
               ],
             );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: CircularProgressIndicator(color: midBlue),
-            );
-          } else {
+          }
+          if (snapshot.hasError) {
             return Center(
               child: CircularProgressIndicator(color: midBlue),
             );
           }
+          if (!snapshot.hasData) {
+            return Center(
+              child: PoppinsTextWidget(
+                text: 'No files found.',
+                size: fontLabel,
+                color: grey,
+                isBold: true,
+              ),
+            );
+          }
+          return Center(
+            child: CircularProgressIndicator(color: midBlue),
+          );
         });
   }
 

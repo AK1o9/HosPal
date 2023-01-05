@@ -24,6 +24,7 @@ class _JobseekerNavBarState extends State<JobseekerNavBar> {
     const JobseekerHomePage(),
     const JobCustomSearchPage(
       query: "",
+      canBack: false,
     ),
     // JobseekerApplicationsPage(),
     const JobseekerFileStoragePage(),

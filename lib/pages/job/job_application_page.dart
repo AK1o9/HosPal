@@ -616,7 +616,6 @@ class _JobApplicationPageState extends State<JobApplicationPage> {
               });
             }
           } else if (currentStep == 1 && newFileToUpload != null) {
-            //TODO: File upload (or selection)
           } else if (currentStep == 0 &&
               (fullNameController.text.isEmpty ||
                   (emailController.text.isEmpty &&

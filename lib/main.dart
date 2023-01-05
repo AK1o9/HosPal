@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:hospal/constants/style.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hospal/pages/job/job_application_page.dart';
 import 'package:hospal/widgets/welcome_screen.dart';
 
 import 'pages/user/auth.dart';

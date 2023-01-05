@@ -39,6 +39,8 @@ List<String> fileTypes = [];
 List<String> fileSizes = [];
 List<String> fileDownloadUrls = [];
 
+bool displayAttachmentsError = false;
+
 var userDoc = FirebaseFirestore.instance
     .collection('users')
     .doc(UserAuth().currentUser!.uid); // FOR JOBSEEKERS only
@@ -69,22 +71,23 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
     try {
       List<String> temp = [];
       await applicationsCollection.doc(widget.docId).get().then((value) {
-        value['files'].forEach((val) {
-          temp.add(val.toString());
-        });
-        setState(() {
-          files = temp;
-        });
-        if (kDebugMode) print(files);
+        if (value['files'].isNotEmpty) {
+          value['files'].forEach((val) {
+            temp.add(val.toString());
+          });
+          setState(() {
+            files = temp;
+          });
+          if (kDebugMode) print(files);
+        }
       });
-    } on Exception catch (e) {
-      print(e);
+    } catch (e) {
+      if (kDebugMode) print('ERROR[1]:${e}');
     }
   }
 
   void getFileInfo() async {
     try {
-      // files.forEach((element) {});
       await FirebaseFirestore.instance
           .collection('users')
           .doc(jobseekerId)
@@ -92,27 +95,22 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
           .get()
           .then((value) {
         for (var doc in value.docs) {
-          for (var file in files) {
-            if (file == doc.id) {
-              setState(() {
-                fileNames.add(doc['file_name']);
-                fileTypes.add(doc['file_type']);
-                fileSizes.add(doc['file_size']);
-                fileDownloadUrls.add(doc['download_url']);
-              });
+          if (files.isNotEmpty) {
+            for (var file in files) {
+              if (file == doc.id) {
+                setState(() {
+                  fileNames.add(doc['file_name']);
+                  fileTypes.add(doc['file_type']);
+                  fileSizes.add(doc['file_size']);
+                  fileDownloadUrls.add(doc['download_url']);
+                });
+              }
             }
           }
         }
-        // for (var file in files) {
-        //   if (file==value.docs. {
-        //     setState(() {
-        //       fileNames.add(value);
-        //     });
-        //   }
-        // }
       });
-    } on Exception catch (e) {
-      print(e);
+    } catch (e) {
+      if (kDebugMode) print('ERROR[2]:${e}');
     }
   }
 
@@ -143,29 +141,7 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
                       borderRadius: bRadius12),
                   padding: EdgeInsets.symmetric(
                       horizontal: space10, vertical: space12),
-                  child:
-                      buildFuture() /* Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // PoppinsTextWidget(
-                      //     text: 'tst', size: fontBody, color: dark),
-                      buildFuture(),
-                      Container(
-                        height: 800,
-                      )
-                      //job title
-                      //comp name
-                      //comp_location
-
-                      //your details
-
-                      //your files (attachments)
-
-                      //Status & how to proceed
-
-                      //Option to delete application
-                    ]), */
-                  ),
+                  child: buildFuture()),
               Padding(
                 padding: pad20,
                 child: CustomButtonWidget(
@@ -332,81 +308,24 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
                             backgroundColor: dark,
                             icon: Icons.visibility_rounded,
                             onTap: () {
-                              getFiles();
+                              // try {
+                              getFiles().catchError((_) {
+                                setState(() {
+                                  displayAttachmentsError = true;
+                                });
+                              });
                               getFileInfo();
-                              // showDialog(
-                              //     context: context,
-                              //     builder: (context) => AlertDialog(
-                              //         title: PoppinsTextWidget(
-                              //           text: 'Attachments',
-                              //           size: fontHeader,
-                              //           isBold: true,
-                              //           color: dark,
-                              //         ),
-                              //         content: /* FutureBuilder(
-                              //             future: FirebaseFirestore.instance
-                              //                 .collection('files')
-                              //                 .doc(jobseekerId)
-                              //                 .get(),
-                              //             builder: (BuildContext context,
-                              //                 AsyncSnapshot snapshot) {
-                              //               if (snapshot.hasData) {
-                              //                 var document = snapshot.data;
-                              //                 return Column(
-                              //                   children: [
-                              //                     SizedBox(
-                              //                       height: 200,
-                              //                       child: ListView.builder(
-                              //                           itemCount: snapshot
-                              //                               .data.length,
-                              //                           itemBuilder:
-                              //                               (context, index) {
-                              //                             return Card(
-                              //                               child: Column(
-                              //                                   children: [
-                              //                                     Text(document[
-                              //                                         'file_name'])
-                              //                                   ]),
-                              //                             );
-                              //                           }),
-                              //                     ),
-                              //                   ],
-                              //                 );
-                              //               }
-                              //               if (snapshot.hasError) {
-                              //                 return const Center(
-                              //                     child:
-                              //                         Text('Nothing here...'));
-                              //               }
-                              //               return const Center(
-                              //                 child:
-                              //                     CircularProgressIndicator(),
-                              //               );
-                              //             },
-                              //           ), */
-                              //             Column(
-                              //           children: [
-                              //             SizedBox(
-                              //               height: 200,
-                              //               width: 200,
-                              //               child: ListView.builder(
-                              //                 itemCount: files.length,
-                              //                 itemBuilder: ((context, index) {
-                              //                   return Center(
-                              //                     child: Card(
-                              //                         child: Padding(
-                              //                       padding: pad12,
-                              //                       child: PoppinsTextWidget(
-                              //                           text: fileNames[index],
-                              //                           size: fontLabel,
-                              //                           color: dark),
-                              //                     )),
-                              //                   );
-                              //                 }),
-                              //               ),
-                              //             ),
-                              //           ],
-                              //         )));
+                              displayAttachmentsError
+                                  ? setState(() {
+                                      displayAttachmentsError = false;
+                                    })
+                                  : null;
+                              // } catch (e) {
+                              //   setState(() {
+                              //     displayAttachmentsError = true;
+                              //   });
+                              //   print(e);
+                              // }
                             }),
                       )
                     : document['files'].length > 0
@@ -422,6 +341,7 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
                             size: fontLabel,
                             color: dark,
                           ),
+                _displayAttachmentError(),
                 y30,
                 PoppinsTextWidget(
                   text: 'Status',
@@ -530,7 +450,8 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
                                                     await applicationsCollection
                                                         .doc(widget.docId)
                                                         .delete();
-                                                    print('deleted...');
+                                                    if (kDebugMode)
+                                                      print('deleted...');
 
                                                     Navigator.of(super.context)
                                                         .pop();
@@ -628,40 +549,6 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
   }
 
   Widget buildFilesLV() {
-    // return ListView(
-    //   scrollDirection: Axis.horizontal,
-    //   children: files.map((file) {
-    //     return Padding(
-    //       padding: EdgeInsets.only(right: space10),
-    //       child: InkWell(
-    //         onTap: () {},
-    //         child: Container(
-    //             height: 150,
-    //             width: 200,
-    //             decoration:
-    //                 BoxDecoration(color: light, borderRadius: bRadius20),
-    //             padding: pad20,
-    //             child: Column(
-    //               children: [
-    //                 PoppinsTextWidget(
-    //                   text: file,
-    //                   size: fontLabel,
-    //                   color: dark,
-    //                   isBold: true,
-    //                 ),
-    //                 PoppinsTextWidget(
-    //                   text: fileNames[2],
-    //                   size: fontLabel,
-    //                   color: dark,
-    //                   isBold: true,
-    //                 ),
-    //               ],
-    //             )),
-    //       ),
-    //     );
-    //   }).toList(),
-    //   // children: files.map((e) {}).toList(),
-    // );
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: files.length,
@@ -681,12 +568,6 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // PoppinsTextWidget(
-                        //   text: files[index],
-                        //   size: fontLabel,
-                        //   color: dark,
-                        //   isBold: true,
-                        // ),
                         const Icon(
                           Icons.file_present_outlined,
                           size: 36,
@@ -710,12 +591,6 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
                           color: dark,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        // IconButton(
-                        //     onPressed: () {},
-                        //     icon: Icon(
-                        //       Icons.download_rounded,
-                        //       color: dark,
-                        //     ))
                       ],
                     )),
               ));
@@ -729,7 +604,6 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return const Text("Loading...");
-            // return const Center(child: CircularProgressIndicator());
           }
           var document = snapshot.data!;
           return PoppinsTextWidget(
@@ -751,7 +625,7 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
         future: fileRef.get(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            var document = snapshot.data!;
+            // var document = snapshot.data!;
             return SizedBox(
                 height: 200,
                 child: Row(
@@ -783,5 +657,20 @@ class _JobApplicationDetailsPageState extends State<JobApplicationDetailsPage> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  Widget _displayAttachmentError() {
+    return displayAttachmentsError
+        ? Padding(
+            padding: pad10,
+            child: PoppinsTextWidget(
+                text:
+                    'Oops! Looks like something went wrong with loading attachments. Please try again.',
+                size: fontLabel,
+                color: Colors.red),
+          )
+        : Container(
+            width: 0,
+          );
   }
 }
