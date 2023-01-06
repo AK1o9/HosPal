@@ -69,6 +69,7 @@ class _EmployerPostHistoryPageState extends State<EmployerPostHistoryPage> {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => JobPage(
                                     docId: document.id,
+                                    isEmployerView: true,
                                     employerId: document['employer_id'])));
                           },
                           child: Container(

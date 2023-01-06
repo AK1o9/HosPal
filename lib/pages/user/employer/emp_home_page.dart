@@ -306,6 +306,7 @@ class _EmployerHomePageState extends State<EmployerHomePage> {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => JobPage(
                                     docId: document.id,
+                                    isEmployerView: true,
                                     employerId: document['employer_id'])));
                           },
                           child: Container(

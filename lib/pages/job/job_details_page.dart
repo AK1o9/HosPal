@@ -203,7 +203,10 @@ class _JobPageState extends State<JobPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             PoppinsTextWidget(
-                text: 'Job Details', size: 42, isBold: true, color: midBlue),
+                text: 'Job Details',
+                size: 42,
+                isBold: true,
+                color: widget.isEmployerView ? midOrange : midBlue),
             Divider(
               height: space20,
             ),
@@ -430,7 +433,7 @@ class _JobPageState extends State<JobPage> {
                       text: widget.isEmployerView ? 'Back' : 'Cancel',
                       size: fontLabel,
                       isBold: true,
-                      color: darkBlue),
+                      color: widget.isEmployerView ? darkOrange : darkBlue),
                 ),
               ),
             )
