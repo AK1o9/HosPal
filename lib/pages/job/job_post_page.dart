@@ -128,7 +128,6 @@ class _JobPostPageState extends State<JobPostPage> {
     jobId = 'J-${getRandomString(20)}';
     return Material(
       child: Scaffold(
-        //TODO: If page's fixed, remove scaffold.
         body: Container(
           margin: EdgeInsets.only(
               left: isMobile(context) ? space12 : space18,
@@ -429,27 +428,6 @@ class _JobPostPageState extends State<JobPostPage> {
                 ],
               ),
               y20,
-
-              //Drop Zone / File Picker
-              // PoppinsTextWidget(
-              //     text: 'Company Logo', size: fontHeader, color: dark),
-              // y10,
-              // droppedFile != null
-              //     ? SizedBox(
-              //         height: 200,
-              //         // width: 300,
-              //         child: DroppedFileWidget(file: droppedFile!))
-              //     : Container(
-              //         width: 0,
-              //       ),
-              // kIsWeb
-              //     ? SizedBox(
-              //         height: 400,
-              //         // width: 300,
-              //         child: DropzoneWidget(
-              //             onDroppedFile: (file) =>
-              //                 setState(() => droppedFile = file)))
-              //     : pickFile(),
               uploadError
                   ? Padding(
                       padding: EdgeInsets.symmetric(vertical: space12),
@@ -674,10 +652,7 @@ class _JobPostPageState extends State<JobPostPage> {
           setState(() {
             uploadError = true;
           });
-          //TODO
-          // final events = await dropzoneController!.pickFiles();
-          // if (events.isEmpty) return;
-          // acceptFile(events.first);
+
         },
       ),
     );
@@ -706,7 +681,6 @@ class _JobPostPageState extends State<JobPostPage> {
       bytes: bytes,
     );
 
-    // widget.onDroppedFile(droppedFile);
   }
 
   Future selectFile() async {
@@ -714,8 +688,7 @@ class _JobPostPageState extends State<JobPostPage> {
 
     if (result == null) {
       return;
-    } else if (/* result.files.single.bytes != null ||
-        FilePicker.platform.toString() == "Instance of 'FilePickerWeb'" ||  */
+    } else if (
         kIsWeb) {
       final path = result.files.single.path;
       setState(() {
@@ -813,7 +786,6 @@ class _JobPostPageState extends State<JobPostPage> {
             scrollDirection: Axis.horizontal,
             itemCount: jobSkills!.length,
             itemBuilder: (context, index) {
-              bool isHovering = false;
               return InkWell(
                 hoverColor: Colors.transparent,
                 splashColor: Colors.transparent,
