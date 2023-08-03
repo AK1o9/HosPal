@@ -5,6 +5,7 @@ HosPal is a job-searching mobile application for people in the medical field.
 
 ## Technologies used
 Programming Language: Dart
+
 External packages/libraries: Flutter SDK
 
 ## Acknowledgements
