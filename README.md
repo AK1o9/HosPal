@@ -3,7 +3,6 @@
 # HosPal
 
 HosPal is a job-searching mobile application for people in the medical field.
-
 In addition to **helping people land jobs**, it also **assists employers in seeking out jobseekers/applicants.**
 
 # Pitch
