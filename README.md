@@ -35,7 +35,7 @@ The application enables Jobseekers:
 4. To save and retrieve files within a cloud storage.
 5. To fill up and submit job applications.
 6.	To check/review their job applications and the status of each application (which is set by the employer).
-7.	To set up and modify a public profile that can be viewed by Employers. (This may include extra info like perhaps personal information, qualifications, working history, endorsements and such) (Similar to *LinkedIn* profiles)
+7.	To set up and modify a public profile that can be viewed by Employers. (This may include a description which can contain info like perhaps personal information, qualifications, working history, endorsements and such) (Similar to *LinkedIn/Jobstreet* profiles)
 
 The application enables Employers:
 1. To sign in or register in the system.
