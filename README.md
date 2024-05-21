@@ -1,6 +1,10 @@
 
 ![HosPal Logo](https://user-images.githubusercontent.com/96708800/199993708-65eff58c-fdff-4a29-96ec-2960ca0edf85.png)
 # HosPal
+![Static Badge](https://img.shields.io/badge/dart-grey?style=for-the-badge&logo=dart&logoColor=skyblue)
+![Static Badge](https://img.shields.io/badge/Flutter-grey?style=for-the-badge&logo=flutter&logoColor=skyblue)
+![Static Badge](https://img.shields.io/badge/firebase-grey?style=for-the-badge&logo=firebase)
+
 
 HosPal is a job-searching mobile application for people in the medical field.
 In addition to **helping people land jobs**, it also **assists employers in seeking out jobseekers/applicants.**
